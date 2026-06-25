@@ -339,6 +339,61 @@ li {
   color: var(--accent);
 }
 
+.option-plan {
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.58);
+  overflow: hidden;
+}
+
+.option-plan summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-weight: 800;
+  color: var(--ink);
+  position: relative;
+}
+
+.option-plan summary::-webkit-details-marker {
+  display: none;
+}
+
+.option-plan summary::after {
+  content: "+";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.option-plan[open] summary::after {
+  content: "-";
+}
+
+.option-plan-body {
+  padding: 0 16px 14px;
+  border-top: 1px solid var(--line);
+}
+
+.option-plan-body p {
+  margin: 10px 0 0;
+}
+
+.destination-card.recommended .option-plan {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.destination-card.recommended .option-plan summary,
+.destination-card.recommended .option-plan-body p,
+.destination-card.recommended .option-plan summary::after {
+  color: white;
+}
+
 .planner-layout {
   display: grid;
   grid-template-columns: 320px 1fr;

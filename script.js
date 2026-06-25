@@ -35,13 +35,31 @@ const tripOptions = [
     reason:
       "Beautiful and genuinely different, but it should be chosen only if the group actively likes a monsoon-green, rain-shaped trip.",
   },
+  {
+    id: "kolli",
+    name: "Kolli Hills",
+    min: 5000,
+    max: 8500,
+    tags: ["budget", "easy"],
+    reason:
+      "A closer and more rugged road-trip style option if the group wants mountain-road energy over polished hill-town comfort.",
+  },
+  {
+    id: "wayanad",
+    name: "Wayanad",
+    min: 7500,
+    max: 13000,
+    tags: ["balanced"],
+    reason:
+      "Best when the group wants a larger, more adventurous landscape and is okay with a longer access day plus some September rain flexibility.",
+  },
 ];
 
 const stylePriority = {
-  balanced: ["valparai", "kotagiri", "sakleshpur", "vagamon"],
-  budget: ["valparai", "kotagiri", "sakleshpur", "vagamon"],
-  cooler: ["kotagiri", "valparai", "sakleshpur", "vagamon"],
-  easy: ["kotagiri", "valparai", "sakleshpur", "vagamon"],
+  balanced: ["valparai", "kotagiri", "sakleshpur", "wayanad", "vagamon", "kolli"],
+  budget: ["kolli", "valparai", "kotagiri", "sakleshpur", "vagamon", "wayanad"],
+  cooler: ["kotagiri", "valparai", "sakleshpur", "vagamon", "wayanad", "kolli"],
+  easy: ["kolli", "kotagiri", "valparai", "sakleshpur", "vagamon", "wayanad"],
 };
 
 const groupSizeInput = document.getElementById("groupSize");
@@ -91,7 +109,11 @@ function render() {
             ? "Stay in Kotagiri or Coonoor, not busy Ooty center"
             : option.id === "sakleshpur"
               ? "Estate stay vibe works better than a rushed sightseeing list"
-              : "Pick only if the group is fine with September rain moods";
+              : option.id === "vagamon"
+                ? "Pick only if the group is fine with September rain moods"
+                : option.id === "kolli"
+                  ? "Shorter access and stronger road-trip energy"
+                  : "Larger destination, so pick one side and do it well";
 
       return `
         <article class="${classes}">
