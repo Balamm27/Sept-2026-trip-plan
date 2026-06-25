@@ -244,10 +244,33 @@ li {
   gap: 10px;
 }
 
-.showcase-field span {
-  font-size: 0.92rem;
+.field-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.96rem;
   font-weight: 800;
   color: var(--ink);
+}
+
+.field-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(29, 107, 224, 0.12);
+  color: #1d6be0;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+.field-help {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
 }
 
 .showcase-field select {
@@ -267,6 +290,52 @@ li {
   outline: none;
   border-color: #1d6be0;
   box-shadow: 0 0 0 4px rgba(29, 107, 224, 0.12);
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.guide-card {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  border-radius: 24px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.guide-card::after {
+  content: "";
+  position: absolute;
+  inset: auto -20% -35% auto;
+  width: 180px;
+  height: 180px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(33, 75, 63, 0.12), transparent 68%);
+}
+
+.guide-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: var(--accent);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.guide-card h3 {
+  margin-top: 16px;
+  font-size: 1.15rem;
 }
 
 .intro-card,
@@ -307,6 +376,8 @@ li {
   transition: transform 180ms ease, box-shadow 180ms ease;
   overflow: hidden;
   isolation: isolate;
+  animation: rise-in 560ms ease both;
+  animation-delay: calc(var(--card-delay, 0) * 40ms);
 }
 
 .destination-card.has-photo::before {
@@ -341,6 +412,12 @@ li {
 .timeline-card:hover,
 .tip-card:hover {
   transform: translateY(-4px);
+}
+
+.destination-card.selected {
+  box-shadow:
+    0 0 0 3px rgba(29, 107, 224, 0.32),
+    0 18px 50px rgba(25, 38, 31, 0.16);
 }
 
 .destination-card.recommended {
@@ -421,6 +498,43 @@ li {
   margin-top: 18px;
   font-weight: 800;
   color: var(--accent);
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 14px;
+}
+
+.card-action-primary {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #1d6be0, #1451ad);
+  color: white;
+  padding: 11px 16px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 26px rgba(29, 107, 224, 0.22);
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+}
+
+.card-action-primary:hover {
+  transform: translateY(-2px);
+}
+
+.card-action-primary.is-active {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.84));
+  color: #184b96;
+  box-shadow: inset 0 0 0 2px rgba(29, 107, 224, 0.18);
+}
+
+.card-action-hint {
+  font-size: 0.84rem;
+  color: var(--muted);
 }
 
 .option-plan {
@@ -542,8 +656,14 @@ li {
 
 .destination-card.recommended .photo-album summary,
 .destination-card.recommended .album-credit,
-.destination-card.recommended .photo-album summary::after {
+.destination-card.recommended .photo-album summary::after,
+.destination-card.recommended .card-action-hint {
   color: white;
+}
+
+.destination-card.recommended .card-action-primary {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(249, 253, 255, 0.86));
+  color: #17478d;
 }
 
 .planner-layout {
@@ -561,6 +681,15 @@ li {
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+.controls-eyebrow {
+  margin: 0 0 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #1d6be0;
 }
 
 .controls-panel label {
@@ -658,9 +787,68 @@ li {
   gap: 16px;
 }
 
+.itinerary-heading {
+  display: grid;
+  grid-template-columns: 1.3fr 320px;
+  gap: 18px;
+  align-items: end;
+}
+
+.itinerary-focus-card {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  border-radius: 22px;
+  padding: 18px;
+}
+
+.itinerary-focus-label {
+  display: block;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  color: #1d6be0;
+}
+
+.itinerary-focus-card strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.2rem;
+}
+
+.itinerary-focus-card p {
+  margin: 10px 0 0;
+}
+
+.itinerary-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 8px 0 18px;
+}
+
+.itinerary-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(29, 107, 224, 0.08);
+  border: 1px solid rgba(29, 107, 224, 0.16);
+  color: #17478d;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
 .timeline-card,
 .tip-card {
   padding: 22px;
+}
+
+.timeline-card-animated {
+  animation: rise-in 520ms ease both;
+  animation-delay: calc(var(--delay, 0) * 90ms);
 }
 
 .day-chip {
@@ -680,10 +868,24 @@ li {
   gap: 16px;
 }
 
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 980px) {
   .hero,
   .filter-showcase,
+  .guide-grid,
   .planner-layout,
+  .itinerary-heading,
   .timeline,
   .tips-grid,
   .card-grid {
@@ -713,13 +915,36 @@ li {
   .intro-card,
   .controls-panel,
   .results-panel,
+  .guide-card,
   .timeline-card,
-  .tip-card {
+  .tip-card,
+  .filter-showcase-copy,
+  .top-filters-card,
+  .itinerary-focus-card {
     padding: 18px;
     border-radius: 22px;
   }
 
   h1 {
     font-size: 2.4rem;
+  }
+
+  .showcase-field select {
+    padding: 16px 18px;
+    font-size: 1.14rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .destination-card,
+  .timeline-card-animated,
+  .button,
+  .card-action-primary {
+    animation: none;
+    transition: none;
   }
 }

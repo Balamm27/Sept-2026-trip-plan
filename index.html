@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=5800" />
+    <link rel="stylesheet" href="./styles.css?v=5900" />
   </head>
   <body>
     <div class="page-shell">
@@ -71,7 +71,8 @@
             </div>
             <div class="top-filters-card">
               <label class="showcase-field" for="heroNights">
-                <span>Trip length</span>
+                <span class="field-heading"><span class="field-icon">01</span><span>Trip length</span></span>
+                <span class="field-help">This changes both the ranking and the itinerary length below.</span>
                 <select id="heroNights">
                   <option value="3" selected>3 nights / 4 days</option>
                   <option value="2">2 nights / 3 days</option>
@@ -79,7 +80,8 @@
               </label>
 
               <label class="showcase-field" for="heroStyle">
-                <span>Group mood</span>
+                <span class="field-heading"><span class="field-icon">02</span><span>Group mood</span></span>
+                <span class="field-help">Pick what matters most and the best-fit tile moves to the top.</span>
                 <select id="heroStyle">
                   <option value="balanced" selected>Balanced chill + sightseeing</option>
                   <option value="budget">Lowest possible spend</option>
@@ -88,6 +90,26 @@
                 </select>
               </label>
             </div>
+          </div>
+        </section>
+
+        <section class="section guide-strip">
+          <div class="guide-grid">
+            <article class="guide-card">
+              <span class="guide-step">01</span>
+              <h3>Use the blue filters</h3>
+              <p>They control the recommendation, the order of the tiles, and the compare section.</p>
+            </article>
+            <article class="guide-card">
+              <span class="guide-step">02</span>
+              <h3>Scan the ranked options</h3>
+              <p>The top-left badge shows what each place is best for, and the rank updates live.</p>
+            </article>
+            <article class="guide-card">
+              <span class="guide-step">03</span>
+              <h3>Open the full plan</h3>
+              <p>Use the itinerary button on any tile to load the detailed trip plan at the bottom.</p>
+            </article>
           </div>
         </section>
 
@@ -585,6 +607,7 @@
 
           <div class="planner-layout">
             <aside class="controls-panel">
+              <p class="controls-eyebrow">Interactive compare</p>
               <label for="groupSize">Group size</label>
               <input id="groupSize" type="range" min="5" max="7" step="1" value="6" />
               <div class="range-readout"><span id="groupSizeValue">6</span> friends</div>
@@ -618,52 +641,23 @@
         </section>
 
         <section id="itinerary" class="section">
-          <div class="section-heading">
-            <p class="section-label">Sample plan</p>
-            <h2>Featured 3N / 4D itinerary</h2>
-            <p>
-              Designed around a Valparai base, with the journey itself becoming part of the trip.
-            </p>
+          <div class="section-heading itinerary-heading">
+            <div>
+              <p class="section-label">Full plan</p>
+              <h2 id="itineraryHeading">Meghamalai full itinerary</h2>
+              <p id="itineraryIntro">
+                Choose any destination tile and this section switches to that place's more complete trip flow.
+              </p>
+            </div>
+            <div class="itinerary-focus-card">
+              <span class="itinerary-focus-label">Currently viewing</span>
+              <strong id="itineraryCurrent">Meghamalai</strong>
+              <p id="itineraryMeta">3 nights / 4 days with a slow scenic-drive pace.</p>
+            </div>
           </div>
 
-          <div class="timeline">
-            <article class="timeline-card">
-              <span class="day-chip">Night 0 / Day 1</span>
-              <h3>Overnight from Chennai, then head up through Pollachi</h3>
-              <p>
-                Take an overnight train or bus to Coimbatore, move toward Pollachi after
-                breakfast, and make the Aliyar-side climb part of the experience. Check in,
-                take it easy, and keep the evening for mist, tea-estate roads, and a long stay-side hangout.
-              </p>
-            </article>
-
-            <article class="timeline-card">
-              <span class="day-chip">Day 2</span>
-              <h3>Valparai viewpoints and tea-country roaming</h3>
-              <p>
-                Keep it simple: dam stops, estate roads, relaxed view points, tea or snack
-                breaks, and no pressure to rush through a checklist. This is the day for pure hill-road mood.
-              </p>
-            </article>
-
-            <article class="timeline-card">
-              <span class="day-chip">Day 3</span>
-              <h3>Sholayar side or a slow backup weather day</h3>
-              <p>
-                If the weather is clear, take a longer scenic loop toward the dam side. If the
-                rain picks up, keep this as a cafe, cards, music, and stay-with-a-view day instead.
-              </p>
-            </article>
-
-            <article class="timeline-card">
-              <span class="day-chip">Day 4</span>
-              <h3>Breakfast, one final viewpoint, and return</h3>
-              <p>
-                Keep the last morning easy, do one final stop on the way down, and leave enough
-                buffer for the return train or bus. That way the trip stays relaxed instead of over-optimized.
-              </p>
-            </article>
-          </div>
+          <div class="itinerary-chip-row" id="itineraryChips"></div>
+          <div class="timeline" id="itineraryTimeline"></div>
         </section>
 
         <section class="section tips-grid">
@@ -695,6 +689,6 @@
       </main>
     </div>
 
-    <script src="./script.js?v=5800"></script>
+    <script src="./script.js?v=5900"></script>
   </body>
 </html>
