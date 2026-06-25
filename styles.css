@@ -215,6 +215,60 @@ li {
   margin-top: 34px;
 }
 
+.filter-showcase {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.filter-showcase-copy,
+.top-filters-card {
+  backdrop-filter: blur(12px);
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  border-radius: 28px;
+  padding: 24px 26px;
+}
+
+.top-filters-card {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.showcase-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.showcase-field span {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.showcase-field select {
+  appearance: none;
+  width: 100%;
+  padding: 20px 26px;
+  border-radius: 30px;
+  border: 2px solid rgba(24, 49, 42, 0.1);
+  background: rgba(255, 255, 255, 0.92);
+  font: inherit;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  color: var(--ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.showcase-field select:focus {
+  outline: none;
+  border-color: #1d6be0;
+  box-shadow: 0 0 0 4px rgba(29, 107, 224, 0.12);
+}
+
 .intro-card,
 .controls-panel,
 .results-panel,
@@ -628,6 +682,7 @@ li {
 
 @media (max-width: 980px) {
   .hero,
+  .filter-showcase,
   .planner-layout,
   .timeline,
   .tips-grid,

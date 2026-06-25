@@ -34,8 +34,8 @@
         <div class="hero-panel">
           <div class="metric-card highlight">
             <span class="metric-label">Best overall</span>
-            <strong>Valparai base</strong>
-            <span class="metric-note">with Aliyar and Sholayar side drives</span>
+            <strong id="heroBestName">Meghamalai base</strong>
+            <span class="metric-note" id="heroBestNote">for cloud-forest roads and a deeper-cut Tamil Nadu vibe</span>
           </div>
           <div class="metric-grid">
             <div class="metric-card">
@@ -59,6 +59,38 @@
       </header>
 
       <main>
+        <section class="section filter-showcase-section">
+          <div class="filter-showcase">
+            <div class="filter-showcase-copy">
+              <p class="section-label">Pick the vibe first</p>
+              <h2>Let the filters choose the best fit</h2>
+              <p>
+                These controls decide which option gets the live recommendation tag across
+                the full shortlist.
+              </p>
+            </div>
+            <div class="top-filters-card">
+              <label class="showcase-field" for="heroNights">
+                <span>Trip length</span>
+                <select id="heroNights">
+                  <option value="3" selected>3 nights / 4 days</option>
+                  <option value="2">2 nights / 3 days</option>
+                </select>
+              </label>
+
+              <label class="showcase-field" for="heroStyle">
+                <span>Group mood</span>
+                <select id="heroStyle">
+                  <option value="balanced" selected>Balanced chill + sightseeing</option>
+                  <option value="budget">Lowest possible spend</option>
+                  <option value="cooler">Coolest weather first</option>
+                  <option value="easy">Lowest travel effort</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </section>
+
         <section class="section intro-strip">
           <div class="intro-card">
             <p class="section-label">Trip brief</p>
@@ -82,14 +114,16 @@
             </p>
           </div>
 
-          <div class="card-grid">
+          <div class="card-grid" id="optionsGrid">
             <article
-              class="destination-card recommended has-photo"
+              class="destination-card has-photo"
+              data-option-id="valparai"
+              data-pill="Best scenic-drive base"
               style="--card-photo: url('./assets/optimized/valparai-hero.jpg'); --card-focus: 48% 52%;"
             >
               <div class="card-topline">
-                <span class="pill">Recommended</span>
-                <span class="rank">#1</span>
+                <span class="pill muted">Best scenic-drive base</span>
+                <span class="rank">#2</span>
               </div>
               <h3>Valparai</h3>
               <p class="subtitle">Best offbeat scenic-drive pick if the group wants something less obvious.</p>
@@ -126,12 +160,102 @@
             </article>
 
             <article
+              class="destination-card recommended has-photo"
+              data-option-id="meghamalai"
+              data-pill="Deep-cut favourite"
+              style="--card-photo: url('https://commons.wikimedia.org/wiki/Special:FilePath/Panoramic%20view%20of%20Meghamalai.jpg'); --card-focus: center center;"
+            >
+              <div class="card-topline">
+                <span class="pill">Recommended</span>
+                <span class="rank">#1</span>
+              </div>
+              <h3>Meghamalai</h3>
+              <p class="subtitle">The strongest hidden-gem pick if you want a colder, rawer, less-ticked-off version of the Tamil Nadu hills.</p>
+              <div class="stats-row">
+                <span>Cloud-forest feel</span>
+                <span>Very low tourist noise</span>
+                <span>Best with a car</span>
+              </div>
+              <ul>
+                <li>Reach Madurai or Theni side overnight, then climb into High Wavy country where the roads, estates, and dams are the whole mood.</li>
+                <li>Feels more secretive than Valparai because the stay density is lower and the hill experience is more spread out and remote.</li>
+                <li>Excellent for a group that values views, long drives, quiet stays, and “how do people not know this place?” energy.</li>
+              </ul>
+              <p class="budget-tag">Estimated: ₹6.8k to ₹11.8k per person</p>
+              <details class="option-plan">
+                <summary>Open 3N / 4D plan</summary>
+                <div class="option-plan-body">
+                  <p><strong>Night 0:</strong> Overnight train or bus from Chennai toward Madurai, then continue by road into Theni district.</p>
+                  <p><strong>Day 1:</strong> Breakfast on the plains, climb up slowly with viewpoint pauses, check in, and keep the first evening entirely stay-side.</p>
+                  <p><strong>Day 2:</strong> Estate-road day with dams, misty bends, and one lunch stop instead of trying to collect too many locations.</p>
+                  <p><strong>Day 3:</strong> Flexible scenic loop toward waterfalls or wildlife-side stretches depending on rain and road conditions.</p>
+                  <p><strong>Day 4:</strong> Descend after breakfast and keep a safe buffer before the overnight return.</p>
+                </div>
+              </details>
+              <details class="photo-album">
+                <summary>Open photo album</summary>
+                <div class="album-grid">
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Panoramic%20view%20of%20Meghamalai.jpg" alt="Panoramic Meghamalai hill view" loading="lazy" />
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Meghamalai%20Falls%2C%20Theni%20District.jpg" alt="Waterfall in Meghamalai" loading="lazy" />
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Tea%20plantations%20of%20Meghamalai.jpg" alt="Tea plantations in Meghamalai" loading="lazy" />
+                </div>
+                <p class="album-credit">Album photos via Wikimedia Commons.</p>
+              </details>
+            </article>
+
+            <article
               class="destination-card has-photo"
+              data-option-id="vattavada"
+              data-pill="Coldest hidden valley"
+              style="--card-photo: url('https://commons.wikimedia.org/wiki/Special:FilePath/Morning%20of%20vattavada.jpg'); --card-focus: center center;"
+            >
+              <div class="card-topline">
+                <span class="pill muted">Coldest hidden valley</span>
+                <span class="rank">#3</span>
+              </div>
+              <h3>Vattavada + Kanthalloor</h3>
+              <p class="subtitle">Remote farm valleys above the regular Munnar circuit, with colder air and a much quieter village feel.</p>
+              <div class="stats-row">
+                <span>Farm-country hills</span>
+                <span>Very niche Kerala pick</span>
+                <span>Longer transfer</span>
+              </div>
+              <ul>
+                <li>Use an overnight train toward Kerala and then road-trip into the Vattavada side instead of stopping in mainstream Munnar.</li>
+                <li>The appeal here is terraced farms, empty roads, and that borderland hill vibe rather than polished town tourism.</li>
+                <li>Works beautifully if your group wants cooler weather and doesn’t mind a longer first-day transfer for a more unusual base.</li>
+              </ul>
+              <p class="budget-tag">Estimated: ₹8.2k to ₹13.5k per person</p>
+              <details class="option-plan">
+                <summary>Open 3N / 4D plan</summary>
+                <div class="option-plan-body">
+                  <p><strong>Night 0:</strong> Overnight train from Chennai toward Ernakulam or Kottayam, then continue by road via Munnar.</p>
+                  <p><strong>Day 1:</strong> Reach late morning or noon, settle in, and keep the day very light because the onward drive is the real effort.</p>
+                  <p><strong>Day 2:</strong> Vattavada and Kanthalloor village loop with farm views, fruit stops, and zero hurry.</p>
+                  <p><strong>Day 3:</strong> One longer border-road or shola-side outing, then an evening fully reserved for the stay and the weather.</p>
+                  <p><strong>Day 4:</strong> Descend early and build in serious buffer before the return train.</p>
+                </div>
+              </details>
+              <details class="photo-album">
+                <summary>Open photo album</summary>
+                <div class="album-grid">
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Morning%20of%20vattavada.jpg" alt="Morning view in Vattavada" loading="lazy" />
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Vattavada%20Village%20%40%20Munnar%20-%20panoramio.jpg" alt="Vattavada village valley" loading="lazy" />
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Step%20Agriculture%20%40%20Vattavada%20-%20panoramio.jpg" alt="Terraced agriculture in Vattavada" loading="lazy" />
+                </div>
+                <p class="album-credit">Album photos via Wikimedia Commons.</p>
+              </details>
+            </article>
+
+            <article
+              class="destination-card has-photo"
+              data-option-id="kotagiri"
+              data-pill="Best weather-safe"
               style="--card-photo: url('./assets/optimized/kotagiri-hero.jpg'); --card-focus: center center;"
             >
               <div class="card-topline">
                 <span class="pill muted">Best weather-safe</span>
-                <span class="rank">#2</span>
+                <span class="rank">#5</span>
               </div>
               <h3>Kotagiri + Coonoor</h3>
               <p class="subtitle">The safer September choice if you still want cool air and good roads without going too mainstream.</p>
@@ -170,6 +294,8 @@
 
             <article
               class="destination-card has-photo"
+              data-option-id="sakleshpur"
+              data-pill="Best outside Tamil Nadu"
               style="--card-photo: url('./assets/optimized/sakleshpur-hero.jpg'); --card-focus: center center;"
             >
               <div class="card-topline">
@@ -212,6 +338,52 @@
 
             <article
               class="destination-card has-photo"
+              data-option-id="kemmanagundi"
+              data-pill="Most under-planned Karnataka"
+              style="--card-photo: url('https://commons.wikimedia.org/wiki/Special:FilePath/Kemmanagundi%20View.jpg'); --card-focus: center center;"
+            >
+              <div class="card-topline">
+                <span class="pill muted">Most under-planned Karnataka</span>
+                <span class="rank">#7</span>
+              </div>
+              <h3>Kemmanagundi</h3>
+              <p class="subtitle">A misty Bababudangiri-side retreat that feels more like an old hill outpost than a busy tourist town.</p>
+              <div class="stats-row">
+                <span>Royal-retreat feel</span>
+                <span>Falls + viewpoints</span>
+                <span>Longest access</span>
+              </div>
+              <ul>
+                <li>Best for a group that wants a genuinely unusual Karnataka option and is okay spending a bit more time getting there.</li>
+                <li>The landscape is more ridges, valleys, and old-school hill-retreat energy than cafe-town tourism.</li>
+                <li>Feels like a stronger “we discovered this ourselves” pick than Chikmagalur proper.</li>
+              </ul>
+              <p class="budget-tag">Estimated: ₹8.5k to ₹14.5k per person</p>
+              <details class="option-plan">
+                <summary>Open 3N / 4D plan</summary>
+                <div class="option-plan-body">
+                  <p><strong>Night 0:</strong> Overnight train or bus toward Birur or Chikkamagaluru-side access.</p>
+                  <p><strong>Day 1:</strong> Continue the last stretch by road, check in, and keep the first evening for sunset and quiet stay time.</p>
+                  <p><strong>Day 2:</strong> Viewpoint loop, garden stretches, and one waterfall-side excursion if the roads are cooperating.</p>
+                  <p><strong>Day 3:</strong> Keep this for a longer scenic round or an intentionally slow mist day.</p>
+                  <p><strong>Day 4:</strong> Start early because this option earns its uniqueness with longer travel hours.</p>
+                </div>
+              </details>
+              <details class="photo-album">
+                <summary>Open photo album</summary>
+                <div class="album-grid">
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Kemmanagundi%20View.jpg" alt="Kemmanagundi valley view" loading="lazy" />
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hebbe%20falls%20in%20Kemmangundi%20Karnataka%20India.jpg" alt="Hebbe Falls near Kemmanagundi" loading="lazy" />
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Picture%20shot%20during%20sunset%20%40%20Kemmangundi%20which%20depicts%20amazing%20beauty%20of%20nature.jpg" alt="Sunset in Kemmanagundi" loading="lazy" />
+                </div>
+                <p class="album-credit">Album photos via Wikimedia Commons.</p>
+              </details>
+            </article>
+
+            <article
+              class="destination-card has-photo"
+              data-option-id="vagamon"
+              data-pill="Rain-lover wildcard"
               style="--card-photo: url('./assets/optimized/vagamon-meadows.jpg'); --card-focus: center center;"
             >
               <div class="card-topline">
@@ -254,6 +426,52 @@
 
             <article
               class="destination-card has-photo"
+              data-option-id="javadi"
+              data-pill="Closest true hidden gem"
+              style="--card-photo: url('https://commons.wikimedia.org/wiki/Special:FilePath/Javadi%20Hills%20in%20Tamil%20Nadu.jpg'); --card-focus: center center;"
+            >
+              <div class="card-topline">
+                <span class="pill muted">Closest true hidden gem</span>
+                <span class="rank">#9</span>
+              </div>
+              <h3>Javadi Hills</h3>
+              <p class="subtitle">A quieter Eastern Ghats answer if you want a less-discussed hill break without burning a whole day in transfers.</p>
+              <div class="stats-row">
+                <span>Nearer from Chennai</span>
+                <span>Raw forest roads</span>
+                <span>Low-polish charm</span>
+              </div>
+              <ul>
+                <li>Very different from the usual tea-estate hill towns: more forest, lakes, waterfalls, and a stripped-back road-trip feel.</li>
+                <li>Works well for groups that want hidden-gem bragging rights but still want a lighter overall travel burden.</li>
+                <li>Less premium in stay quality than Nilgiris or Kerala, so pick it for the vibe, not luxury inventory.</li>
+              </ul>
+              <p class="budget-tag">Estimated: ₹5.2k to ₹9k per person</p>
+              <details class="option-plan">
+                <summary>Open 3N / 4D plan</summary>
+                <div class="option-plan-body">
+                  <p><strong>Night 0:</strong> Overnight bus or train toward Vellore or Tirupattur side, then continue upward by road.</p>
+                  <p><strong>Day 1:</strong> Reach the hills, check in, and keep the first day simple with lake or short-viewpoint time.</p>
+                  <p><strong>Day 2:</strong> Waterfall, forest road, and relaxed local loop without trying to over-schedule it.</p>
+                  <p><strong>Day 3:</strong> Slow hidden-spot day or full stay-based hangout if the group just wants to chill.</p>
+                  <p><strong>Day 4:</strong> Descend comfortably and head back without needing a hyper-early return.</p>
+                </div>
+              </details>
+              <details class="photo-album">
+                <summary>Open photo album</summary>
+                <div class="album-grid">
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Javadi%20Hills%20in%20Tamil%20Nadu.jpg" alt="View of Javadi Hills" loading="lazy" />
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Javadi%20Hills.jpg" alt="Panoramic Javadi Hills view" loading="lazy" />
+                  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Javadi%20Hills%20in%20Tamil%20Nadu.jpg" alt="Forest and hill stretch in Javadi" loading="lazy" />
+                </div>
+                <p class="album-credit">Album photos via Wikimedia Commons.</p>
+              </details>
+            </article>
+
+            <article
+              class="destination-card has-photo"
+              data-option-id="kolli"
+              data-pill="Closest exciting pick"
               style="--card-photo: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/34_Hairpin_Kolli_Hills.jpg/1280px-34_Hairpin_Kolli_Hills.jpg'); --card-focus: center center;"
             >
               <div class="card-topline">
@@ -296,6 +514,8 @@
 
             <article
               class="destination-card has-photo"
+              data-option-id="wayanad"
+              data-pill="Big-trip wildcard"
               style="--card-photo: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Blue%2C_Green_%26_White.jpg/1280px-Blue%2C_Green_%26_White.jpg'); --card-focus: center center;"
             >
               <div class="card-topline">
@@ -342,12 +562,12 @@
           <div class="intro-card">
             <p class="section-label">September reality check</p>
             <ul class="trip-points">
-              <li>Best offbeat vibe: Valparai</li>
+              <li>Deepest hidden-gem energy: Meghamalai</li>
+              <li>Coldest unusual base: Vattavada + Kanthalloor</li>
               <li>Best safer-weather choice: Kotagiri + Coonoor</li>
-              <li>Best outside-Tamil-Nadu mood: Sakleshpur</li>
-              <li>Best monsoon-green wildcard: Vagamon</li>
-              <li>Best closer exciting drive: Kolli Hills</li>
-              <li>Best bigger adventure canvas: Wayanad</li>
+              <li>Best closer hidden-gem backup: Javadi Hills</li>
+              <li>Most interesting long-shot Karnataka pick: Kemmanagundi</li>
+              <li>Kolli and Vagamon stay on the list, but they are now the more familiar side of this shortlist</li>
               <li>If the group hates rain uncertainty, avoid Kerala-heavy picks in early September</li>
             </ul>
           </div>
