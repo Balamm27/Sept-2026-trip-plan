@@ -4,6 +4,8 @@ const tripOptions = [
     name: "Meghamalai",
     min: 6800,
     max: 11800,
+    heroImage:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Panoramic%20view%20of%20Meghamalai.jpg",
     reason:
       "Best deep-cut Tamil Nadu option when the group wants colder hill roads, quieter stays, and a trip that still feels under the radar.",
     heroNote: "for cloud-forest roads and a deeper-cut Tamil Nadu vibe",
@@ -42,6 +44,7 @@ const tripOptions = [
     name: "Valparai",
     min: 6000,
     max: 10500,
+    heroImage: "./assets/optimized/valparai-hero.jpg",
     reason:
       "Best offbeat drive-heavy option for a chilled group that wants something less regular than the standard hill-station list.",
     heroNote: "with Aliyar and Sholayar side drives",
@@ -80,6 +83,8 @@ const tripOptions = [
     name: "Vattavada + Kanthalloor",
     min: 8200,
     max: 13500,
+    heroImage:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Morning%20of%20vattavada.jpg",
     reason:
       "Best if the group wants one of the coldest, quietest, least-standard Kerala hill bases and is okay with a longer first-day transfer.",
     heroNote: "for colder valley farms and border-road scenery",
@@ -118,6 +123,7 @@ const tripOptions = [
     name: "Kotagiri + Coonoor",
     min: 6500,
     max: 11000,
+    heroImage: "./assets/optimized/kotagiri-hero.jpg",
     reason:
       "Best option when the group wants cooler weather and less September weather risk without falling back into the most crowded Ooty version.",
     heroNote: "for easier cool weather with less rain gamble",
@@ -156,6 +162,7 @@ const tripOptions = [
     name: "Sakleshpur",
     min: 7000,
     max: 12000,
+    heroImage: "./assets/optimized/sakleshpur-hero.jpg",
     reason:
       "Strong outside-Tamil-Nadu option for a slower estate-stay mood, provided the group is okay with a few extra travel hours.",
     heroNote: "for coffee-estate mist and longer, softer days",
@@ -194,6 +201,8 @@ const tripOptions = [
     name: "Kemmanagundi",
     min: 8500,
     max: 14500,
+    heroImage:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Kemmanagundi%20View.jpg",
     reason:
       "Best if you want a rarer Karnataka hill retreat than the usual Chikmagalur plan and are fine with the heavier access time.",
     heroNote: "for old-school hill-retreat quiet and misty ridges",
@@ -232,6 +241,7 @@ const tripOptions = [
     name: "Vagamon",
     min: 7500,
     max: 12500,
+    heroImage: "./assets/optimized/vagamon-meadows.jpg",
     reason:
       "Beautiful and genuinely different, but it should be chosen only if the group actively likes a monsoon-green, rain-shaped trip.",
     heroNote: "if everyone is actively into monsoon-green weather",
@@ -270,6 +280,8 @@ const tripOptions = [
     name: "Javadi Hills",
     min: 5200,
     max: 9000,
+    heroImage:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Javadi%20Hills%20in%20Tamil%20Nadu.jpg",
     reason:
       "Best nearby hidden-gem pick when the group wants lighter travel effort but still wants to avoid more obvious Tamil Nadu hill names.",
     heroNote: "for a lower-effort hidden-gem answer from Chennai",
@@ -308,6 +320,8 @@ const tripOptions = [
     name: "Kolli Hills",
     min: 5000,
     max: 8500,
+    heroImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/34_Hairpin_Kolli_Hills.jpg/1280px-34_Hairpin_Kolli_Hills.jpg",
     reason:
       "A closer and more rugged road-trip style option if the group wants mountain-road energy over polished hill-town comfort.",
     heroNote: "for hairpin-bend fun with shorter access",
@@ -346,6 +360,8 @@ const tripOptions = [
     name: "Wayanad",
     min: 7500,
     max: 13000,
+    heroImage:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Blue%2C_Green_%26_White.jpg/1280px-Blue%2C_Green_%26_White.jpg",
     reason:
       "Best when the group wants a larger, more adventurous landscape and is okay with a longer access day plus some September rain flexibility.",
     heroNote: "for a larger landscape with more spread-out drives",
@@ -409,6 +425,7 @@ const liveRecommendation = document.getElementById("liveRecommendation");
 const liveReason = document.getElementById("liveReason");
 const heroBestName = document.getElementById("heroBestName");
 const heroBestNote = document.getElementById("heroBestNote");
+const heroBestCard = document.getElementById("heroBestCard");
 const optionsGrid = document.getElementById("optionsGrid");
 const itineraryHeading = document.getElementById("itineraryHeading");
 const itineraryIntro = document.getElementById("itineraryIntro");
@@ -612,6 +629,7 @@ function render() {
     liveReason.textContent = leader.reason;
     heroBestName.textContent = `${leader.name} base`;
     heroBestNote.textContent = leader.heroNote;
+    heroBestCard?.style.setProperty("--hero-photo", `url("${leader.heroImage}")`);
   }
 
   renderCards(ranked);
