@@ -251,6 +251,36 @@ li {
   border-radius: 28px;
   position: relative;
   transition: transform 180ms ease, box-shadow 180ms ease;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.destination-card.has-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--card-photo);
+  background-size: cover;
+  background-position: var(--card-focus, center center);
+  opacity: 0.32;
+  z-index: -2;
+  transform: scale(1.04);
+}
+
+.destination-card.has-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 244, 0.78), rgba(255, 251, 244, 0.94)),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+  z-index: -1;
+}
+
+.destination-card.recommended.has-photo::after {
+  background:
+    linear-gradient(180deg, rgba(20, 48, 40, 0.72), rgba(20, 48, 40, 0.9)),
+    linear-gradient(135deg, rgba(33, 75, 63, 0.7), rgba(23, 52, 45, 0.75));
 }
 
 .destination-card:hover,
@@ -391,6 +421,74 @@ li {
 .destination-card.recommended .option-plan summary,
 .destination-card.recommended .option-plan-body p,
 .destination-card.recommended .option-plan summary::after {
+  color: white;
+}
+
+.photo-album {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.62);
+  overflow: hidden;
+}
+
+.photo-album summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-weight: 800;
+  color: var(--ink);
+  position: relative;
+}
+
+.photo-album summary::-webkit-details-marker {
+  display: none;
+}
+
+.photo-album summary::after {
+  content: "+";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.photo-album[open] summary::after {
+  content: "-";
+}
+
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0 16px 14px;
+  border-top: 1px solid var(--line);
+}
+
+.album-grid img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+  box-shadow: 0 10px 24px rgba(24, 49, 42, 0.14);
+}
+
+.album-credit {
+  margin: -2px 16px 14px;
+  font-size: 0.84rem;
+}
+
+.destination-card.recommended .photo-album {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.destination-card.recommended .photo-album summary,
+.destination-card.recommended .album-credit,
+.destination-card.recommended .photo-album summary::after {
   color: white;
 }
 
@@ -539,7 +637,8 @@ li {
 
   .metric-grid,
   .compare-table,
-  .trip-points {
+  .trip-points,
+  .album-grid {
     grid-template-columns: 1fr;
   }
 
