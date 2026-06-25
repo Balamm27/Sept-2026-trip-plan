@@ -1,47 +1,47 @@
 const tripOptions = [
   {
-    id: "coonoor",
-    name: "Coonoor + Ooty + Kotagiri",
+    id: "valparai",
+    name: "Valparai",
+    min: 6000,
+    max: 10500,
+    tags: ["balanced", "drives", "budget"],
+    reason:
+      "Best offbeat drive-heavy option for a chilled group that wants something less regular than the standard hill-station list.",
+  },
+  {
+    id: "kotagiri",
+    name: "Kotagiri + Coonoor",
     min: 6500,
     max: 11000,
-    tags: ["cooler", "drives", "balanced"],
+    tags: ["cooler", "easy", "balanced"],
     reason:
-      "Best mix of weather, scenic drives, and group hangout value without making the travel too painful.",
+      "Best option when the group wants cooler weather and less September weather risk without falling back into the most crowded Ooty version.",
   },
   {
-    id: "yercaud",
-    name: "Yercaud",
-    min: 4500,
-    max: 8000,
-    tags: ["budget", "easy", "balanced"],
-    reason:
-      "The best value option when the group wants a genuine hill break without stretching money too much.",
-  },
-  {
-    id: "yelagiri",
-    name: "Yelagiri",
-    min: 4000,
-    max: 7000,
-    tags: ["budget", "easy"],
-    reason:
-      "Best when the group cares most about short travel time and a very low-effort plan from Chennai.",
-  },
-  {
-    id: "kodai",
-    name: "Kodaikanal",
+    id: "sakleshpur",
+    name: "Sakleshpur",
     min: 7000,
     max: 12000,
+    tags: ["balanced", "cooler"],
+    reason:
+      "Strong outside-Tamil-Nadu option for a slower estate-stay mood, provided the group is okay with a few extra travel hours.",
+  },
+  {
+    id: "vagamon",
+    name: "Vagamon",
+    min: 7500,
+    max: 12500,
     tags: ["cooler"],
     reason:
-      "Worth keeping as a colder backup, but the travel and cost are both a little heavier for this brief.",
+      "Beautiful and genuinely different, but it should be chosen only if the group actively likes a monsoon-green, rain-shaped trip.",
   },
 ];
 
 const stylePriority = {
-  balanced: ["coonoor", "yercaud", "yelagiri", "kodai"],
-  budget: ["yercaud", "yelagiri", "coonoor", "kodai"],
-  cooler: ["coonoor", "kodai", "yercaud", "yelagiri"],
-  easy: ["yelagiri", "yercaud", "coonoor", "kodai"],
+  balanced: ["valparai", "kotagiri", "sakleshpur", "vagamon"],
+  budget: ["valparai", "kotagiri", "sakleshpur", "vagamon"],
+  cooler: ["kotagiri", "valparai", "sakleshpur", "vagamon"],
+  easy: ["kotagiri", "valparai", "sakleshpur", "vagamon"],
 };
 
 const groupSizeInput = document.getElementById("groupSize");
@@ -85,13 +85,13 @@ function render() {
       const estimate = computeEstimate(option, nights, groupSize);
       const classes = index === 0 ? "budget-card featured" : "budget-card";
       const stayText =
-        option.id === "coonoor"
-          ? "Stay in Coonoor or Kotagiri"
-          : option.id === "yercaud"
-            ? "Best with a shared villa or 3 rooms"
-            : option.id === "yelagiri"
-              ? "Shortest travel, smallest destination"
-              : "Colder feel, longer ride";
+        option.id === "valparai"
+          ? "Best with a car and a scenic-road mindset"
+          : option.id === "kotagiri"
+            ? "Stay in Kotagiri or Coonoor, not busy Ooty center"
+            : option.id === "sakleshpur"
+              ? "Estate stay vibe works better than a rushed sightseeing list"
+              : "Pick only if the group is fine with September rain moods";
 
       return `
         <article class="${classes}">
