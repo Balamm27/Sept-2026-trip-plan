@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>September 2026 Hill Trip Planner</title>
+    <meta
+      name="description"
+      content="Shareable dashboard for planning a September 2026 hill-station trip from Chennai."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Group Escape Planner</p>
+          <h1>September 2026 hill trip from Chennai, built for a chilled friend group.</h1>
+          <p class="hero-text">
+            A shareable shortlist for 5 to 7 people: short travel time, cooler weather,
+            casual sightseeing, scenic drives, and a budget that stays realistic.
+          </p>
+          <div class="hero-actions">
+            <a href="#options" class="button button-primary">See options</a>
+            <a href="#itinerary" class="button button-secondary">Open itinerary</a>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <div class="metric-card highlight">
+            <span class="metric-label">Best overall</span>
+            <strong>Coonoor base</strong>
+            <span class="metric-note">with Ooty + Kotagiri drives</span>
+          </div>
+          <div class="metric-grid">
+            <div class="metric-card">
+              <span class="metric-label">Trip length</span>
+              <strong>3N / 4D</strong>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Travel rule</span>
+              <strong>1 night max</strong>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Weather goal</span>
+              <strong>Cooler better</strong>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Budget target</span>
+              <strong>Light per head</strong>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="section intro-strip">
+          <div class="intro-card">
+            <p class="section-label">Trip brief</p>
+            <ul class="trip-points">
+              <li>Start from Chennai using train or overnight bus</li>
+              <li>Stay 3 to 4 days at the destination</li>
+              <li>Rent car or bikes locally for scenic roaming</li>
+              <li>Prefer cold or cool weather in September</li>
+              <li>Keep it relaxed, social, and group-budget friendly</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="options" class="section">
+          <div class="section-heading">
+            <p class="section-label">Shortlist</p>
+            <h2>Best hill-station options for this plan</h2>
+            <p>
+              Ranked for travel practicality, weather, casual vibe, scenic driving, and
+              value for a 5 to 7 person group.
+            </p>
+          </div>
+
+          <div class="card-grid">
+            <article class="destination-card recommended">
+              <div class="card-topline">
+                <span class="pill">Recommended</span>
+                <span class="rank">#1</span>
+              </div>
+              <h3>Coonoor + Ooty + Kotagiri</h3>
+              <p class="subtitle">Best overall balance of weather, drives, and group vibe.</p>
+              <div class="stats-row">
+                <span>Cooler weather</span>
+                <span>Best scenic roaming</span>
+                <span>Moderate budget</span>
+              </div>
+              <ul>
+                <li>Stay in Coonoor or Kotagiri for a calmer base than central Ooty.</li>
+                <li>Three hill towns are close enough to cover with rented car or bikes.</li>
+                <li>Great for tea-estate roads, viewpoints, cafes, and slow evenings.</li>
+              </ul>
+              <p class="budget-tag">Estimated: ₹6.5k to ₹11k per person</p>
+            </article>
+
+            <article class="destination-card">
+              <div class="card-topline">
+                <span class="pill muted">Best budget</span>
+                <span class="rank">#2</span>
+              </div>
+              <h3>Yercaud</h3>
+              <p class="subtitle">Cheaper, simpler, and still pretty solid for a low-pressure trip.</p>
+              <div class="stats-row">
+                <span>Easy via Salem</span>
+                <span>Relaxed pace</span>
+                <span>Budget-friendly</span>
+              </div>
+              <ul>
+                <li>Works well if the group wants more chilling than ticking off places.</li>
+                <li>Good for loop-road drives, lake time, viewpoints, and long conversations.</li>
+                <li>Best value if you want to keep both stay and transport reasonable.</li>
+              </ul>
+              <p class="budget-tag">Estimated: ₹4.5k to ₹8k per person</p>
+            </article>
+
+            <article class="destination-card">
+              <div class="card-topline">
+                <span class="pill muted">Least effort</span>
+                <span class="rank">#3</span>
+              </div>
+              <h3>Yelagiri</h3>
+              <p class="subtitle">Closest option from Chennai and the lightest travel load.</p>
+              <div class="stats-row">
+                <span>Closest</span>
+                <span>Simple logistics</span>
+                <span>Smaller destination</span>
+              </div>
+              <ul>
+                <li>Best when the group values convenience more than a packed sightseeing list.</li>
+                <li>Works nicely for a laid-back two-wheeler or car-based roaming trip.</li>
+                <li>Smaller than Nilgiris, but very manageable for a short casual escape.</li>
+              </ul>
+              <p class="budget-tag">Estimated: ₹4k to ₹7k per person</p>
+            </article>
+
+            <article class="destination-card">
+              <div class="card-topline">
+                <span class="pill muted">Backup option</span>
+                <span class="rank">#4</span>
+              </div>
+              <h3>Kodaikanal</h3>
+              <p class="subtitle">Beautiful and cold, but longer and a bit less budget-light.</p>
+              <div class="stats-row">
+                <span>Cool climate</span>
+                <span>Longer travel</span>
+                <span>Higher cost</span>
+              </div>
+              <ul>
+                <li>Keep this if the group wants colder weather strongly enough to pay more.</li>
+                <li>September can still be a bit monsoon-ish compared with other months.</li>
+                <li>Still a good place, just not the cleanest fit for this brief.</li>
+              </ul>
+              <p class="budget-tag">Estimated: ₹7k to ₹12k per person</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section planner-section">
+          <div class="section-heading">
+            <p class="section-label">Quick compare</p>
+            <h2>See how the options change with group size</h2>
+            <p>
+              Use the controls to estimate total per-person cost and match the trip style to
+              your group mood.
+            </p>
+          </div>
+
+          <div class="planner-layout">
+            <aside class="controls-panel">
+              <label for="groupSize">Group size</label>
+              <input id="groupSize" type="range" min="5" max="7" step="1" value="6" />
+              <div class="range-readout"><span id="groupSizeValue">6</span> friends</div>
+
+              <label for="nights">Trip length</label>
+              <select id="nights">
+                <option value="3" selected>3 nights / 4 days</option>
+                <option value="2">2 nights / 3 days</option>
+              </select>
+
+              <label for="style">Group mood</label>
+              <select id="style">
+                <option value="balanced" selected>Balanced chill + sightseeing</option>
+                <option value="budget">Lowest possible spend</option>
+                <option value="cooler">Coolest weather first</option>
+                <option value="easy">Lowest travel effort</option>
+              </select>
+            </aside>
+
+            <div class="results-panel">
+              <div class="recommendation-banner">
+                <p class="section-label">Current fit</p>
+                <h3 id="liveRecommendation">Coonoor + Ooty + Kotagiri</h3>
+                <p id="liveReason">
+                  Best mix of weather, scenic drives, and group hangout value without making
+                  the travel too painful.
+                </p>
+              </div>
+              <div class="compare-table" id="budgetCards"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="itinerary" class="section">
+          <div class="section-heading">
+            <p class="section-label">Sample plan</p>
+            <h2>Recommended 3N / 4D itinerary</h2>
+            <p>
+              Designed around a Coonoor base, with easy day loops into Ooty and Kotagiri.
+            </p>
+          </div>
+
+          <div class="timeline">
+            <article class="timeline-card">
+              <span class="day-chip">Night 0 / Day 1</span>
+              <h3>Overnight from Chennai, then settle into Coonoor</h3>
+              <p>
+                Take an overnight bus to Ooty or an overnight train toward Mettupalayam, then
+                head up to Coonoor. Keep the first day light: brunch, check-in, tea-estate
+                roads, Sims Park, and a slow evening at the stay.
+              </p>
+            </article>
+
+            <article class="timeline-card">
+              <span class="day-chip">Day 2</span>
+              <h3>Ooty scenic loop</h3>
+              <p>
+                Do a relaxed Ooty-side drive: lake area, viewpoint stops, garden or tea stop,
+                and return before dark. Good day to use bikes if the weather is clear, or a
+                rental car if the group wants it easier.
+              </p>
+            </article>
+
+            <article class="timeline-card">
+              <span class="day-chip">Day 3</span>
+              <h3>Kotagiri side for the best road vibe</h3>
+              <p>
+                Drive through Kotagiri-side roads for a quieter day with less crowd and better
+                hangout energy. Keep the evening open for a long dinner, cards, music, and
+                terrace time at the stay.
+              </p>
+            </article>
+
+            <article class="timeline-card">
+              <span class="day-chip">Day 4</span>
+              <h3>Breakfast, one final viewpoint, and return</h3>
+              <p>
+                Keep the last morning easy, leave enough buffer for downhill travel, and start
+                the return without rushing. This keeps the trip feeling relaxed instead of
+                squeezed.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section tips-grid">
+          <article class="tip-card">
+            <p class="section-label">Stay strategy</p>
+            <h3>Book villas or 3-room stays, not scattered rooms</h3>
+            <p>
+              For 5 to 7 people, the best vibe-to-budget ratio usually comes from one shared
+              property with parking, a terrace, and a view.
+            </p>
+          </article>
+          <article class="tip-card">
+            <p class="section-label">Local travel</p>
+            <h3>One rental car beats multiple bikes in mixed weather</h3>
+            <p>
+              Bikes are fun in the hills, but a backup car makes the plan much easier if it
+              rains or if some people want a slower day.
+            </p>
+          </article>
+          <article class="tip-card">
+            <p class="section-label">Safety note</p>
+            <h3>Use stays with views for social evenings</h3>
+            <p>
+              If the group wants drinks with a view, keep that at the stay and avoid riding or
+              driving after. It is the easiest way to keep the trip fun and safe.
+            </p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
