@@ -2,6 +2,7 @@ const tripOptions = [
   {
     id: "meghamalai",
     name: "Meghamalai",
+    coords: [9.694, 77.385],
     min: 6800,
     max: 11800,
     heroImage:
@@ -42,6 +43,7 @@ const tripOptions = [
   {
     id: "valparai",
     name: "Valparai",
+    coords: [10.3269, 76.9512],
     min: 6000,
     max: 10500,
     heroImage: "./assets/optimized/valparai-hero.jpg",
@@ -81,6 +83,7 @@ const tripOptions = [
   {
     id: "vattavada",
     name: "Vattavada + Kanthalloor",
+    coords: [10.1779, 77.2608],
     min: 8200,
     max: 13500,
     heroImage:
@@ -121,6 +124,7 @@ const tripOptions = [
   {
     id: "kotagiri",
     name: "Kotagiri + Coonoor",
+    coords: [11.4204, 76.8637],
     min: 6500,
     max: 11000,
     heroImage: "./assets/optimized/kotagiri-hero.jpg",
@@ -160,6 +164,7 @@ const tripOptions = [
   {
     id: "sakleshpur",
     name: "Sakleshpur",
+    coords: [12.9417, 75.785],
     min: 7000,
     max: 12000,
     heroImage: "./assets/optimized/sakleshpur-hero.jpg",
@@ -199,6 +204,7 @@ const tripOptions = [
   {
     id: "kemmanagundi",
     name: "Kemmanagundi",
+    coords: [13.553, 75.7878],
     min: 8500,
     max: 14500,
     heroImage:
@@ -239,6 +245,7 @@ const tripOptions = [
   {
     id: "vagamon",
     name: "Vagamon",
+    coords: [9.6866, 76.9052],
     min: 7500,
     max: 12500,
     heroImage: "./assets/optimized/vagamon-meadows.jpg",
@@ -278,6 +285,7 @@ const tripOptions = [
   {
     id: "javadi",
     name: "Javadi Hills",
+    coords: [12.5759, 78.8744],
     min: 5200,
     max: 9000,
     heroImage:
@@ -318,6 +326,7 @@ const tripOptions = [
   {
     id: "kolli",
     name: "Kolli Hills",
+    coords: [11.2484, 78.3316],
     min: 5000,
     max: 8500,
     heroImage:
@@ -358,6 +367,7 @@ const tripOptions = [
   {
     id: "wayanad",
     name: "Wayanad",
+    coords: [11.6854, 76.132],
     min: 7500,
     max: 13000,
     heroImage:
@@ -431,13 +441,23 @@ const itineraryHeading = document.getElementById("itineraryHeading");
 const itineraryIntro = document.getElementById("itineraryIntro");
 const itineraryCurrent = document.getElementById("itineraryCurrent");
 const itineraryMeta = document.getElementById("itineraryMeta");
-const itineraryChips = document.getElementById("itineraryChips");
 const itineraryTimeline = document.getElementById("itineraryTimeline");
+const heroMapButton = document.getElementById("heroMapButton");
+const mapDrawerToggle = document.getElementById("mapDrawerToggle");
+const mapPanel = document.getElementById("mapPanel");
+const mapDrawerSection = document.querySelector(".map-drawer-section");
 
 const cardNodes = Array.from(document.querySelectorAll(".destination-card[data-option-id]"));
 
 let selectedOptionId = "meghamalai";
 let manualSelection = false;
+let tripMap;
+
+const chennaiAnchor = {
+  name: "Chennai",
+  coords: [13.0827, 80.2707],
+  note: "Departure anchor",
+};
 
 function computeEstimate(option, nights, groupSize) {
   const nightFactor = nights === 2 ? 0.88 : 1;
@@ -475,13 +495,9 @@ function createCardActions() {
     planButton.type = "button";
     planButton.className = "card-action-primary";
     planButton.dataset.optionAction = "itinerary";
-    planButton.textContent = "View full itinerary";
+    planButton.textContent = "View detailed itinerary";
 
-    const hint = document.createElement("span");
-    hint.className = "card-action-hint";
-    hint.textContent = "Loads the full plan below";
-
-    actions.append(planButton, hint);
+    actions.append(planButton);
 
     const budgetTag = card.querySelector(".budget-tag");
     if (budgetTag) {
@@ -533,10 +549,77 @@ function renderCards(ranked) {
     }
 
     if (actionButton) {
-      actionButton.textContent = isSelected ? "Viewing full itinerary" : "View full itinerary";
+      actionButton.textContent =
+        isSelected ? "Viewing detailed itinerary" : "View detailed itinerary";
       actionButton.classList.toggle("is-active", isSelected);
     }
   });
+}
+
+function ensureMap() {
+  if (tripMap || typeof window.L === "undefined") {
+    return;
+  }
+
+  tripMap = window.L.map("tripMap", {
+    zoomControl: true,
+    scrollWheelZoom: false,
+  });
+
+  window.L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: "&copy; OpenStreetMap contributors",
+  }).addTo(tripMap);
+
+  const bounds = [];
+
+  const anchorMarker = window.L.circleMarker(chennaiAnchor.coords, {
+    radius: 8,
+    color: "#123633",
+    weight: 2,
+    fillColor: "#123633",
+    fillOpacity: 1,
+  }).addTo(tripMap);
+
+  anchorMarker.bindPopup(`<strong>${chennaiAnchor.name}</strong><br>${chennaiAnchor.note}`);
+  bounds.push(chennaiAnchor.coords);
+
+  tripOptions.forEach((option) => {
+    if (!option.coords) {
+      return;
+    }
+
+    const marker = window.L.marker(option.coords).addTo(tripMap);
+    marker.bindPopup(`<strong>${option.name}</strong><br>${option.stayText}`);
+    bounds.push(option.coords);
+  });
+
+  tripMap.fitBounds(bounds, { padding: [36, 36] });
+}
+
+function setMapOpen(open, { scroll = false } = {}) {
+  if (!mapPanel || !mapDrawerToggle) {
+    return;
+  }
+
+  mapPanel.hidden = !open;
+  mapDrawerToggle.setAttribute("aria-expanded", String(open));
+  mapDrawerToggle.textContent = open ? "Hide map" : "Show map";
+
+  if (heroMapButton) {
+    heroMapButton.textContent = open ? "Hide map" : "View map";
+  }
+
+  if (open) {
+    ensureMap();
+    requestAnimationFrame(() => {
+      tripMap?.invalidateSize();
+    });
+
+    if (scroll) {
+      mapDrawerSection?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
 }
 
 function buildItineraryDays(option, nights) {
@@ -565,13 +648,9 @@ function renderItinerary(option, nights) {
 
   itineraryHeading.textContent = `${option.name} full itinerary`;
   itineraryIntro.textContent =
-    `This is the detailed ${tripLabel} version for ${option.name}. Use any tile's itinerary button to swap the plan instantly.`;
+    `This is the detailed ${tripLabel} version for ${option.name}. Use any destination card to switch the itinerary.`;
   itineraryCurrent.textContent = option.name;
   itineraryMeta.textContent = `${tripLabel} with a ${option.itineraryMeta}.`;
-
-  itineraryChips.innerHTML = option.chips
-    .map((chip) => `<span class="itinerary-chip">${chip}</span>`)
-    .join("");
 
   itineraryTimeline.innerHTML = itineraryDays
     .map(
@@ -671,6 +750,16 @@ heroNightsSelect.addEventListener("change", () => {
 heroStyleSelect.addEventListener("change", () => {
   syncPlannerFilters();
   render();
+});
+
+heroMapButton?.addEventListener("click", () => {
+  const isOpen = mapPanel ? !mapPanel.hidden : false;
+  setMapOpen(!isOpen, { scroll: true });
+});
+
+mapDrawerToggle?.addEventListener("click", () => {
+  const isOpen = mapPanel ? !mapPanel.hidden : false;
+  setMapOpen(!isOpen);
 });
 
 syncTopFilters();

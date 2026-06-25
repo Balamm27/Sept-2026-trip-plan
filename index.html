@@ -14,29 +14,29 @@
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=6000" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="./styles.css?v=6100" />
   </head>
   <body>
     <div class="page-shell">
       <header class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Group Escape Planner</p>
-          <h1>September 2026 hill getaway from Chennai.</h1>
+          <p class="eyebrow">September 2026 trip dashboard</p>
+          <h1>Hill trip options from Chennai.</h1>
           <p class="hero-text">
-            Built for a chilled 5 to 7 friend group chasing cool air, hidden roads,
-            scenic drives, and stays with proper vacation energy instead of tourist rush.
+            A ranked shortlist for 5 to 7 people, built around overnight rail or bus
+            access, cooler weather, scenic local driving, and destinations that feel less
+            predictable than the standard hill circuit.
           </p>
           <div class="hero-actions">
             <a href="#options" class="button button-primary">See options</a>
-            <a href="#itinerary" class="button button-secondary">Open itinerary</a>
-          </div>
-          <div class="travel-strip" aria-hidden="true">
-            <span class="travel-pill">Overnight train in</span>
-            <span class="travel-pill">Rent a car or bikes</span>
-            <span class="travel-pill">Misty hill roads</span>
-            <span class="travel-pill">Villa evenings</span>
-            <span class="travel-pill">Sunrise chai stops</span>
-            <span class="travel-pill">Windows down drives</span>
+            <button type="button" class="button button-secondary" id="heroMapButton">
+              View map
+            </button>
+            <a href="#itinerary" class="button button-secondary">Detailed itinerary</a>
           </div>
         </div>
         <div class="hero-panel">
@@ -70,17 +70,17 @@
         <section class="section filter-showcase-section">
           <div class="filter-showcase">
             <div class="filter-showcase-copy">
-              <p class="section-label">Pick the vibe first</p>
-              <h2>Let the filters choose the best fit</h2>
+              <p class="section-label">Plan filters</p>
+              <h2>Choose the trip shape first</h2>
               <p>
-                These controls decide which option gets the live recommendation tag across
-                the full shortlist.
+                These controls drive the recommendation, reorder the shortlist, and update
+                the cost comparison below.
               </p>
             </div>
             <div class="top-filters-card">
               <label class="showcase-field" for="heroNights">
-                <span class="field-heading"><span class="field-icon">01</span><span>Trip length</span></span>
-                <span class="field-help">This changes both the ranking and the itinerary length below.</span>
+                <span class="field-heading"><span class="field-icon">A</span><span>Trip length</span></span>
+                <span class="field-help">Changes the ranking and the detailed itinerary length.</span>
                 <select id="heroNights">
                   <option value="3" selected>3 nights / 4 days</option>
                   <option value="2">2 nights / 3 days</option>
@@ -88,8 +88,8 @@
               </label>
 
               <label class="showcase-field" for="heroStyle">
-                <span class="field-heading"><span class="field-icon">02</span><span>Group mood</span></span>
-                <span class="field-help">Pick what matters most and the best-fit tile moves to the top.</span>
+                <span class="field-heading"><span class="field-icon">B</span><span>Group mood</span></span>
+                <span class="field-help">Prioritizes budget, cooler weather, travel ease, or a balanced mix.</span>
                 <select id="heroStyle">
                   <option value="balanced" selected>Balanced chill + sightseeing</option>
                   <option value="budget">Lowest possible spend</option>
@@ -101,46 +101,45 @@
           </div>
         </section>
 
-        <section class="section guide-strip">
-          <div class="guide-grid">
-            <article class="guide-card">
-              <span class="guide-step">01</span>
-              <h3>Use the blue filters</h3>
-              <p>They control the recommendation, the order of the tiles, and the compare section.</p>
-            </article>
-            <article class="guide-card">
-              <span class="guide-step">02</span>
-              <h3>Scan the ranked options</h3>
-              <p>The top-left badge shows what each place is best for, and the rank updates live.</p>
-            </article>
-            <article class="guide-card">
-              <span class="guide-step">03</span>
-              <h3>Open the full plan</h3>
-              <p>Use the itinerary button on any tile to load the detailed trip plan at the bottom.</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="section intro-strip">
-          <div class="intro-card">
-            <p class="section-label">Trip brief</p>
-            <ul class="trip-points">
-              <li>Start from Chennai using train or overnight bus</li>
-              <li>Stay 3 to 4 days at the destination</li>
-              <li>Rent car or bikes locally for scenic roaming</li>
-              <li>Prefer cold or cool weather in September</li>
-              <li>Keep it relaxed, social, group-budget friendly, and less mainstream</li>
-            </ul>
+        <section class="section map-drawer-section">
+          <div class="map-drawer">
+            <div class="map-drawer-header">
+              <div>
+                <p class="section-label">Map view</p>
+                <h2>See the shortlist relative to Chennai</h2>
+                <p>
+                  Open the map only when you want directional context. It stays hidden by
+                  default so the dashboard remains compact.
+                </p>
+              </div>
+              <button
+                type="button"
+                class="button button-secondary"
+                id="mapDrawerToggle"
+                aria-expanded="false"
+                aria-controls="mapPanel"
+              >
+                Show map
+              </button>
+            </div>
+            <div class="map-panel" id="mapPanel" hidden>
+              <div class="trip-map" id="tripMap" aria-label="Map of Chennai and shortlisted hill destinations"></div>
+              <p class="map-note">
+                Chennai is shown as the anchor point, with every shortlisted destination
+                pinned for quick directional comparison.
+              </p>
+            </div>
           </div>
         </section>
 
         <section id="options" class="section">
           <div class="section-heading">
-            <p class="section-label">Shortlist</p>
-            <h2>Best offbeat hill options for this plan</h2>
+            <p class="section-label">Destinations</p>
+            <h2>Ranked destination shortlist</h2>
             <p>
-              Ranked for overnight practicality from Chennai, September weather, scenic
-              road vibe, and how far they stay away from the usual Ooty-Kodai circuit.
+              Ranked for overnight practicality from Chennai, September suitability,
+              local driving quality, and how distinct each place feels from the usual
+              Ooty-Kodaikanal pattern.
             </p>
           </div>
 
@@ -588,21 +587,6 @@
           </div>
         </section>
 
-        <section class="section intro-strip">
-          <div class="intro-card">
-            <p class="section-label">September reality check</p>
-            <ul class="trip-points">
-              <li>Deepest hidden-gem energy: Meghamalai</li>
-              <li>Coldest unusual base: Vattavada + Kanthalloor</li>
-              <li>Best safer-weather choice: Kotagiri + Coonoor</li>
-              <li>Best closer hidden-gem backup: Javadi Hills</li>
-              <li>Most interesting long-shot Karnataka pick: Kemmanagundi</li>
-              <li>Kolli and Vagamon stay on the list, but they are now the more familiar side of this shortlist</li>
-              <li>If the group hates rain uncertainty, avoid Kerala-heavy picks in early September</li>
-            </ul>
-          </div>
-        </section>
-
         <section class="section planner-section">
           <div class="section-heading">
             <p class="section-label">Quick compare</p>
@@ -637,7 +621,7 @@
 
             <div class="results-panel">
               <div class="recommendation-banner">
-                <p class="section-label">Current fit</p>
+                <p class="section-label">Current recommendation</p>
                 <h3 id="liveRecommendation">Valparai</h3>
                 <p id="liveReason">
                   Best offbeat drive-heavy option for a chilled group that wants something less regular than the standard hill-station list.
@@ -651,7 +635,7 @@
         <section id="itinerary" class="section">
           <div class="section-heading itinerary-heading">
             <div>
-              <p class="section-label">Full plan</p>
+              <p class="section-label">Detailed itinerary</p>
               <h2 id="itineraryHeading">Meghamalai full itinerary</h2>
               <p id="itineraryIntro">
                 Choose any destination tile and this section switches to that place's more complete trip flow.
@@ -664,7 +648,6 @@
             </div>
           </div>
 
-          <div class="itinerary-chip-row" id="itineraryChips"></div>
           <div class="timeline" id="itineraryTimeline"></div>
         </section>
 
@@ -697,6 +680,7 @@
       </main>
     </div>
 
-    <script src="./script.js?v=6000"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="./script.js?v=6100"></script>
   </body>
 </html>
