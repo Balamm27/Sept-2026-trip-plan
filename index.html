@@ -18,55 +18,56 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="./styles.css?v=6100" />
+    <link rel="stylesheet" href="./styles.css?v=6300" />
   </head>
   <body>
     <div class="page-shell">
-      <header class="hero">
-        <div class="hero-copy">
+      <header class="page-topbar">
+        <div>
           <p class="eyebrow">September 2026 trip dashboard</p>
           <h1>Hill trip options from Chennai.</h1>
-          <p class="hero-text">
-            A ranked shortlist for 5 to 7 people, built around overnight rail or bus
-            access, cooler weather, scenic local driving, and destinations that feel less
-            predictable than the standard hill circuit.
-          </p>
-          <div class="hero-actions">
-            <a href="#options" class="button button-primary">See options</a>
-            <button type="button" class="button button-secondary" id="heroMapButton">
-              View map
-            </button>
-            <a href="#itinerary" class="button button-secondary">Detailed itinerary</a>
-          </div>
         </div>
-        <div class="hero-panel">
-          <div class="metric-card highlight" id="heroBestCard">
-            <span class="metric-label">Best overall</span>
-            <strong id="heroBestName">Meghamalai base</strong>
-            <span class="metric-note" id="heroBestNote">for cloud-forest roads and a deeper-cut Tamil Nadu vibe</span>
-          </div>
-          <div class="metric-grid">
-            <div class="metric-card">
-              <span class="metric-label">Trip length</span>
-              <strong>3N / 4D</strong>
-            </div>
-            <div class="metric-card">
-              <span class="metric-label">Travel rule</span>
-              <strong>1 night max</strong>
-            </div>
-            <div class="metric-card">
-              <span class="metric-label">Weather goal</span>
-              <strong>Cooler better</strong>
-            </div>
-            <div class="metric-card">
-              <span class="metric-label">Budget target</span>
-              <strong>Light per head</strong>
-            </div>
-          </div>
+        <div class="topbar-actions">
+          <button type="button" class="tab-toggle is-active" id="openExploreTab">
+            Explore
+          </button>
+          <button type="button" class="tab-toggle" id="openCompareTab">
+            Compare
+            <span class="tab-count" id="compareTabCount">0</span>
+          </button>
         </div>
       </header>
 
       <main>
+        <section class="tab-panel is-active" id="exploreTab">
+        <section class="section hero hero-simple">
+          <div class="hero-copy">
+            <p class="eyebrow">Explore offbeat options</p>
+            <h2>Shortlist the places worth taking seriously.</h2>
+            <div class="hero-actions">
+              <a href="#options" class="button button-primary">See options</a>
+              <button type="button" class="button button-secondary" id="heroMapButton">
+                View map
+              </button>
+              <a href="#itinerary" class="button button-secondary">Detailed itinerary</a>
+            </div>
+          </div>
+          <aside class="shortlist-dock">
+            <div class="shortlist-dock-copy">
+              <p class="section-label">Shortlist</p>
+              <h3>Build a compare list as you scan</h3>
+              <p>Select up to 3 destinations, then open the compare planner.</p>
+            </div>
+            <div class="shortlist-pill-row" id="exploreShortlistPreview"></div>
+            <div class="shortlist-dock-actions">
+              <button type="button" class="button button-primary" id="exploreCompareButton">
+                Compare shortlist
+              </button>
+              <span class="shortlist-help" id="exploreShortlistHelp">0 of 3 selected</span>
+            </div>
+          </aside>
+        </section>
+
         <section class="section filter-showcase-section">
           <div class="filter-showcase">
             <div class="filter-showcase-copy">
@@ -587,51 +588,6 @@
           </div>
         </section>
 
-        <section class="section planner-section">
-          <div class="section-heading">
-            <p class="section-label">Quick compare</p>
-            <h2>See how the options change with group size</h2>
-            <p>
-              Use the controls to estimate total per-person cost and match the trip style to
-              your group mood.
-            </p>
-          </div>
-
-          <div class="planner-layout">
-            <aside class="controls-panel">
-              <p class="controls-eyebrow">Interactive compare</p>
-              <label for="groupSize">Group size</label>
-              <input id="groupSize" type="range" min="5" max="7" step="1" value="6" />
-              <div class="range-readout"><span id="groupSizeValue">6</span> friends</div>
-
-              <label for="nights">Trip length</label>
-              <select id="nights">
-                <option value="3" selected>3 nights / 4 days</option>
-                <option value="2">2 nights / 3 days</option>
-              </select>
-
-              <label for="style">Group mood</label>
-              <select id="style">
-                <option value="balanced" selected>Balanced chill + sightseeing</option>
-                <option value="budget">Lowest possible spend</option>
-                <option value="cooler">Coolest weather first</option>
-                <option value="easy">Lowest travel effort</option>
-              </select>
-            </aside>
-
-            <div class="results-panel">
-              <div class="recommendation-banner">
-                <p class="section-label">Current recommendation</p>
-                <h3 id="liveRecommendation">Valparai</h3>
-                <p id="liveReason">
-                  Best offbeat drive-heavy option for a chilled group that wants something less regular than the standard hill-station list.
-                </p>
-              </div>
-              <div class="compare-table" id="budgetCards"></div>
-            </div>
-          </div>
-        </section>
-
         <section id="itinerary" class="section">
           <div class="section-heading itinerary-heading">
             <div>
@@ -677,10 +633,60 @@
             </p>
           </article>
         </section>
+        </section>
+
+        <section class="tab-panel" id="compareTab" hidden>
+          <section class="section compare-hero">
+            <div class="compare-hero-copy">
+              <p class="section-label">Compare planner</p>
+              <h2>Shortlist, route, and price the finalists.</h2>
+              <p>
+                Compare up to 3 destinations with independent trip length, pit stops,
+                route maps, pricing adjustments, and full itineraries.
+              </p>
+            </div>
+            <div class="compare-hero-actions">
+              <label class="compare-add">
+                <span>Add destination</span>
+                <select id="compareAddSelect"></select>
+              </label>
+              <button type="button" class="button button-primary" id="compareAddButton">
+                Add to compare
+              </button>
+            </div>
+          </section>
+
+          <section class="section compare-overview" id="compareOverview">
+            <div class="compare-overview-header">
+              <div>
+                <p class="section-label">Compare map</p>
+                <h2>See only the shortlisted routes</h2>
+                <p>The map updates as each destination gets its own pit stop plan.</p>
+              </div>
+              <div class="compare-overview-pills" id="compareShortlistPills"></div>
+            </div>
+            <div class="trip-map compare-master-map" id="compareMasterMap"></div>
+            <p class="map-note" id="compareMasterMapNote">
+              Chennai stays as the anchor and only shortlisted destinations are shown here.
+            </p>
+          </section>
+
+          <section class="section compare-empty" id="compareEmptyState" hidden>
+            <div class="empty-card">
+              <p class="section-label">No shortlist yet</p>
+              <h2>Choose destinations from Explore or add one here.</h2>
+              <p>
+                The compare planner becomes useful once at least one destination is added.
+              </p>
+            </div>
+          </section>
+
+          <section class="section compare-grid" id="compareCards"></section>
+        </section>
       </main>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="./script.js?v=6100"></script>
+    <script src="./script.js?v=6300"></script>
   </body>
 </html>
