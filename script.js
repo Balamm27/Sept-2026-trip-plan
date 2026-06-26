@@ -479,7 +479,9 @@ const CHENNAI = {
   coords: [13.0827, 80.2707],
 };
 
-const heroNightsSelect = document.getElementById("heroNights");
+const heroTripLengthValue = document.getElementById("heroTripLengthValue");
+const heroTripLengthDecrease = document.getElementById("heroTripLengthDecrease");
+const heroTripLengthIncrease = document.getElementById("heroTripLengthIncrease");
 const heroStyleSelect = document.getElementById("heroStyle");
 const optionsGrid = document.getElementById("optionsGrid");
 const itineraryHeading = document.getElementById("itineraryHeading");
@@ -500,7 +502,11 @@ const exploreCompareButton = document.getElementById("exploreCompareButton");
 const exploreShortlistHelp = document.getElementById("exploreShortlistHelp");
 const compareAddSelect = document.getElementById("compareAddSelect");
 const compareAddButton = document.getElementById("compareAddButton");
+const compareHeroShortlist = document.getElementById("compareHeroShortlist");
+const compareHeroCount = document.getElementById("compareHeroCount");
 const compareShortlistPills = document.getElementById("compareShortlistPills");
+const compareTransportMode = document.getElementById("compareTransportMode");
+const compareMapLegend = document.getElementById("compareMapLegend");
 const compareCards = document.getElementById("compareCards");
 const compareEmptyState = document.getElementById("compareEmptyState");
 const compareMasterMapNote = document.getElementById("compareMasterMapNote");
@@ -524,13 +530,29 @@ function createDefaultCompareConfig(optionId) {
     nights: 3,
     groupSize: 6,
     pitStopMode: "none",
-    selectedStop: null,
-    customQuery: "",
+    pitStops: {
+      going: [],
+      coming: [],
+    },
+    customQuery: {
+      going: "",
+      coming: "",
+    },
+    searchResults: {
+      going: [],
+      coming: [],
+    },
+    searchMessage: {
+      going: "",
+      coming: "",
+    },
+    searchLoading: {
+      going: false,
+      coming: false,
+    },
     manualBudget: 0,
-    searchResults: [],
-    searchMessage: "",
-    searchLoading: false,
     routeMessage: "",
+    routeStats: null,
   };
 }
 
@@ -545,6 +567,7 @@ function createInitialState() {
     manualSelection: false,
     shortlist: [],
     compareConfigs: {},
+    compareTransport: "road",
   };
 }
 
@@ -557,8 +580,7 @@ function getPersistableState() {
       nights: config.nights,
       groupSize: config.groupSize,
       pitStopMode: config.pitStopMode,
-      selectedStop: config.selectedStop,
-      customQuery: config.customQuery,
+      pitStops: config.pitStops,
       manualBudget: config.manualBudget,
     };
   });
@@ -567,6 +589,7 @@ function getPersistableState() {
     activeTab: appState.activeTab,
     filters: appState.filters,
     selectedOptionId: appState.selectedOptionId,
+    compareTransport: appState.compareTransport,
     shortlist: compare,
   };
 }
@@ -584,6 +607,7 @@ function applyPersistedState(payload) {
   appState.selectedOptionId = optionMap.has(payload.selectedOptionId)
     ? payload.selectedOptionId
     : "meghamalai";
+  appState.compareTransport = payload.compareTransport === "train" ? "train" : "road";
 
   if (Array.isArray(payload.shortlist)) {
     payload.shortlist.slice(0, 3).forEach((item) => {
@@ -591,19 +615,36 @@ function applyPersistedState(payload) {
         return;
       }
 
+      const migratedStops = {
+        going: [],
+        coming: [],
+      };
+
+      if (item.pitStops?.going?.length || item.pitStops?.coming?.length) {
+        migratedStops.going = sanitizeStops(item.pitStops.going);
+        migratedStops.coming = sanitizeStops(item.pitStops.coming);
+      } else if (item.selectedStop && typeof item.selectedStop.name === "string") {
+        const migratedStop = sanitizeStops([item.selectedStop])[0];
+        if (migratedStop) {
+          if (item.pitStopMode === "going" || item.pitStopMode === "both") {
+            migratedStops.going = [migratedStop];
+          }
+          if (item.pitStopMode === "coming" || item.pitStopMode === "both") {
+            migratedStops.coming = [migratedStop];
+          }
+        }
+      }
+
       appState.shortlist.push(item.optionId);
       appState.compareConfigs[item.optionId] = {
         ...createDefaultCompareConfig(item.optionId),
-        days: clampNumber(item.days, 3, 8, 4),
-        nights: clampNumber(item.nights, 2, 7, 3),
+        days: clampNumber(item.days, 3, 10, 4),
+        nights: clampNumber(item.nights, 2, 9, 3),
         groupSize: clampNumber(item.groupSize, 5, 7, 6),
         pitStopMode: ["none", "going", "coming", "both"].includes(item.pitStopMode)
           ? item.pitStopMode
           : "none",
-        selectedStop: item.selectedStop && typeof item.selectedStop.name === "string"
-          ? item.selectedStop
-          : null,
-        customQuery: typeof item.customQuery === "string" ? item.customQuery : "",
+        pitStops: migratedStops,
         manualBudget: clampNumber(item.manualBudget, -10000, 50000, 0),
       };
     });
@@ -616,6 +657,7 @@ function encodeStateToUrl() {
   params.set("nights", String(appState.filters.nights));
   params.set("style", appState.filters.style);
   params.set("selected", appState.selectedOptionId);
+  params.set("transport", appState.compareTransport);
   params.set("compare", encodeURIComponent(JSON.stringify(getPersistableState().shortlist)));
   const nextUrl = `${window.location.pathname}?${params.toString()}`;
   window.history.replaceState({}, "", nextUrl);
@@ -628,6 +670,7 @@ function decodeStateFromUrl() {
   urlState.filters.nights = params.get("nights") === "2" ? 2 : 3;
   urlState.filters.style = params.get("style") || "balanced";
   urlState.selectedOptionId = params.get("selected") || "meghamalai";
+  urlState.compareTransport = params.get("transport") === "train" ? "train" : "road";
 
   const compareRaw = params.get("compare");
   if (compareRaw) {
@@ -671,6 +714,39 @@ function clampNumber(value, min, max, fallback) {
     return fallback;
   }
   return Math.min(max, Math.max(min, parsed));
+}
+
+function sanitizeStops(stops) {
+  if (!Array.isArray(stops)) return [];
+  return stops
+    .map((stop) => {
+      const lat = Number(stop.lat ?? stop.coords?.[0]);
+      const lng = Number(stop.lng ?? stop.coords?.[1]);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng) || typeof stop.name !== "string") {
+        return null;
+      }
+      return {
+        name: stop.name,
+        lat,
+        lng,
+        label: typeof stop.label === "string" ? stop.label : stop.name,
+      };
+    })
+    .filter(Boolean);
+}
+
+function getActiveDirections(mode) {
+  if (mode === "both") return ["going", "coming"];
+  if (mode === "going" || mode === "coming") return [mode];
+  return [];
+}
+
+function getDirectionLabel(direction) {
+  return direction === "going" ? "while going" : "while coming back";
+}
+
+function getStopsForDirection(config, direction) {
+  return sanitizeStops(config?.pitStops?.[direction] || []);
 }
 
 function rankOptions(style, nights) {
@@ -734,25 +810,26 @@ function computeEstimate(option, nights, groupSize) {
 }
 
 function computePitStopUplift(config) {
-  if (!config.selectedStop || config.pitStopMode === "none") {
+  const stopCount = getTotalPitStopCount(config);
+  if (!stopCount) {
     return { low: 0, high: 0 };
   }
 
-  const stopCount = getPitStopCount(config.pitStopMode);
   return {
     low: stopCount * 1400,
     high: stopCount * 2200,
   };
 }
 
-function getPitStopCount(mode) {
-  if (mode === "both") return 2;
-  if (mode === "going" || mode === "coming") return 1;
-  return 0;
+function getTotalPitStopCount(config) {
+  return getActiveDirections(config.pitStopMode).reduce(
+    (sum, direction) => sum + getStopsForDirection(config, direction).length,
+    0
+  );
 }
 
 function validateCompareConfig(config) {
-  const stopCount = getPitStopCount(config.pitStopMode);
+  const stopCount = getTotalPitStopCount(config);
   const minimumDays = 3 + stopCount;
   const minimumNights = 2;
 
@@ -768,8 +845,10 @@ function validateCompareConfig(config) {
     return "Days should stay higher than nights so the travel legs and stopovers fit cleanly.";
   }
 
-  if (stopCount > 0 && !config.selectedStop) {
-    return "Choose a resolvable pit stop for this mode before the route and itinerary can be finalized.";
+  for (const direction of getActiveDirections(config.pitStopMode)) {
+    if (!getStopsForDirection(config, direction).length) {
+      return `Add at least one resolvable pit stop ${getDirectionLabel(direction)} before finalizing this plan.`;
+    }
   }
 
   return "";
@@ -801,20 +880,31 @@ function buildCompareItinerary(option, config) {
     return { error: validationMessage, days: [] };
   }
 
-  const stopName = config.selectedStop?.name;
   const itinerary = [];
-  const destinationSlots = config.days - 2 - getPitStopCount(config.pitStopMode);
+  const outboundStops = getStopsForDirection(config, "going");
+  const returnStops = getStopsForDirection(config, "coming");
+  const destinationSlots = config.days - 2 - getTotalPitStopCount(config);
   const middleTemplates = option.days.slice(1, option.days.length - 1);
 
-  if (config.pitStopMode === "going" || config.pitStopMode === "both") {
+  if (outboundStops.length) {
     itinerary.push({
       chip: "Day 1",
-      title: `Depart Chennai and pause in ${stopName}`,
-      body: `${stopName} becomes a deliberate stopover rather than a rushed transfer. Use the day for check-in, a proper meal, and a quieter start before the hill approach.`,
+      title: `Depart Chennai and pause in ${outboundStops[0].name}`,
+      body: `${outboundStops[0].name} becomes a deliberate stopover rather than a rushed transfer. Use the day for check-in, a proper meal, and a quieter start before the hill approach.`,
     });
+
+    outboundStops.slice(1).forEach((stop, index) => {
+      const previous = outboundStops[index];
+      itinerary.push({
+        chip: `Day ${itinerary.length + 1}`,
+        title: `Continue from ${previous.name} and stop in ${stop.name}`,
+        body: `${stop.name} becomes another deliberate pause on the outward route, which keeps the trip spacious instead of turning it into a hard transfer day.`,
+      });
+    });
+
     itinerary.push({
-      chip: "Day 2",
-      title: `Continue from ${stopName} to ${option.name}`,
+      chip: `Day ${itinerary.length + 1}`,
+      title: `Continue from ${outboundStops[outboundStops.length - 1].name} to ${option.name}`,
       body: option.days[0].body,
     });
   } else {
@@ -837,15 +927,25 @@ function buildCompareItinerary(option, config) {
     });
   }
 
-  if (config.pitStopMode === "coming" || config.pitStopMode === "both") {
+  if (returnStops.length) {
     itinerary.push({
       chip: `Day ${itinerary.length + 1}`,
-      title: `Leave ${option.name} and stop in ${stopName}`,
-      body: `Keep the departure from the hills easy, then convert ${stopName} into a proper stopover day rather than a late-night rush back to Chennai.`,
+      title: `Leave ${option.name} and stop in ${returnStops[0].name}`,
+      body: `Keep the departure from the hills easy, then convert ${returnStops[0].name} into a proper stopover day rather than a late-night rush back to Chennai.`,
     });
+
+    returnStops.slice(1).forEach((stop, index) => {
+      const previous = returnStops[index];
+      itinerary.push({
+        chip: `Day ${itinerary.length + 1}`,
+        title: `Continue from ${previous.name} and stop in ${stop.name}`,
+        body: `${stop.name} becomes another full return-side pause, which helps the trip stay unhurried even on the way back.`,
+      });
+    });
+
     itinerary.push({
       chip: `Day ${itinerary.length + 1}`,
-      title: `Return from ${stopName} to Chennai`,
+      title: `Return from ${returnStops[returnStops.length - 1].name} to Chennai`,
       body: `Use the final leg for the cleanest return run back to Chennai, with enough slack to avoid cramming in extra sightseeing.`,
     });
   } else {
@@ -918,6 +1018,13 @@ function renderExploreShortlistDock() {
         })
         .join("")
     : `<span class="shortlist-placeholder">No destinations selected yet</span>`;
+}
+
+function renderExploreTripLengthControl() {
+  const days = appState.filters.nights + 1;
+  heroTripLengthValue.textContent = `${days} days / ${appState.filters.nights} nights`;
+  heroTripLengthDecrease.disabled = appState.filters.nights <= 2;
+  heroTripLengthIncrease.disabled = appState.filters.nights >= 3;
 }
 
 function renderExploreItinerary() {
@@ -1000,7 +1107,7 @@ function setExploreMapOpen(open, { scroll = false } = {}) {
 }
 
 function renderExploreTab() {
-  heroNightsSelect.value = String(appState.filters.nights);
+  renderExploreTripLengthControl();
   heroStyleSelect.value = appState.filters.style;
   const ranked = rankOptions(appState.filters.style, appState.filters.nights);
   if (!appState.manualSelection && ranked[0]) {
@@ -1031,7 +1138,23 @@ function renderCompareAddSelect() {
   compareAddSelect.disabled = compareAddButton.disabled;
 }
 
+function renderCompareHeroShortlist() {
+  compareHeroCount.textContent = `${appState.shortlist.length} selected`;
+  compareHeroShortlist.innerHTML = appState.shortlist.length
+    ? appState.shortlist
+        .map((optionId) => {
+          const option = optionMap.get(optionId);
+          return `<button type="button" class="compare-chip compare-chip-removable" data-shortlist-remove="${optionId}">
+            <span>${option.name}</span>
+            <span aria-hidden="true">×</span>
+          </button>`;
+        })
+        .join("")
+    : `<span class="shortlist-placeholder">No destinations selected yet</span>`;
+}
+
 function renderCompareShortlistPills() {
+  compareTransportMode.value = appState.compareTransport;
   compareShortlistPills.innerHTML = appState.shortlist
     .map((optionId) => {
       const option = optionMap.get(optionId);
@@ -1047,34 +1170,119 @@ function renderCompareEmptyState() {
   compareCards.hidden = isEmpty;
 }
 
-function buildStopSuggestionsMarkup(config, option) {
+function buildStopSuggestionsMarkup(config, option, direction) {
+  const selectedNames = new Set(getStopsForDirection(config, direction).map((stop) => stop.name));
   return option.pitStops
     .map((stop) => {
-      const isSelected = config.selectedStop?.name === stop.name;
-      return `<button type="button" class="stop-chip ${isSelected ? "is-active" : ""}" data-stop-name="${stop.name}" data-option-id="${option.id}">
+      const isSelected = selectedNames.has(stop.name);
+      return `<button type="button" class="stop-chip ${isSelected ? "is-active" : ""}" data-stop-name="${stop.name}" data-option-id="${option.id}" data-stop-direction="${direction}">
         ${stop.name}
       </button>`;
     })
     .join("");
 }
 
+function buildSelectedStopsMarkup(config, optionId, direction) {
+  const selectedStops = getStopsForDirection(config, direction);
+  if (!selectedStops.length) {
+    return `<p class="resolved-stop">No stops chosen ${getDirectionLabel(direction)} yet.</p>`;
+  }
+
+  return `<div class="selected-stop-list">
+    ${selectedStops
+      .map(
+        (stop, index) => `<button type="button" class="selected-stop-chip" data-remove-stop="${optionId}" data-stop-direction="${direction}" data-stop-index="${index}">
+          <span>${stop.name}</span>
+          <span aria-hidden="true">×</span>
+        </button>`
+      )
+      .join("")}
+  </div>`;
+}
+
+function buildPitStopSection(config, option, direction) {
+  const searchResults = config.searchResults[direction] || [];
+  const searchMessage = config.searchMessage[direction] || "";
+  const searchLoading = config.searchLoading[direction] || false;
+  const customQuery = config.customQuery[direction] || "";
+
+  return `<section class="pit-stop-direction-card">
+    <div class="pit-stop-direction-header">
+      <div>
+        <p class="section-label">Pit stop ${getDirectionLabel(direction)}</p>
+        <h4>Choose one or more stops</h4>
+      </div>
+      ${getStopsForDirection(config, direction).length ? `<button type="button" class="ghost-button" data-clear-direction="${option.id}" data-stop-direction="${direction}">Clear</button>` : ""}
+    </div>
+    ${buildSelectedStopsMarkup(config, option.id, direction)}
+    <div class="stop-chip-row">
+      ${buildStopSuggestionsMarkup(config, option, direction)}
+    </div>
+    <div class="custom-stop-row">
+      <input type="text" placeholder="Search a custom city or town in India" value="${customQuery}" data-custom-query="${option.id}" data-stop-direction="${direction}" />
+      <button type="button" class="button button-secondary" data-search-stop="${option.id}" data-stop-direction="${direction}">
+        ${searchLoading ? "Searching..." : "Resolve"}
+      </button>
+    </div>
+    ${searchMessage ? `<p class="field-message">${searchMessage}</p>` : ""}
+    ${
+      searchResults.length
+        ? `<div class="search-results">
+          ${searchResults
+            .map(
+              (result, index) => `<button type="button" class="search-result" data-pick-search="${option.id}" data-stop-direction="${direction}" data-result-index="${index}">
+                <strong>${result.name}</strong>
+                <span>${result.label}</span>
+              </button>`
+            )
+            .join("")}
+        </div>`
+        : ""
+    }
+  </section>`;
+}
+
+function formatWaypointSequence(waypoints) {
+  return waypoints.map((waypoint) => waypoint.name).join(" → ");
+}
+
+function buildRouteLegSummary(config) {
+  const stats = config.routeStats;
+  if (!stats?.legs?.length) {
+    return `<p class="route-message">${config.routeMessage || "Use refresh if the route map needs another render pass."}</p>`;
+  }
+
+  return `<div class="route-leg-list">
+    ${stats.legs
+      .map(
+        (leg) => `<div class="route-leg">
+          <strong>${leg.from} → ${leg.to}</strong>
+          <span>${leg.label}</span>
+        </div>`
+      )
+      .join("")}
+    <p class="route-total">Total by road: ${stats.totalLabel}</p>
+  </div>`;
+}
+
+function updateRouteDetails(optionId) {
+  const slot = document.getElementById(`routeDetails-${optionId}`);
+  const config = appState.compareConfigs[optionId];
+  if (!slot || !config) return;
+  slot.innerHTML = buildRouteLegSummary(config);
+}
+
 function buildCompareCard(config) {
   const option = optionMap.get(config.optionId);
-  const validationMessage = validateCompareConfig(config);
   const estimate = computeEstimate(option, config.nights, config.groupSize);
   const stopUplift = computePitStopUplift(config);
   const manualBudget = Number(config.manualBudget) || 0;
   const finalLow = estimate.low + stopUplift.low + manualBudget;
   const finalHigh = estimate.high + stopUplift.high + manualBudget;
   const itinerary = buildCompareItinerary(option, config);
-  const routeSummary =
-    config.pitStopMode === "none" || !config.selectedStop
-      ? `Direct Chennai to ${option.name} round trip`
-      : config.pitStopMode === "going"
-        ? `Chennai → ${config.selectedStop.name} → ${option.name} → Chennai`
-        : config.pitStopMode === "coming"
-          ? `Chennai → ${option.name} → ${config.selectedStop.name} → Chennai`
-          : `Chennai → ${config.selectedStop.name} → ${option.name} → ${config.selectedStop.name} → Chennai`;
+  const waypoints = getRouteWaypoints(config);
+  const showPitStops = config.pitStopMode !== "none";
+  const directions = getActiveDirections(config.pitStopMode);
 
   return `
     <article class="compare-card" data-compare-card="${option.id}">
@@ -1082,7 +1290,7 @@ function buildCompareCard(config) {
         <div>
           <p class="section-label">Planner</p>
           <h3>${option.name}</h3>
-          <p class="compare-card-route">${routeSummary}</p>
+          <p class="compare-card-route">${formatWaypointSequence(waypoints)}</p>
         </div>
         <button type="button" class="ghost-button" data-remove-compare="${option.id}">Remove</button>
       </div>
@@ -1102,7 +1310,7 @@ function buildCompareCard(config) {
         <div class="compare-price-summary">
           <span class="section-label">Per person estimate</span>
           <strong>₹${finalLow.toLocaleString()} - ₹${finalHigh.toLocaleString()}</strong>
-          <span>Base ${estimate.low.toLocaleString()} - ${estimate.high.toLocaleString()} · Stop ${stopUplift.low.toLocaleString()} - ${stopUplift.high.toLocaleString()} · Manual ${manualBudget.toLocaleString()}</span>
+          <span>Base ${estimate.low.toLocaleString()} - ${estimate.high.toLocaleString()} · Stops ${stopUplift.low.toLocaleString()} - ${stopUplift.high.toLocaleString()} · Manual ${manualBudget.toLocaleString()}</span>
         </div>
       </div>
 
@@ -1146,59 +1354,36 @@ function buildCompareCard(config) {
         </label>
       </div>
 
-      <div class="compare-stopover-panel">
-        <div class="compare-stopover-header">
-          <div>
-            <p class="section-label">Pit stop</p>
-            <h4>Use a suggested stop or resolve a custom place</h4>
-          </div>
-          ${config.selectedStop ? `<button type="button" class="ghost-button" data-clear-stop="${option.id}">Clear stop</button>` : ""}
-        </div>
-        <div class="stop-chip-row">
-          ${buildStopSuggestionsMarkup(config, option)}
-        </div>
-        <div class="custom-stop-row">
-          <input type="text" placeholder="Search a custom city or town in India" value="${config.customQuery}" data-custom-query="${option.id}" />
-          <button type="button" class="button button-secondary" data-search-stop="${option.id}">
-            ${config.searchLoading ? "Searching..." : "Resolve"}
-          </button>
-        </div>
-        ${
-          config.selectedStop
-            ? `<p class="resolved-stop">Resolved pit stop: <strong>${config.selectedStop.name}</strong></p>`
-            : ""
-        }
-        ${
-          config.searchMessage
-            ? `<p class="field-message">${config.searchMessage}</p>`
-            : ""
-        }
-        ${
-          config.searchResults.length
-            ? `<div class="search-results">
-              ${config.searchResults
-                .map(
-                  (result, index) => `<button type="button" class="search-result" data-pick-search="${option.id}" data-result-index="${index}">
-                    <strong>${result.name}</strong>
-                    <span>${result.label}</span>
-                  </button>`
-                )
-                .join("")}
+      ${
+        showPitStops
+          ? `<div class="compare-stopover-panel">
+              <div class="compare-stopover-header">
+                <div>
+                  <p class="section-label">Pit stops</p>
+                  <h4>Use suggested stops or resolve custom places</h4>
+                </div>
+              </div>
+              <div class="pit-stop-direction-grid">
+                ${directions.map((direction) => buildPitStopSection(config, option, direction)).join("")}
+              </div>
             </div>`
-            : ""
-        }
-      </div>
+          : ""
+      }
 
       <div class="compare-card-body">
-        <div class="route-panel">
+        <div class="route-panel" data-route-panel="${option.id}">
           <div class="route-panel-header">
             <div>
               <p class="section-label">Route map</p>
               <h4>${option.name} route</h4>
             </div>
-            ${config.routeMessage ? `<span class="route-message">${config.routeMessage}</span>` : ""}
+            <div class="route-panel-actions">
+              <button type="button" class="ghost-button" data-refresh-route="${option.id}">Refresh</button>
+              <button type="button" class="ghost-button" data-fullscreen-route="${option.id}">Full screen</button>
+            </div>
           </div>
           <div class="trip-map compare-route-map" id="routeMap-${option.id}"></div>
+          <div class="route-detail-slot" id="routeDetails-${option.id}">${buildRouteLegSummary(config)}</div>
         </div>
         <div class="itinerary-panel">
           <div class="itinerary-panel-header">
@@ -1224,17 +1409,30 @@ function buildCompareCard(config) {
   `;
 }
 
+function resetCompareCardMaps() {
+  compareCardMaps.forEach((map) => map.remove());
+  compareCardMaps.clear();
+  compareCardMapLayers.forEach((_, key) => {
+    if (key !== "master") {
+      compareCardMapLayers.delete(key);
+    }
+  });
+}
+
 function renderCompareCards() {
+  resetCompareCardMaps();
   compareCards.className = `section compare-grid compare-grid-${Math.max(1, appState.shortlist.length)}`;
   compareCards.innerHTML = appState.shortlist.map((optionId) => buildCompareCard(appState.compareConfigs[optionId])).join("");
 }
 
 function renderCompareTab() {
   renderCompareAddSelect();
+  renderCompareHeroShortlist();
   renderCompareShortlistPills();
   renderCompareEmptyState();
   if (!compareEmptyState.hidden) {
     compareMasterMapNote.textContent = "Add a destination to see route comparisons here.";
+    compareMapLegend.innerHTML = "";
     compareCards.innerHTML = "";
     return;
   }
@@ -1247,19 +1445,17 @@ function renderCompareTab() {
 function getRouteWaypoints(config) {
   const option = optionMap.get(config.optionId);
   if (!option) return [CHENNAI];
-  const stop = config.selectedStop ? { name: config.selectedStop.name, coords: [config.selectedStop.lat, config.selectedStop.lng] } : null;
   const destination = { name: option.name, coords: option.coords };
+  const outboundStops = getStopsForDirection(config, "going").map((stop) => ({
+    name: stop.name,
+    coords: [stop.lat, stop.lng],
+  }));
+  const returnStops = getStopsForDirection(config, "coming").map((stop) => ({
+    name: stop.name,
+    coords: [stop.lat, stop.lng],
+  }));
 
-  if (!stop || config.pitStopMode === "none") {
-    return [CHENNAI, destination, CHENNAI];
-  }
-  if (config.pitStopMode === "going") {
-    return [CHENNAI, stop, destination, CHENNAI];
-  }
-  if (config.pitStopMode === "coming") {
-    return [CHENNAI, destination, stop, CHENNAI];
-  }
-  return [CHENNAI, stop, destination, stop, CHENNAI];
+  return [CHENNAI, ...outboundStops, destination, ...returnStops, CHENNAI];
 }
 
 async function geocodePlace(query) {
@@ -1298,21 +1494,100 @@ async function geocodePlace(query) {
   return results;
 }
 
-async function fetchRouteForWaypoints(waypoints) {
-  const key = waypoints.map((waypoint) => waypoint.coords.join(",")).join("|");
+function haversineKm(start, end) {
+  const toRad = (value) => (value * Math.PI) / 180;
+  const [lat1, lon1] = start;
+  const [lat2, lon2] = end;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function formatDurationHours(hours) {
+  const totalMinutes = Math.max(1, Math.round(hours * 60));
+  const wholeHours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  if (!wholeHours) return `${minutes} min`;
+  if (!minutes) return `${wholeHours} hr`;
+  return `${wholeHours} hr ${minutes} min`;
+}
+
+function buildFallbackRoute(waypoints, mode) {
+  const speed = mode === "train" ? 52 : 40;
+  const legs = [];
+  let totalDistance = 0;
+  let totalHours = 0;
+
+  waypoints.slice(0, -1).forEach((waypoint, index) => {
+    const nextWaypoint = waypoints[index + 1];
+    const distanceKm = haversineKm(waypoint.coords, nextWaypoint.coords) * (mode === "train" ? 1.18 : 1.28);
+    const durationHours = distanceKm / speed;
+    totalDistance += distanceKm;
+    totalHours += durationHours;
+    legs.push({
+      from: waypoint.name,
+      to: nextWaypoint.name,
+      distanceKm,
+      durationHours,
+      label: `${Math.round(distanceKm)} km · ${formatDurationHours(durationHours)}`,
+    });
+  });
+
+  return {
+    geometry: {
+      type: "LineString",
+      coordinates: waypoints.map((waypoint) => [waypoint.coords[1], waypoint.coords[0]]),
+    },
+    legs,
+    distanceKm: totalDistance,
+    durationHours: totalHours,
+    totalLabel: `${Math.round(totalDistance)} km · ${formatDurationHours(totalHours)}`,
+    mode,
+  };
+}
+
+async function fetchRouteForWaypoints(waypoints, mode = "road") {
+  const key = `${mode}:${waypoints.map((waypoint) => waypoint.coords.join(",")).join("|")}`;
   if (routeCache.has(key)) {
     return routeCache.get(key);
   }
 
+  if (mode === "train") {
+    const fallbackRoute = buildFallbackRoute(waypoints, "train");
+    routeCache.set(key, fallbackRoute);
+    return fallbackRoute;
+  }
+
   const coordinateString = waypoints.map((waypoint) => `${waypoint.coords[1]},${waypoint.coords[0]}`).join(";");
-  const url = `https://router.project-osrm.org/route/v1/driving/${coordinateString}?overview=full&geometries=geojson`;
+  const url = `https://router.project-osrm.org/route/v1/driving/${coordinateString}?overview=full&geometries=geojson&steps=false`;
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error("Unable to load route");
   }
 
   const data = await response.json();
-  const route = data.routes?.[0]?.geometry || null;
+  const routeData = data.routes?.[0];
+  if (!routeData?.geometry) {
+    throw new Error("Unable to load route");
+  }
+
+  const route = {
+    geometry: routeData.geometry,
+    legs: (routeData.legs || []).map((leg, index) => ({
+      from: waypoints[index].name,
+      to: waypoints[index + 1].name,
+      distanceKm: leg.distance / 1000,
+      durationHours: leg.duration / 3600,
+      label: `${Math.round(leg.distance / 1000)} km · ${formatDurationHours(leg.duration / 3600)}`,
+    })),
+    distanceKm: routeData.distance / 1000,
+    durationHours: routeData.duration / 3600,
+    totalLabel: `${Math.round(routeData.distance / 1000)} km · ${formatDurationHours(routeData.duration / 3600)}`,
+    mode,
+  };
   routeCache.set(key, route);
   return route;
 }
@@ -1388,15 +1663,20 @@ async function renderCompareRoute(optionId) {
             fillOpacity: 1,
           })
         : window.L.marker(waypoint.coords);
-    marker.addTo(map).bindPopup(`<strong>${waypoint.name}</strong>`);
+    marker
+      .addTo(map)
+      .bindPopup(`<strong>${waypoint.name}</strong>`)
+      .bindTooltip(waypoint.name, { permanent: true, direction: "top", offset: [0, -10] });
     addTrackedLayer(map, optionId, marker);
     bounds.push(waypoint.coords);
   });
 
   try {
-    const route = await fetchRouteForWaypoints(waypoints);
-    if (route) {
-      const polyline = window.L.geoJSON(route, {
+    const route = await fetchRouteForWaypoints(waypoints, "road");
+    config.routeStats = route;
+    config.routeMessage = "";
+    if (route?.geometry) {
+      const polyline = window.L.geoJSON(route.geometry, {
         style: {
           color: "#2d6eaf",
           weight: 4,
@@ -1406,12 +1686,14 @@ async function renderCompareRoute(optionId) {
       addTrackedLayer(map, optionId, polyline);
     }
   } catch {
+    config.routeStats = buildFallbackRoute(waypoints, "road");
     config.routeMessage = "Route service did not return a full path, but the stop sequence is still valid.";
   }
 
   map.fitBounds(bounds, { padding: [24, 24] });
   requestAnimationFrame(() => map.invalidateSize());
   window.setTimeout(() => map.invalidateSize(), 150);
+  updateRouteDetails(optionId);
   return { waypoints, routeLabel: `${option.name} route` };
 }
 
@@ -1427,9 +1709,11 @@ async function renderCompareMaps() {
   const palette = ["#2d6eaf", "#1f756a", "#8b6a53"];
   const masterBounds = [];
   const summaries = [];
+  const legendMarkup = [];
 
   for (const [index, optionId] of appState.shortlist.entries()) {
     const config = appState.compareConfigs[optionId];
+    const option = optionMap.get(optionId);
     const result = await renderCompareRoute(optionId);
     const waypoints = result?.waypoints || getRouteWaypoints(config);
 
@@ -1451,25 +1735,36 @@ async function renderCompareMaps() {
                 fillColor: palette[index % palette.length],
                 fillOpacity: 1,
               });
-        marker.addTo(compareMasterMap).bindPopup(`<strong>${waypoint.name}</strong>`);
+        marker
+          .addTo(compareMasterMap)
+          .bindPopup(`<strong>${waypoint.name}</strong>`)
+          .bindTooltip(waypoint.name, { permanent: true, direction: "top", offset: [0, -8] });
         addTrackedLayer(compareMasterMap, "master", marker);
         masterBounds.push(waypoint.coords);
       });
 
       try {
-        const route = await fetchRouteForWaypoints(waypoints);
-        if (route) {
-          const polyline = window.L.geoJSON(route, {
+        const route = await fetchRouteForWaypoints(waypoints, appState.compareTransport);
+        if (route?.geometry) {
+          const polyline = window.L.geoJSON(route.geometry, {
             style: {
               color: palette[index % palette.length],
               weight: 4,
               opacity: 0.75,
+              dashArray: appState.compareTransport === "train" ? "10 8" : "",
             },
           }).addTo(compareMasterMap);
           addTrackedLayer(compareMasterMap, "master", polyline);
+          legendMarkup.push(`<div class="route-legend-item">
+            <span class="route-legend-swatch" style="--legend-color:${palette[index % palette.length]}"></span>
+            <div>
+              <strong>${option.name}</strong>
+              <span>${appState.compareTransport === "train" ? "Train-style" : "Road"} · ${route.totalLabel}</span>
+            </div>
+          </div>`);
         }
       } catch {
-        summaries.push(`${optionMap.get(optionId).name}: route line unavailable`);
+        summaries.push(`${option.name}: route line unavailable`);
       }
     }
   }
@@ -1482,53 +1777,81 @@ async function renderCompareMaps() {
 
   compareMasterMapNote.textContent = summaries.length
     ? `Some route lines could not be drawn. ${summaries.join(" · ")}`
-    : "Chennai stays as the anchor and only shortlisted destinations are shown here.";
+    : `${appState.compareTransport === "train" ? "Train-style" : "Road"} route view from Chennai across only the shortlisted destinations.`;
+  compareMapLegend.innerHTML = legendMarkup.join("");
 }
 
-async function searchCustomStop(optionId) {
+async function searchCustomStop(optionId, direction) {
   const config = appState.compareConfigs[optionId];
   if (!config) return;
-  const query = config.customQuery.trim();
+  const query = config.customQuery[direction].trim();
   if (!query) {
-    config.searchMessage = "Type a place name first.";
-    renderApp();
+    config.searchMessage[direction] = "Type a place name first.";
+    renderCompareTab();
     return;
   }
 
-  config.searchLoading = true;
-  config.searchMessage = "";
-  config.searchResults = [];
+  config.searchLoading[direction] = true;
+  config.searchMessage[direction] = "";
+  config.searchResults[direction] = [];
   renderCompareTab();
 
   try {
     const results = await geocodePlace(query);
-    config.searchLoading = false;
+    config.searchLoading[direction] = false;
     if (!results.length) {
-      config.searchMessage = "No resolvable stop found. Try a nearby city or town name instead.";
+      config.searchMessage[direction] = "No resolvable stop found. Try a nearby city or town name instead.";
     } else {
-      config.searchMessage = "Choose one of the closest resolvable matches below.";
-      config.searchResults = results;
+      config.searchMessage[direction] = "Choose one of the closest resolvable matches below.";
+      config.searchResults[direction] = results;
     }
   } catch (error) {
-    config.searchLoading = false;
-    config.searchMessage = error instanceof Error ? error.message : "Unable to resolve that stop.";
+    config.searchLoading[direction] = false;
+    config.searchMessage[direction] = error instanceof Error ? error.message : "Unable to resolve that stop.";
   }
 
   persistState();
   renderCompareTab();
 }
 
-function pickResolvedStop(optionId, stop) {
+function pickResolvedStop(optionId, direction, stop) {
   const config = appState.compareConfigs[optionId];
   if (!config) return;
-  config.selectedStop = {
-    name: stop.name,
-    lat: stop.lat ?? stop.coords?.[0],
-    lng: stop.lng ?? stop.coords?.[1],
-    label: stop.label || stop.note || stop.name,
-  };
-  config.searchMessage = "";
-  config.searchResults = [];
+  const selectedStops = getStopsForDirection(config, direction);
+  if (selectedStops.some((item) => item.name === stop.name)) {
+    return;
+  }
+  config.pitStops[direction] = [
+    ...selectedStops,
+    {
+      name: stop.name,
+      lat: stop.lat ?? stop.coords?.[0],
+      lng: stop.lng ?? stop.coords?.[1],
+      label: stop.label || stop.note || stop.name,
+    },
+  ];
+  config.searchMessage[direction] = "";
+  config.searchResults[direction] = [];
+  config.customQuery[direction] = "";
+  persistState();
+  renderCompareTab();
+}
+
+function removeResolvedStop(optionId, direction, stopIndex) {
+  const config = appState.compareConfigs[optionId];
+  if (!config) return;
+  config.pitStops[direction] = getStopsForDirection(config, direction).filter((_, index) => index !== stopIndex);
+  persistState();
+  renderCompareTab();
+}
+
+function clearPitStopDirection(optionId, direction) {
+  const config = appState.compareConfigs[optionId];
+  if (!config) return;
+  config.pitStops[direction] = [];
+  config.searchResults[direction] = [];
+  config.searchMessage[direction] = "";
+  config.customQuery[direction] = "";
   persistState();
   renderCompareTab();
 }
@@ -1536,12 +1859,43 @@ function pickResolvedStop(optionId, stop) {
 function clearPitStop(optionId) {
   const config = appState.compareConfigs[optionId];
   if (!config) return;
-  config.selectedStop = null;
-  config.searchResults = [];
-  config.searchMessage = "";
+  config.pitStops = {
+    going: [],
+    coming: [],
+  };
+  config.searchResults = {
+    going: [],
+    coming: [],
+  };
+  config.searchMessage = {
+    going: "",
+    coming: "",
+  };
+  config.customQuery = {
+    going: "",
+    coming: "",
+  };
   config.pitStopMode = "none";
   persistState();
   renderCompareTab();
+}
+
+function toggleRoutePanelFullscreen(optionId) {
+  const panel = document.querySelector(`[data-route-panel="${optionId}"]`);
+  if (!(panel instanceof HTMLElement)) return;
+  if (document.fullscreenElement === panel) {
+    document.exitFullscreen?.();
+    return;
+  }
+  if (panel.requestFullscreen) {
+    panel.requestFullscreen().catch(() => {
+      panel.classList.toggle("is-expanded");
+      window.setTimeout(() => renderCompareRoute(optionId), 80);
+    });
+    return;
+  }
+  panel.classList.toggle("is-expanded");
+  window.setTimeout(() => renderCompareRoute(optionId), 80);
 }
 
 function createCardActions() {
@@ -1636,6 +1990,15 @@ exploreShortlistPreview.addEventListener("click", (event) => {
   renderApp();
 });
 
+compareHeroShortlist.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
+  const button = target.closest("[data-shortlist-remove]");
+  if (!button) return;
+  removeFromShortlist(button.dataset.shortlistRemove);
+  renderApp();
+});
+
 exploreCompareButton.addEventListener("click", () => {
   if (!appState.shortlist.length) return;
   appState.activeTab = "compare";
@@ -1646,12 +2009,15 @@ exploreCompareButton.addEventListener("click", () => {
 openExploreTabButton.addEventListener("click", () => setActiveTab("explore"));
 openCompareTabButton.addEventListener("click", () => setActiveTab("compare"));
 
-heroNightsSelect.addEventListener("change", () => {
-  appState.filters.nights = Number(heroNightsSelect.value) === 2 ? 2 : 3;
+function adjustExploreTripLength(delta) {
+  appState.filters.nights = clampNumber(appState.filters.nights + delta, 2, 3, appState.filters.nights);
   appState.manualSelection = false;
   persistState();
   renderExploreTab();
-});
+}
+
+heroTripLengthDecrease.addEventListener("click", () => adjustExploreTripLength(-1));
+heroTripLengthIncrease.addEventListener("click", () => adjustExploreTripLength(1));
 
 heroStyleSelect.addEventListener("change", () => {
   appState.filters.style = heroStyleSelect.value;
@@ -1689,6 +2055,12 @@ compareShortlistPills.addEventListener("click", (event) => {
   node?.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
+compareTransportMode.addEventListener("change", () => {
+  appState.compareTransport = compareTransportMode.value === "train" ? "train" : "road";
+  persistState();
+  renderCompareTab();
+});
+
 compareCards.addEventListener("click", (event) => {
   const target = event.target;
   if (!(target instanceof HTMLElement)) return;
@@ -1707,7 +2079,7 @@ compareCards.addEventListener("click", (event) => {
     const delta = Number(adjustButton.dataset.delta);
     const config = appState.compareConfigs[optionId];
     if (config && (key === "days" || key === "nights")) {
-      const bounds = key === "days" ? [3, 8] : [2, 7];
+      const bounds = key === "days" ? [3, 10] : [2, 9];
       config[key] = clampNumber(config[key] + delta, bounds[0], bounds[1], config[key]);
       persistState();
       renderCompareTab();
@@ -1718,10 +2090,11 @@ compareCards.addEventListener("click", (event) => {
   const stopButton = target.closest("[data-stop-name]");
   if (stopButton) {
     const optionId = stopButton.dataset.optionId;
+    const direction = stopButton.dataset.stopDirection;
     const option = optionMap.get(optionId);
     const stop = option?.pitStops.find((item) => item.name === stopButton.dataset.stopName);
-    if (stop) {
-      pickResolvedStop(optionId, stop);
+    if (stop && direction) {
+      pickResolvedStop(optionId, direction, stop);
     }
     return;
   }
@@ -1732,21 +2105,50 @@ compareCards.addEventListener("click", (event) => {
     return;
   }
 
+  const clearDirectionButton = target.closest("[data-clear-direction]");
+  if (clearDirectionButton) {
+    clearPitStopDirection(clearDirectionButton.dataset.clearDirection, clearDirectionButton.dataset.stopDirection);
+    return;
+  }
+
+  const removeStopButton = target.closest("[data-remove-stop]");
+  if (removeStopButton) {
+    removeResolvedStop(
+      removeStopButton.dataset.removeStop,
+      removeStopButton.dataset.stopDirection,
+      Number(removeStopButton.dataset.stopIndex)
+    );
+    return;
+  }
+
   const pickSearchButton = target.closest("[data-pick-search]");
   if (pickSearchButton) {
     const optionId = pickSearchButton.dataset.pickSearch;
+    const direction = pickSearchButton.dataset.stopDirection;
     const index = Number(pickSearchButton.dataset.resultIndex);
     const config = appState.compareConfigs[optionId];
-    const result = config?.searchResults[index];
-    if (result) {
-      pickResolvedStop(optionId, result);
+    const result = config?.searchResults[direction]?.[index];
+    if (result && direction) {
+      pickResolvedStop(optionId, direction, result);
     }
     return;
   }
 
   const searchButton = target.closest("[data-search-stop]");
   if (searchButton) {
-    searchCustomStop(searchButton.dataset.searchStop);
+    searchCustomStop(searchButton.dataset.searchStop, searchButton.dataset.stopDirection);
+    return;
+  }
+
+  const refreshRouteButton = target.closest("[data-refresh-route]");
+  if (refreshRouteButton) {
+    renderCompareRoute(refreshRouteButton.dataset.refreshRoute);
+    return;
+  }
+
+  const fullscreenRouteButton = target.closest("[data-fullscreen-route]");
+  if (fullscreenRouteButton) {
+    toggleRoutePanelFullscreen(fullscreenRouteButton.dataset.fullscreenRoute);
   }
 });
 
@@ -1770,7 +2172,7 @@ compareCards.addEventListener("change", (event) => {
       days: existingConfig.days,
       nights: existingConfig.nights,
       groupSize: existingConfig.groupSize,
-      pitStopMode: "none",
+      pitStopMode: existingConfig.pitStopMode,
       manualBudget: existingConfig.manualBudget,
     };
     delete appState.compareConfigs[currentId];
@@ -1786,9 +2188,7 @@ compareCards.addEventListener("change", (event) => {
   if (target.matches("[data-config-select='pitStopMode']")) {
     config.pitStopMode = target.value;
     if (config.pitStopMode === "none") {
-      config.selectedStop = null;
-      config.searchResults = [];
-      config.searchMessage = "";
+      config.routeStats = null;
     }
     config.routeMessage = "";
     persistState();
@@ -1820,7 +2220,8 @@ compareCards.addEventListener("input", (event) => {
   }
 
   if (target.matches("[data-custom-query]")) {
-    config.customQuery = target.value;
+    const direction = target.dataset.stopDirection;
+    config.customQuery[direction] = target.value;
     persistState();
   }
 });

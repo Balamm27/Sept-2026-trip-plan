@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="./styles.css?v=6300" />
+    <link rel="stylesheet" href="./styles.css?v=6301" />
   </head>
   <body>
     <div class="page-shell">
@@ -75,18 +75,24 @@
               <h2>Choose the trip shape first</h2>
               <p>
                 These controls drive the recommendation, reorder the shortlist, and update
-                the cost comparison below.
+                the destination itinerary below.
               </p>
             </div>
             <div class="top-filters-card">
-              <label class="showcase-field" for="heroNights">
+              <div class="showcase-field showcase-field-counter">
                 <span class="field-heading"><span class="field-icon">A</span><span>Trip length</span></span>
                 <span class="field-help">Changes the ranking and the detailed itinerary length.</span>
-                <select id="heroNights">
-                  <option value="3" selected>3 nights / 4 days</option>
-                  <option value="2">2 nights / 3 days</option>
-                </select>
-              </label>
+                <div class="trip-length-stepper" id="heroTripLengthStepper" aria-label="Trip length controls">
+                  <div class="trip-length-stepper-copy">
+                    <span class="trip-length-stepper-value" id="heroTripLengthValue">4 days / 3 nights</span>
+                    <span class="trip-length-stepper-note">Use plus or minus to switch between the lighter and fuller version.</span>
+                  </div>
+                  <div class="trip-length-stepper-actions">
+                    <button type="button" class="counter-button" id="heroTripLengthDecrease" aria-label="Decrease trip length">−</button>
+                    <button type="button" class="counter-button" id="heroTripLengthIncrease" aria-label="Increase trip length">+</button>
+                  </div>
+                </div>
+              </div>
 
               <label class="showcase-field" for="heroStyle">
                 <span class="field-heading"><span class="field-icon">B</span><span>Group mood</span></span>
@@ -646,6 +652,13 @@
               </p>
             </div>
             <div class="compare-hero-actions">
+              <div class="compare-hero-shortlist">
+                <div class="compare-hero-shortlist-topline">
+                  <span class="section-label">Selected now</span>
+                  <span class="compare-hero-shortlist-count" id="compareHeroCount">0 selected</span>
+                </div>
+                <div class="compare-hero-shortlist-row" id="compareHeroShortlist"></div>
+              </div>
               <label class="compare-add">
                 <span>Add destination</span>
                 <select id="compareAddSelect"></select>
@@ -663,9 +676,19 @@
                 <h2>See only the shortlisted routes</h2>
                 <p>The map updates as each destination gets its own pit stop plan.</p>
               </div>
-              <div class="compare-overview-pills" id="compareShortlistPills"></div>
+              <div class="compare-overview-tools">
+                <label class="compare-mode-toggle" for="compareTransportMode">
+                  <span>Route mode</span>
+                  <select id="compareTransportMode">
+                    <option value="road">Road</option>
+                    <option value="train">Train</option>
+                  </select>
+                </label>
+                <div class="compare-overview-pills" id="compareShortlistPills"></div>
+              </div>
             </div>
             <div class="trip-map compare-master-map" id="compareMasterMap"></div>
+            <div class="route-legend" id="compareMapLegend"></div>
             <p class="map-note" id="compareMasterMapNote">
               Chennai stays as the anchor and only shortlisted destinations are shown here.
             </p>
@@ -687,6 +710,6 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="./script.js?v=6300"></script>
+    <script src="./script.js?v=6301"></script>
   </body>
 </html>
