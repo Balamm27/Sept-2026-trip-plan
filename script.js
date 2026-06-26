@@ -504,6 +504,9 @@ const compareAddSelect = document.getElementById("compareAddSelect");
 const compareAddButton = document.getElementById("compareAddButton");
 const compareHeroShortlist = document.getElementById("compareHeroShortlist");
 const compareHeroCount = document.getElementById("compareHeroCount");
+const shareComparePlanButton = document.getElementById("shareComparePlanButton");
+const shareComparePlanStatus = document.getElementById("shareComparePlanStatus");
+const shareComparePlanLink = document.getElementById("shareComparePlanLink");
 const compareShortlistPills = document.getElementById("compareShortlistPills");
 const compareTransportMode = document.getElementById("compareTransportMode");
 const compareMapLegend = document.getElementById("compareMapLegend");
@@ -520,6 +523,8 @@ const compareCardMaps = new Map();
 const compareCardMapLayers = new Map();
 const geocodeCache = new Map();
 const routeCache = new Map();
+let sharePlanStatusMessage = "Copy a link to this exact compare setup.";
+let sharePlanStatusTimeout;
 
 let appState = createInitialState();
 
@@ -661,6 +666,71 @@ function encodeStateToUrl() {
   params.set("compare", encodeURIComponent(JSON.stringify(getPersistableState().shortlist)));
   const nextUrl = `${window.location.pathname}?${params.toString()}`;
   window.history.replaceState({}, "", nextUrl);
+}
+
+function buildShareablePlanUrl() {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams();
+  const currentParams = new URLSearchParams(window.location.search);
+
+  if (currentParams.has("t")) {
+    params.set("t", currentParams.get("t"));
+  }
+  if (currentParams.has("v")) {
+    params.set("v", currentParams.get("v"));
+  }
+
+  params.set("tab", "compare");
+  params.set("nights", String(appState.filters.nights));
+  params.set("style", appState.filters.style);
+  params.set("selected", appState.selectedOptionId);
+  params.set("transport", appState.compareTransport);
+  params.set("compare", encodeURIComponent(JSON.stringify(getPersistableState().shortlist)));
+  url.search = params.toString();
+  return url.toString();
+}
+
+function setSharePlanStatus(message) {
+  sharePlanStatusMessage = message;
+  if (shareComparePlanStatus) {
+    shareComparePlanStatus.textContent = message;
+  }
+
+  if (sharePlanStatusTimeout) {
+    window.clearTimeout(sharePlanStatusTimeout);
+  }
+
+  if (message !== "Copy a link to this exact compare setup.") {
+    sharePlanStatusTimeout = window.setTimeout(() => {
+      sharePlanStatusMessage = "Copy a link to this exact compare setup.";
+      if (shareComparePlanStatus) {
+        shareComparePlanStatus.textContent = sharePlanStatusMessage;
+      }
+    }, 2600);
+  }
+}
+
+async function copyTextToClipboard(text) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(text);
+    return true;
+  }
+
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.setAttribute("readonly", "");
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0";
+  document.body.appendChild(textArea);
+  textArea.select();
+  const copied = document.execCommand("copy");
+  document.body.removeChild(textArea);
+
+  if (!copied) {
+    throw new Error("Copy not available");
+  }
+
+  return true;
 }
 
 function decodeStateFromUrl() {
@@ -1151,6 +1221,11 @@ function renderCompareHeroShortlist() {
         })
         .join("")
     : `<span class="shortlist-placeholder">No destinations selected yet</span>`;
+
+  shareComparePlanButton.disabled = appState.shortlist.length === 0;
+  shareComparePlanStatus.textContent = sharePlanStatusMessage;
+  shareComparePlanLink.value = appState.shortlist.length ? buildShareablePlanUrl() : "";
+  shareComparePlanLink.hidden = appState.shortlist.length === 0;
 }
 
 function renderCompareShortlistPills() {
@@ -2043,6 +2118,25 @@ compareAddButton.addEventListener("click", () => {
   appState.activeTab = "compare";
   persistState();
   renderApp();
+});
+
+shareComparePlanButton.addEventListener("click", async () => {
+  if (!appState.shortlist.length) {
+    setSharePlanStatus("Add at least one destination before sharing.");
+    return;
+  }
+
+  const shareUrl = buildShareablePlanUrl();
+
+  try {
+    await copyTextToClipboard(shareUrl);
+    shareComparePlanLink.select();
+    setSharePlanStatus("Share link copied. Your friends will open the same compare plan.");
+  } catch {
+    shareComparePlanLink.focus();
+    shareComparePlanLink.select();
+    setSharePlanStatus("Copy failed. You can still share the current page URL manually.");
+  }
 });
 
 compareShortlistPills.addEventListener("click", (event) => {
