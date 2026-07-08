@@ -494,8 +494,10 @@ const mapDrawerToggle = document.getElementById("mapDrawerToggle");
 const mapPanel = document.getElementById("mapPanel");
 const openExploreTabButton = document.getElementById("openExploreTab");
 const openCompareTabButton = document.getElementById("openCompareTab");
+const openPlanTabButton = document.getElementById("openPlanTab");
 const exploreTab = document.getElementById("exploreTab");
 const compareTab = document.getElementById("compareTab");
+const planTab = document.getElementById("planTab");
 const compareTabCount = document.getElementById("compareTabCount");
 const exploreShortlistPreview = document.getElementById("exploreShortlistPreview");
 const exploreCompareButton = document.getElementById("exploreCompareButton");
@@ -604,7 +606,7 @@ function applyPersistedState(payload) {
     return;
   }
 
-  appState.activeTab = payload.activeTab === "compare" ? "compare" : "explore";
+  appState.activeTab = ["compare", "plan"].includes(payload.activeTab) ? payload.activeTab : "explore";
   appState.filters.nights = payload.filters?.nights === 2 ? 2 : 3;
   appState.filters.style = ["balanced", "budget", "cooler", "easy"].includes(payload.filters?.style)
     ? payload.filters.style
@@ -736,7 +738,7 @@ async function copyTextToClipboard(text) {
 function decodeStateFromUrl() {
   const params = new URLSearchParams(window.location.search);
   const urlState = createInitialState();
-  urlState.activeTab = params.get("tab") === "compare" ? "compare" : "explore";
+  urlState.activeTab = ["compare", "plan"].includes(params.get("tab")) ? params.get("tab") : "explore";
   urlState.filters.nights = params.get("nights") === "2" ? 2 : 3;
   urlState.filters.style = params.get("style") || "balanced";
   urlState.selectedOptionId = params.get("selected") || "meghamalai";
@@ -759,7 +761,7 @@ function loadInitialState() {
   const fromUrl = decodeStateFromUrl();
   const hasUrlCompare = Array.isArray(fromUrl.shortlist) && fromUrl.shortlist.length > 0;
 
-  if (hasUrlCompare || fromUrl.activeTab === "compare" || fromUrl.selectedOptionId !== "meghamalai") {
+  if (hasUrlCompare || fromUrl.activeTab !== "explore" || fromUrl.selectedOptionId !== "meghamalai") {
     applyPersistedState(fromUrl);
     return;
   }
@@ -825,14 +827,18 @@ function rankOptions(style, nights) {
 }
 
 function setActiveTab(tabId) {
-  appState.activeTab = tabId === "compare" ? "compare" : "explore";
+  appState.activeTab = ["compare", "plan"].includes(tabId) ? tabId : "explore";
   const isCompare = appState.activeTab === "compare";
-  exploreTab.hidden = isCompare;
+  const isPlan = appState.activeTab === "plan";
+  exploreTab.hidden = isCompare || isPlan;
   compareTab.hidden = !isCompare;
-  exploreTab.classList.toggle("is-active", !isCompare);
+  planTab.hidden = !isPlan;
+  exploreTab.classList.toggle("is-active", appState.activeTab === "explore");
   compareTab.classList.toggle("is-active", isCompare);
-  openExploreTabButton.classList.toggle("is-active", !isCompare);
+  planTab.classList.toggle("is-active", isPlan);
+  openExploreTabButton.classList.toggle("is-active", appState.activeTab === "explore");
   openCompareTabButton.classList.toggle("is-active", isCompare);
+  openPlanTabButton.classList.toggle("is-active", isPlan);
   persistState();
 
   if (isCompare) {
@@ -2083,6 +2089,7 @@ exploreCompareButton.addEventListener("click", () => {
 
 openExploreTabButton.addEventListener("click", () => setActiveTab("explore"));
 openCompareTabButton.addEventListener("click", () => setActiveTab("compare"));
+openPlanTabButton.addEventListener("click", () => setActiveTab("plan"));
 
 function adjustExploreTripLength(delta) {
   appState.filters.nights = clampNumber(appState.filters.nights + delta, 2, 3, appState.filters.nights);

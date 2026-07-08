@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="./styles.css?v=6303" />
+    <link rel="stylesheet" href="./styles.css?v=6304" />
   </head>
   <body>
     <div class="page-shell">
@@ -34,6 +34,9 @@
           <button type="button" class="tab-toggle" id="openCompareTab">
             Compare
             <span class="tab-count" id="compareTabCount">0</span>
+          </button>
+          <button type="button" class="tab-toggle" id="openPlanTab">
+            Finalists
           </button>
         </div>
       </header>
@@ -727,10 +730,415 @@
 
           <section class="section compare-grid" id="compareCards"></section>
         </section>
+
+        <section class="tab-panel" id="planTab" hidden>
+          <section class="section finalists-hero">
+            <div class="finalists-hero-copy">
+              <p class="section-label">Finalists planning tab</p>
+              <h2>Meghamalai and Kemmanagundi, worked into proper trip drafts.</h2>
+              <p>
+                This tab is the narrowed-down planning view: stay ideas, current Airbnb
+                pricing anchors, fuller itineraries, and larger photo sets for the two
+                options that deserve serious discussion.
+              </p>
+            </div>
+            <div class="finalists-hero-note">
+              <p class="section-label">How to use it</p>
+              <p>
+                Keep every block collapsed until you need it. That keeps the view clean on
+                phones while still making the full planning detail easy to open on demand.
+              </p>
+            </div>
+          </section>
+
+          <section class="section finalists-grid">
+            <article class="finalist-card">
+              <div
+                class="finalist-banner"
+                style="--finalist-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Magamalai_panoramic_view.jpg/500px-Magamalai_panoramic_view.jpg');"
+              >
+                <div class="finalist-banner-copy">
+                  <p class="section-label">Finalist one</p>
+                  <h3>Meghamalai</h3>
+                  <p>
+                    Colder, moodier, and still the more unusual Tamil Nadu answer for a
+                    group that wants mist, estate roads, and a stay-led trip.
+                  </p>
+                </div>
+              </div>
+
+              <div class="finalist-facts">
+                <div class="finalist-fact">
+                  <span class="fact-label">Travel shape</span>
+                  <strong>Train or bus to Madurai side, then rented car</strong>
+                </div>
+                <div class="finalist-fact">
+                  <span class="fact-label">Best group size</span>
+                  <strong>5 to 7 people in one shared villa</strong>
+                </div>
+                <div class="finalist-fact">
+                  <span class="fact-label">Budget read</span>
+                  <strong>Moderate if the stay is shared well</strong>
+                </div>
+              </div>
+
+              <details class="planner-accordion" open>
+                <summary>Stay options and Airbnb picks</summary>
+                <div class="planner-accordion-body">
+                  <div class="stay-list">
+                    <article class="stay-card">
+                      <div>
+                        <h4>Belle Vie, By the Mountains, Kambilikandam</h4>
+                        <p>
+                          Strongest polished-group pick near the Meghamalai side approach:
+                          a 2-bedroom, 2-bath farm stay for 5 guests, rated about 4.95 on
+                          Airbnb.
+                        </p>
+                      </div>
+                      <ul class="stay-meta">
+                        <li>Works well if the group wants one tasteful shared base.</li>
+                        <li>Airbnb listing shows exact price only after dates are entered.</li>
+                        <li>September area average nearby on Airbnb: about $51 to $52 a night.</li>
+                      </ul>
+                      <a
+                        class="text-link"
+                        href="https://www.airbnb.com/rooms/1520233427153696086"
+                        target="_blank"
+                        rel="noreferrer"
+                        >Open Airbnb listing</a
+                      >
+                    </article>
+
+                    <article class="stay-card">
+                      <div>
+                        <h4>Agristays @ The Ghat-Hill Bunglaw Homestay</h4>
+                        <p>
+                          Better if the group wants something quieter and more rural-feeling
+                          on the Kambilikandam side rather than a polished town-style base.
+                        </p>
+                      </div>
+                      <ul class="stay-meta">
+                        <li>Useful as the more hidden, slower alternative.</li>
+                        <li>Exact nightly rate requires entering travel dates on Airbnb.</li>
+                        <li>Best for a stay-first trip with one rented vehicle.</li>
+                      </ul>
+                      <a
+                        class="text-link"
+                        href="https://www.airbnb.com/rooms/1533189545756397361"
+                        target="_blank"
+                        rel="noreferrer"
+                        >Open Airbnb listing</a
+                      >
+                    </article>
+
+                    <article class="stay-card">
+                      <div>
+                        <h4>Area budget anchor for September 2026</h4>
+                        <p>
+                          Airbnb’s broader Idukki-side September average is about $51 per
+                          night. Using the early July 2026 USD/INR reference near 95.39,
+                          that is roughly <strong>₹4,850 to ₹4,950 per night</strong> before
+                          taxes and before moving up to larger-view villas.
+                        </p>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </details>
+
+              <details class="planner-accordion">
+                <summary>Price picture for a 5 to 7 person group</summary>
+                <div class="planner-accordion-body">
+                  <div class="pricing-grid">
+                    <div class="pricing-card">
+                      <span class="fact-label">Stay only</span>
+                      <strong>₹4.9k to ₹9.5k per night</strong>
+                      <p>Realistic shared-villa planning range for a solid, scenic base.</p>
+                    </div>
+                    <div class="pricing-card">
+                      <span class="fact-label">3 nights stay split</span>
+                      <strong>₹2.1k to ₹5.7k per person</strong>
+                      <p>Lower end if 6 to 7 share one stay; higher if the villa is premium.</p>
+                    </div>
+                    <div class="pricing-card">
+                      <span class="fact-label">Transport + local car</span>
+                      <strong>₹3.5k to ₹5.5k per person</strong>
+                      <p>Train or bus down, plus one local rental car and fuel buffer.</p>
+                    </div>
+                    <div class="pricing-card">
+                      <span class="fact-label">All-in trip feel</span>
+                      <strong>₹7k to ₹12k per person</strong>
+                      <p>Comfortable range without forcing luxury or over-optimizing.</p>
+                    </div>
+                  </div>
+                  <p class="planner-note">
+                    The stay anchor is based on current Airbnb area averages and live listing
+                    availability patterns, not a locked September 2026 reservation quote.
+                  </p>
+                </div>
+              </details>
+
+              <details class="planner-accordion">
+                <summary>Suggested 4 day / 3 night itinerary</summary>
+                <div class="planner-accordion-body">
+                  <div class="day-plan-list">
+                    <article class="day-plan">
+                      <span class="day-chip">Night 0 / Day 1</span>
+                      <h4>Chennai to Madurai, breakfast stop, then the Meghamalai climb</h4>
+                      <p>
+                        Take the overnight train or bus to Madurai, pick up the rental car
+                        early, and pause for breakfast before the Theni side ascent. Keep
+                        check-in by afternoon, then use the evening for the stay, tea, mist,
+                        and one short sunset road.
+                      </p>
+                    </article>
+                    <article class="day-plan">
+                      <span class="day-chip">Day 2</span>
+                      <h4>Estate-road day with one long lake-and-view loop</h4>
+                      <p>
+                        Treat the drive itself as the main activity. Do one calm scenic loop
+                        across tea-country stretches, viewpoint pauses, and a proper lunch
+                        back at the stay or at a simple local stop.
+                      </p>
+                    </article>
+                    <article class="day-plan">
+                      <span class="day-chip">Day 3</span>
+                      <h4>Flexible weather day: waterfalls if clear, villa evening if not</h4>
+                      <p>
+                        September can flip the mood fast. If visibility is good, push toward
+                        the more dramatic upper roads and waterfall side. If the weather turns,
+                        convert this into the social day and let the stay itself carry the trip.
+                      </p>
+                    </article>
+                    <article class="day-plan">
+                      <span class="day-chip">Day 4</span>
+                      <h4>Slow breakfast, final stop on descent, then back to the rail leg</h4>
+                      <p>
+                        Descend without trying to squeeze in too much. A relaxed plains-side
+                        lunch and a safe return transfer work better here than an overloaded
+                        final day.
+                      </p>
+                    </article>
+                  </div>
+                </div>
+              </details>
+
+              <details class="planner-accordion">
+                <summary>Large photo set</summary>
+                <div class="planner-accordion-body">
+                  <div class="planner-gallery">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Magamalai_panoramic_view.jpg/500px-Magamalai_panoramic_view.jpg" alt="Panoramic view of Meghamalai" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Meghamalai_Mountains.jpg/250px-Meghamalai_Mountains.jpg" alt="Meghamalai mountains" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Manalaru_Dam%2C_Meghamalai.jpg/250px-Manalaru_Dam%2C_Meghamalai.jpg" alt="Manalaru Dam in Meghamalai" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Cumbam_Valley.jpg" alt="View of Cumbam Valley from Meghamalai side" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Elephants_Coming_Out_of_Forest.jpg/250px-Elephants_Coming_Out_of_Forest.jpg" alt="Wildlife near Meghamalai" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Elephants_at_river.jpg/250px-Elephants_at_river.jpg" alt="Elephants near a river in Meghamalai tea estate" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Bison_at_Meghamalai.jpg/250px-Bison_at_Meghamalai.jpg" alt="Bison at Meghamalai" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Upper_Manalar_Estate%2C_Meghamalai.jpg/250px-Upper_Manalar_Estate%2C_Meghamalai.jpg" alt="Upper Manalar Estate in Meghamalai" loading="lazy" />
+                  </div>
+                  <p class="planner-note">Photo set pulled from Wikimedia Commons so the highlights feel more tangible before the group decides.</p>
+                </div>
+              </details>
+            </article>
+
+            <article class="finalist-card">
+              <div
+                class="finalist-banner"
+                style="--finalist-image: url('https://web-cms.karnatakatourism.org/wp-content/uploads/2025/07/kemmanugundi_-scaled-1.jpg');"
+              >
+                <div class="finalist-banner-copy">
+                  <p class="section-label">Finalist two</p>
+                  <h3>Kemmanagundi</h3>
+                  <p>
+                    Heavier to reach, but much rarer-feeling than the more standard
+                    Chikmagalur circuit if the group wants an older, quieter hill-retreat mood.
+                  </p>
+                </div>
+              </div>
+
+              <div class="finalist-facts">
+                <div class="finalist-fact">
+                  <span class="fact-label">Travel shape</span>
+                  <strong>Overnight train to Karnataka side, then Chikkamagaluru base car</strong>
+                </div>
+                <div class="finalist-fact">
+                  <span class="fact-label">Best group size</span>
+                  <strong>5 to 6 is ideal, 7 if everyone shares well</strong>
+                </div>
+                <div class="finalist-fact">
+                  <span class="fact-label">Budget read</span>
+                  <strong>Slightly higher because access is longer</strong>
+                </div>
+              </div>
+
+              <details class="planner-accordion" open>
+                <summary>Stay options and Airbnb picks</summary>
+                <div class="planner-accordion-body">
+                  <div class="stay-list">
+                    <article class="stay-card">
+                      <div>
+                        <h4>Hegde Residency 2bhk Home (ARABICA) with balcony</h4>
+                        <p>
+                          Cleanest practical base if you want to stay in Chikkamagaluru,
+                          rent a car, and run Kemmanagundi as the headline day trip stretch.
+                        </p>
+                      </div>
+                      <ul class="stay-meta">
+                        <li>Airbnb shows 6 guests, 2 bedrooms, 1.5 baths, rating about 4.94.</li>
+                        <li>Strong fit for a 5 to 6 person group that wants town convenience.</li>
+                        <li>Just better logistics than forcing a more isolated booking too early.</li>
+                      </ul>
+                      <a
+                        class="text-link"
+                        href="https://www.airbnb.com/rooms/1362985265646033350"
+                        target="_blank"
+                        rel="noreferrer"
+                        >Open Airbnb listing</a
+                      >
+                    </article>
+
+                    <article class="stay-card">
+                      <div>
+                        <h4>Hegde Residency 2bhk Home (ROBUSTA) ground floor</h4>
+                        <p>
+                          Useful backup if the balcony unit is taken. Slightly simpler, but the
+                          Chikkamagaluru base still makes the overall trip far easier to execute.
+                        </p>
+                      </div>
+                      <ul class="stay-meta">
+                        <li>Airbnb shows 4 guests, 2 bedrooms, 1 bath, rating around 4.67.</li>
+                        <li>Best if the final group becomes 4 to 5 instead of 6 to 7.</li>
+                        <li>Good fallback rather than the first-choice shared plan.</li>
+                      </ul>
+                      <a
+                        class="text-link"
+                        href="https://www.airbnb.com/rooms/1185551590264589805"
+                        target="_blank"
+                        rel="noreferrer"
+                        >Open Airbnb listing</a
+                      >
+                    </article>
+
+                    <article class="stay-card">
+                      <div>
+                        <h4>Area budget anchor for September 2026</h4>
+                        <p>
+                          Airbnb’s broader Chikkamagaluru September average sits around
+                          <strong>$45 a night</strong>. Using the early July 2026 USD/INR
+                          reference near 95.39, that is roughly
+                          <strong>₹4,250 to ₹4,350 per night</strong> before taxes, with
+                          villas and scenic estate homes naturally climbing higher.
+                        </p>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </details>
+
+              <details class="planner-accordion">
+                <summary>Price picture for a 5 to 7 person group</summary>
+                <div class="planner-accordion-body">
+                  <div class="pricing-grid">
+                    <div class="pricing-card">
+                      <span class="fact-label">Stay only</span>
+                      <strong>₹4.3k to ₹10k per night</strong>
+                      <p>Town base stays remain reasonable; ridge-view villas push the range up.</p>
+                    </div>
+                    <div class="pricing-card">
+                      <span class="fact-label">3 nights stay split</span>
+                      <strong>₹1.9k to ₹6k per person</strong>
+                      <p>Lower when six share one base, higher if the group wants premium privacy.</p>
+                    </div>
+                    <div class="pricing-card">
+                      <span class="fact-label">Transport + local car</span>
+                      <strong>₹4.5k to ₹6.8k per person</strong>
+                      <p>Longer transfer from Chennai makes the moving budget materially heavier.</p>
+                    </div>
+                    <div class="pricing-card">
+                      <span class="fact-label">All-in trip feel</span>
+                      <strong>₹8k to ₹14k per person</strong>
+                      <p>Worth it only if the group values the rarity and not just the checklist.</p>
+                    </div>
+                  </div>
+                  <p class="planner-note">
+                    Kemmanagundi gets more attractive when the group treats Chikkamagaluru as
+                    the execution base and the ridge section as the premium scenic layer.
+                  </p>
+                </div>
+              </details>
+
+              <details class="planner-accordion">
+                <summary>Suggested 4 day / 3 night itinerary</summary>
+                <div class="planner-accordion-body">
+                  <div class="day-plan-list">
+                    <article class="day-plan">
+                      <span class="day-chip">Night 0 / Day 1</span>
+                      <h4>Overnight into Karnataka, then settle into Chikkamagaluru</h4>
+                      <p>
+                        Reach the Karnataka side by train, pick up the rental car, and make
+                        Chikkamagaluru the operational base. Keep the first day mostly for
+                        coffee, a local lunch, and a light evening rather than pushing all the
+                        way into a long hill circuit immediately.
+                      </p>
+                    </article>
+                    <article class="day-plan">
+                      <span class="day-chip">Day 2</span>
+                      <h4>Kemmanagundi headline day with Raj Bhavan side and sunset views</h4>
+                      <p>
+                        Start early, make the scenic drive part of the day, and keep the
+                        Kemmanagundi ridge, viewpoint stretches, and garden side as the center
+                        of gravity. This is the day the place has to earn its extra effort.
+                      </p>
+                    </article>
+                    <article class="day-plan">
+                      <span class="day-chip">Day 3</span>
+                      <h4>Hebbe or waterfall-side choice, then back to a slower evening</h4>
+                      <p>
+                        Pick one ambitious add-on only if the weather and road conditions are
+                        genuinely helping. Otherwise, use Chikkamagaluru’s food, coffee, and
+                        quieter stay time to avoid overdriving the trip.
+                      </p>
+                    </article>
+                    <article class="day-plan">
+                      <span class="day-chip">Day 4</span>
+                      <h4>Return day with buffer instead of heroics</h4>
+                      <p>
+                        This option stops being enjoyable the moment the last day gets too
+                        tight. Leave early, keep one coffee break, and protect the return rail
+                        timing instead of squeezing in one more viewpoint.
+                      </p>
+                    </article>
+                  </div>
+                </div>
+              </details>
+
+              <details class="planner-accordion">
+                <summary>Large photo set</summary>
+                <div class="planner-accordion-body">
+                  <div class="planner-gallery">
+                    <img src="https://web-cms.karnatakatourism.org/wp-content/uploads/2025/07/kemmanugundi_-scaled-1.jpg" alt="Kemmanagundi hero landscape" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Kemmangundi_fog.JPG/250px-Kemmangundi_fog.JPG" alt="Foggy day in Kemmanagundi" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/2005-kemmangundi.jpg/500px-2005-kemmangundi.jpg" alt="Landscape in Kemmanagundi with shola and grassland" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Picture_shot_during_sunset_%40_Kemmangundi_which_depicts_amazing_beauty_of_nature.jpg/500px-Picture_shot_during_sunset_%40_Kemmangundi_which_depicts_amazing_beauty_of_nature.jpg" alt="Sunset at viewpoint in Kemmanagundi" loading="lazy" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Hebbe_Falls.jpg/500px-Hebbe_Falls.jpg" alt="Hebbe Falls near Kemmanagundi" loading="lazy" />
+                    <img src="https://cdn.junglelodges.com/uploads/2025/03/Badangiri-View-scaled_555x306_acf_cropped.jpg" alt="Badanagiri view from the Kemmanagundi region" loading="lazy" />
+                    <img src="https://cdn.junglelodges.com/uploads/2025/03/Budan-Giri-2-scaled_555x306_acf_cropped.jpg" alt="Budan Giri mountain view near Kemmanagundi" loading="lazy" />
+                    <img src="https://cdn.junglelodges.com/uploads/2025/03/Building-Full-View-KHR-4-scaled_935x518_acf_cropped.jpg" alt="Kemmanagundi hill resort exterior view" loading="lazy" />
+                  </div>
+                  <p class="planner-note">
+                    The gallery intentionally mixes Kemmanagundi itself with the stronger
+                    Chikkamagaluru-side landscape context, because that is how the trip
+                    actually plays out on the ground.
+                  </p>
+                </div>
+              </details>
+            </article>
+          </section>
+        </section>
       </main>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="./script.js?v=6303"></script>
+    <script src="./script.js?v=6304"></script>
   </body>
 </html>
