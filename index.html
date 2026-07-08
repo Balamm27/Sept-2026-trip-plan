@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="./styles.css?v=6304" />
+    <link rel="stylesheet" href="./styles.css?v=6305" />
   </head>
   <body>
     <div class="page-shell">
@@ -751,6 +751,71 @@
             </div>
           </section>
 
+          <section class="section finalists-tools">
+            <div class="finalists-map-panel">
+              <div class="finalists-tools-header">
+                <div>
+                  <p class="section-label">Map</p>
+                  <h3>See the two finalists against Chennai</h3>
+                  <p>
+                    This stays visible at the top so the shortlist never loses geographic
+                    context while you scroll through the Airbnb options.
+                  </p>
+                </div>
+                <div class="finalists-map-legend">
+                  <span class="legend-dot legend-megh"></span>
+                  <span>Meghamalai</span>
+                  <span class="legend-dot legend-kem"></span>
+                  <span>Kemmanagundi</span>
+                </div>
+              </div>
+              <div class="trip-map finalists-map" id="finalistsMap"></div>
+              <p class="map-note">
+                Chennai is the anchor; the lines are simple planning routes to help the group
+                visualize direction and travel weight.
+              </p>
+            </div>
+
+            <div class="finalists-budget-panel">
+              <p class="section-label">Budget filter</p>
+              <h3>Filter the Airbnb pool by nightly stay budget</h3>
+              <p>
+                This filter works on the estimated nightly stay number shown on each card, so
+                you can narrow the list before comparing the fuller itinerary.
+              </p>
+
+              <div class="budget-readout">
+                <div class="budget-chip">
+                  <span class="fact-label">Minimum</span>
+                  <strong id="planBudgetMinValue">₹3,500</strong>
+                </div>
+                <div class="budget-chip">
+                  <span class="fact-label">Maximum</span>
+                  <strong id="planBudgetMaxValue">₹9,000</strong>
+                </div>
+                <button type="button" class="button button-secondary budget-reset-button" id="planBudgetReset">
+                  Reset range
+                </button>
+              </div>
+
+              <div class="budget-slider-group">
+                <label class="budget-slider-label" for="planBudgetMin">
+                  <span>Minimum nightly stay budget</span>
+                  <input type="range" id="planBudgetMin" min="3000" max="12000" step="500" value="3500" />
+                </label>
+                <label class="budget-slider-label" for="planBudgetMax">
+                  <span>Maximum nightly stay budget</span>
+                  <input type="range" id="planBudgetMax" min="3000" max="12000" step="500" value="9000" />
+                </label>
+              </div>
+
+              <p class="planner-note" id="planBudgetSummary">
+                Showing Airbnb options whose estimated nightly stay price sits inside the
+                selected budget band.
+              </p>
+            </div>
+          </section>
+
           <section class="section finalists-grid">
             <article class="finalist-card">
               <div
@@ -785,64 +850,12 @@
               <details class="planner-accordion" open>
                 <summary>Stay options and Airbnb picks</summary>
                 <div class="planner-accordion-body">
-                  <div class="stay-list">
-                    <article class="stay-card">
-                      <div>
-                        <h4>Belle Vie, By the Mountains, Kambilikandam</h4>
-                        <p>
-                          Strongest polished-group pick near the Meghamalai side approach:
-                          a 2-bedroom, 2-bath farm stay for 5 guests, rated about 4.95 on
-                          Airbnb.
-                        </p>
-                      </div>
-                      <ul class="stay-meta">
-                        <li>Works well if the group wants one tasteful shared base.</li>
-                        <li>Airbnb listing shows exact price only after dates are entered.</li>
-                        <li>September area average nearby on Airbnb: about $51 to $52 a night.</li>
-                      </ul>
-                      <a
-                        class="text-link"
-                        href="https://www.airbnb.com/rooms/1520233427153696086"
-                        target="_blank"
-                        rel="noreferrer"
-                        >Open Airbnb listing</a
-                      >
-                    </article>
-
-                    <article class="stay-card">
-                      <div>
-                        <h4>Agristays @ The Ghat-Hill Bunglaw Homestay</h4>
-                        <p>
-                          Better if the group wants something quieter and more rural-feeling
-                          on the Kambilikandam side rather than a polished town-style base.
-                        </p>
-                      </div>
-                      <ul class="stay-meta">
-                        <li>Useful as the more hidden, slower alternative.</li>
-                        <li>Exact nightly rate requires entering travel dates on Airbnb.</li>
-                        <li>Best for a stay-first trip with one rented vehicle.</li>
-                      </ul>
-                      <a
-                        class="text-link"
-                        href="https://www.airbnb.com/rooms/1533189545756397361"
-                        target="_blank"
-                        rel="noreferrer"
-                        >Open Airbnb listing</a
-                      >
-                    </article>
-
-                    <article class="stay-card">
-                      <div>
-                        <h4>Area budget anchor for September 2026</h4>
-                        <p>
-                          Airbnb’s broader Idukki-side September average is about $51 per
-                          night. Using the early July 2026 USD/INR reference near 95.39,
-                          that is roughly <strong>₹4,850 to ₹4,950 per night</strong> before
-                          taxes and before moving up to larger-view villas.
-                        </p>
-                      </div>
-                    </article>
-                  </div>
+                  <p class="planner-note">
+                    Budget filtering applies to this list live. These cards use Airbnb listing
+                    metadata plus estimated nightly planning numbers so you can actually sort
+                    the options instead of reading them one by one.
+                  </p>
+                  <div class="stay-list stay-list-rich" id="meghamalaiStayList"></div>
                 </div>
               </details>
 
@@ -974,64 +987,11 @@
               <details class="planner-accordion" open>
                 <summary>Stay options and Airbnb picks</summary>
                 <div class="planner-accordion-body">
-                  <div class="stay-list">
-                    <article class="stay-card">
-                      <div>
-                        <h4>Hegde Residency 2bhk Home (ARABICA) with balcony</h4>
-                        <p>
-                          Cleanest practical base if you want to stay in Chikkamagaluru,
-                          rent a car, and run Kemmanagundi as the headline day trip stretch.
-                        </p>
-                      </div>
-                      <ul class="stay-meta">
-                        <li>Airbnb shows 6 guests, 2 bedrooms, 1.5 baths, rating about 4.94.</li>
-                        <li>Strong fit for a 5 to 6 person group that wants town convenience.</li>
-                        <li>Just better logistics than forcing a more isolated booking too early.</li>
-                      </ul>
-                      <a
-                        class="text-link"
-                        href="https://www.airbnb.com/rooms/1362985265646033350"
-                        target="_blank"
-                        rel="noreferrer"
-                        >Open Airbnb listing</a
-                      >
-                    </article>
-
-                    <article class="stay-card">
-                      <div>
-                        <h4>Hegde Residency 2bhk Home (ROBUSTA) ground floor</h4>
-                        <p>
-                          Useful backup if the balcony unit is taken. Slightly simpler, but the
-                          Chikkamagaluru base still makes the overall trip far easier to execute.
-                        </p>
-                      </div>
-                      <ul class="stay-meta">
-                        <li>Airbnb shows 4 guests, 2 bedrooms, 1 bath, rating around 4.67.</li>
-                        <li>Best if the final group becomes 4 to 5 instead of 6 to 7.</li>
-                        <li>Good fallback rather than the first-choice shared plan.</li>
-                      </ul>
-                      <a
-                        class="text-link"
-                        href="https://www.airbnb.com/rooms/1185551590264589805"
-                        target="_blank"
-                        rel="noreferrer"
-                        >Open Airbnb listing</a
-                      >
-                    </article>
-
-                    <article class="stay-card">
-                      <div>
-                        <h4>Area budget anchor for September 2026</h4>
-                        <p>
-                          Airbnb’s broader Chikkamagaluru September average sits around
-                          <strong>$45 a night</strong>. Using the early July 2026 USD/INR
-                          reference near 95.39, that is roughly
-                          <strong>₹4,250 to ₹4,350 per night</strong> before taxes, with
-                          villas and scenic estate homes naturally climbing higher.
-                        </p>
-                      </div>
-                    </article>
-                  </div>
+                  <p class="planner-note">
+                    These are better-for-sharing Chikkamagaluru and Kemmanagundi-region options
+                    with Airbnb images included, so the group can scan the stay style quickly.
+                  </p>
+                  <div class="stay-list stay-list-rich" id="kemmanagundiStayList"></div>
                 </div>
               </details>
 
@@ -1139,6 +1099,6 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="./script.js?v=6304"></script>
+    <script src="./script.js?v=6305"></script>
   </body>
 </html>

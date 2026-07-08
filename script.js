@@ -478,6 +478,286 @@ const CHENNAI = {
   name: "Chennai",
   coords: [13.0827, 80.2707],
 };
+const FINALISTS_ROUTE_LINES = [
+  {
+    id: "meghamalai",
+    name: "Meghamalai",
+    color: "#2f7f73",
+    waypoints: [
+      { name: "Chennai", coords: [13.0827, 80.2707] },
+      { name: "Madurai", coords: [9.9252, 78.1198] },
+      { name: "Meghamalai", coords: [9.694, 77.385] },
+    ],
+  },
+  {
+    id: "kemmanagundi",
+    name: "Kemmanagundi",
+    color: "#9b6641",
+    waypoints: [
+      { name: "Chennai", coords: [13.0827, 80.2707] },
+      { name: "Bengaluru", coords: [12.9716, 77.5946] },
+      { name: "Kemmanagundi", coords: [13.553, 75.7878] },
+    ],
+  },
+];
+const FINALISTS_STAY_CATALOG = {
+  meghamalai: [
+    {
+      id: "belle-vie",
+      name: "Belle Vie, By the Mountains, Kambalikandam, Munnar",
+      location: "Kambilikandam / Meghamalai-side approach",
+      typeLabel: "Farm stay in Kambilikandam",
+      metaLabel: "4.96 · 2 bedrooms · 3 beds · 2 baths",
+      guests: "5 guests",
+      estimatedNightly: 5200,
+      link: "https://www.airbnb.com/rooms/1520233427153696086",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-1520233427153696086/original/d1e5711a-fef4-4873-9116-1e741b583ae5.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "The cleanest polished-group base if you want one tasteful shared stay with a proper mountain-view feel.",
+    },
+    {
+      id: "agristays-ghat-hill",
+      name: "Agristays @ The Ghat-Hill Bunglaw Homestay",
+      location: "Kambilikandam / Munnar side",
+      typeLabel: "Bungalow in Kambilikandam",
+      metaLabel: "5.0 · 2 bedrooms · 6 beds · 2 baths",
+      guests: "9 guests",
+      estimatedNightly: 6100,
+      link: "https://www.airbnb.com/rooms/1167251703430552120",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-1167251703430552120/original/a086563d-5b1d-414f-80ae-6e7f1c1950e9.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "A stronger stay-first option for a bigger group that wants the quieter rural side instead of a town-led base.",
+    },
+    {
+      id: "munnar-balcony-2bhk",
+      name: "2 BHK First Floor Stay with Balcony in Munnar",
+      location: "Idukki / Munnar side transfer base",
+      typeLabel: "Home in Idukki",
+      metaLabel: "4.91 · 2 bedrooms · 2 beds · 2.5 baths",
+      guests: "4 guests",
+      estimatedNightly: 4600,
+      link: "https://www.airbnb.com/rooms/675701284363225291",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-675701284363225291/original/7a9b4f04-d1bd-40af-be2d-15e4517ab168.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "Practical if the group ends up a little smaller or wants a smoother arrival night before the scenic climb.",
+    },
+    {
+      id: "mudhouse-marayoor",
+      name: "Cob 1 by The Mudhouse Marayoor",
+      location: "Marayoor / slower highlands detour",
+      typeLabel: "Earthen home in Munnar",
+      metaLabel: "4.85 · 1 bedroom · 1 bed · 1 bath",
+      guests: "2 guests",
+      estimatedNightly: 4300,
+      link: "https://www.airbnb.com/rooms/23862260",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-23862260/original/e7ff02e3-92a0-442a-93fa-7477f5c95290.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "Not the main full-group answer, but worth surfacing because the design language is excellent for a couple or split stay idea.",
+    },
+    {
+      id: "mountscape-retreat",
+      name: "Mountscape Retreat | Luxury Pool Villa",
+      location: "Idukki highlands",
+      typeLabel: "Villa in Idukki",
+      metaLabel: "4.88 · 4 bedrooms · 4 beds · 3 baths",
+      guests: "8 guests",
+      estimatedNightly: 8200,
+      link: "https://www.airbnb.com/rooms/861761467874815687",
+      image:
+        "https://a0.muscache.com/im/pictures/8a044245-0c01-4c85-9294-f9d96af578e5.jpg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "The premium pick if the group decides the trip should feel more villa-led than budget-led.",
+    },
+    {
+      id: "mannoorfarms",
+      name: "MannoorFarms: mountain stays",
+      location: "Idukki Township",
+      typeLabel: "Farm stay in Idukki",
+      metaLabel: "4.83 · 1 bedroom · 1 bed · 1 bath",
+      guests: "2 guests",
+      estimatedNightly: 4700,
+      link: "https://www.airbnb.com/rooms/38281216",
+      image:
+        "https://a0.muscache.com/im/pictures/60751e63-1de3-4b5e-834b-f8f7e86ebaf5.jpg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "A more intimate mountain-farm stay that is useful if the travel party splits or the final group size drops sharply.",
+    },
+    {
+      id: "thumpayil-villa",
+      name: "Private 1 Bedroom Villa @Thumpayil Tea Plantation",
+      location: "Idukki Township / tea estate belt",
+      typeLabel: "Home in Idukki",
+      metaLabel: "4.9 · 1 bedroom · 1 bed · 1 bath",
+      guests: "2 guests",
+      estimatedNightly: 5100,
+      link: "https://www.airbnb.com/rooms/1654045356531811548",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-1654045356531811548/original/d2410c78-ba2b-420e-ad22-2d7d371c234f.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "A tea-plantation mood pick that fits the visual brief really well, even if it is not the main large-group option.",
+    },
+    {
+      id: "lakefront-homestay",
+      name: "Entire Lakefront Homestay Exclusively For You",
+      location: "Kallarkutty / larger group base",
+      typeLabel: "Farm stay in Kallarkutty",
+      metaLabel: "4.85 · 5 bedrooms · 7 beds · 4 baths",
+      guests: "12 guests",
+      estimatedNightly: 7600,
+      link: "https://www.airbnb.com/rooms/53330245",
+      image:
+        "https://a0.muscache.com/im/pictures/miso/Hosting-53330245/original/5c2768dd-ac61-484d-aa4f-b9453770c0c7.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "One of the more straightforward answers if you want to keep the whole group together in a single bigger property.",
+    },
+  ],
+  kemmanagundi: [
+    {
+      id: "hegde-arabica",
+      name: "Hegde Residency 2bhk Home(ARABICA) with balcony",
+      location: "Chikmagalur town base",
+      typeLabel: "Home in Chikmagalur",
+      metaLabel: "4.94 · 2 bedrooms · 2 beds · 1.5 baths",
+      guests: "6 guests",
+      estimatedNightly: 4500,
+      link: "https://www.airbnb.com/rooms/1362985265646033350",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-1362985265646033350/original/5f8805b5-3f7a-4020-b890-0f3e1db5f7e2.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "Still the cleanest execution-first answer if the group wants Kemmanagundi as the scenic objective and Chikmagalur as the reliable base.",
+    },
+    {
+      id: "hegde-robusta",
+      name: "Hegde Residency 2bhk Home(ROBUSTA) ground floor",
+      location: "Chikmagalur town base",
+      typeLabel: "Home in Chikmagalur",
+      metaLabel: "4.67 · 2 bedrooms · 2 beds · 1 bath",
+      guests: "4 guests",
+      estimatedNightly: 3900,
+      link: "https://www.airbnb.com/rooms/1185551590264589805",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-1185551590264589805/original/adbc3e0b-31b9-44c7-9ed9-8ced33ca7374.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "Lower-spend fallback for a smaller group or a backup if the balcony unit is already gone.",
+    },
+    {
+      id: "home-chikmagalur",
+      name: "Home - Chikmagalur",
+      location: "Chikmagalur",
+      typeLabel: "Rental unit in Chikmagalur",
+      metaLabel: "5.0 · 2 bedrooms · 3 beds · 2 baths",
+      guests: "4 guests",
+      estimatedNightly: 4700,
+      link: "https://www.airbnb.com/rooms/1245544710797087888",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-1245544710797087888/original/43dafb28-2587-42fd-a964-3cdfbb7f370d.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "A polished apartment-style option that keeps the local driving practical while still feeling upgraded.",
+    },
+    {
+      id: "sanctum",
+      name: "Sanctum Luxury Serviced Apartments",
+      location: "Chikmagalur",
+      typeLabel: "Serviced apartment in Chikmagalur",
+      metaLabel: "4.87 · 2 bedrooms · 3 beds · 2 baths",
+      guests: "6 guests",
+      estimatedNightly: 5000,
+      link: "https://www.airbnb.com/rooms/48855340",
+      image:
+        "https://a0.muscache.com/im/pictures/13c9055f-2a70-4ba4-83da-202209d84dbd.jpg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "Good middle ground between apartment practicality and a slightly more premium shared-group feel.",
+    },
+    {
+      id: "savi-service",
+      name: "A 2 BHK flat Savi Service Apartment chikmagalur",
+      location: "Chikkamagaluru",
+      typeLabel: "Serviced apartment in Chikmagalur",
+      metaLabel: "4.94 · 2 bedrooms · 2 beds · 3 baths",
+      guests: "6 guests",
+      estimatedNightly: 4600,
+      link: "https://www.airbnb.com/rooms/1541387498172711491",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-1541387498172711491/original/ffa54650-a6e4-4c75-b73b-b98144b9119e.png?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "Useful when the group wants a clean apartment base with less uncertainty than a remote homestay.",
+    },
+    {
+      id: "villa-chikkamagaluru",
+      name: "Villa in chikkamagaluru",
+      location: "Ulluvagilu / Chikkamagaluru region",
+      typeLabel: "Home in Ulluvagilu",
+      metaLabel: "4.89 · 2 bedrooms · 4 beds · 2 baths",
+      guests: "8 guests",
+      estimatedNightly: 6900,
+      link: "https://www.airbnb.com/rooms/1408569359485573917",
+      image:
+        "https://a0.muscache.com/im/pictures/hosting/Hosting-1408569359485573917/original/572f7143-2b5e-459e-8904-53a1eb00ab98.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "One of the better-looking bigger-home options if the group decides it wants more private-space energy.",
+    },
+    {
+      id: "fresh-breeze",
+      name: "Fresh Breeze Homestay",
+      location: "Chikmagalur",
+      typeLabel: "Guesthouse in Chikmagalur",
+      metaLabel: "4.65 · 1 bedroom · 3 beds · 1 bath",
+      guests: "3 guests",
+      estimatedNightly: 4100,
+      link: "https://www.airbnb.com/rooms/21059713",
+      image:
+        "https://a0.muscache.com/im/pictures/3d7a9b73-f861-487c-95f0-1578237d695d.jpg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "A simple budget-friendly stay to keep on the board if cost starts dominating the final decision.",
+    },
+    {
+      id: "captains-bungalow",
+      name: "The Captain's Bungalow",
+      location: "Javali / broader Chikmagalur region",
+      typeLabel: "Farm stay in Javali",
+      metaLabel: "4.73 · 13 bedrooms · 33 beds · 13 baths",
+      guests: "16+ guests",
+      estimatedNightly: 8800,
+      link: "https://www.airbnb.com/rooms/893155834284873893",
+      image:
+        "https://a0.muscache.com/im/pictures/miso/Hosting-893155834284873893/original/56148851-5739-49f0-80e7-68aa378d31b1.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "Worth showing because it handles a large group comfortably, even if it sits above the lighter budget lane.",
+    },
+    {
+      id: "haven-villa",
+      name: "Haven Villa, Chikmagalur",
+      location: "Thoranamavu / scenic Chikmagalur side",
+      typeLabel: "Villa in Thoranamavu",
+      metaLabel: "4.84 · 2 bedrooms · 2 beds · 2 baths",
+      guests: "4 guests",
+      estimatedNightly: 7200,
+      link: "https://www.airbnb.com/rooms/1182573072991701285",
+      image:
+        "https://a0.muscache.com/im/pictures/miso/Hosting-1182573072991701285/original/a0aa9d1c-8dad-4847-a201-06eb0b68edb5.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "A stronger visual-aesthetic pick if the final group is smaller and wants a more composed villa setting.",
+    },
+    {
+      id: "livingston-cottage",
+      name: "Livingston homestay - Single Cottage with kitchen",
+      location: "Chikkolale / near Chikkamagaluru",
+      typeLabel: "Farm stay in Chikkolale",
+      metaLabel: "4.8 · 1 bedroom · 2 beds · 1 bath",
+      guests: "4 guests",
+      estimatedNightly: 4300,
+      link: "https://www.airbnb.com/rooms/46182646",
+      image:
+        "https://a0.muscache.com/im/pictures/miso/Hosting-46182646/original/11b66b89-6233-4a7e-9cbb-da1e98c4e1ba.jpeg?im_w=720&width=720&quality=70&auto=webp",
+      summary:
+        "A quieter cottage-style fallback for a smaller group that wants plantation-side calm rather than town convenience.",
+    },
+  ],
+};
 
 const heroTripLengthValue = document.getElementById("heroTripLengthValue");
 const heroTripLengthDecrease = document.getElementById("heroTripLengthDecrease");
@@ -516,13 +796,24 @@ const compareCards = document.getElementById("compareCards");
 const compareEmptyState = document.getElementById("compareEmptyState");
 const compareMasterMapNote = document.getElementById("compareMasterMapNote");
 const compareOverview = document.getElementById("compareOverview");
+const finalistsMapNode = document.getElementById("finalistsMap");
+const planBudgetMinInput = document.getElementById("planBudgetMin");
+const planBudgetMaxInput = document.getElementById("planBudgetMax");
+const planBudgetResetButton = document.getElementById("planBudgetReset");
+const planBudgetMinValue = document.getElementById("planBudgetMinValue");
+const planBudgetMaxValue = document.getElementById("planBudgetMaxValue");
+const planBudgetSummary = document.getElementById("planBudgetSummary");
+const meghamalaiStayList = document.getElementById("meghamalaiStayList");
+const kemmanagundiStayList = document.getElementById("kemmanagundiStayList");
 
 const cardNodes = Array.from(document.querySelectorAll(".destination-card[data-option-id]"));
 
 let exploreMap;
 let compareMasterMap;
+let finalistsMap;
 const compareCardMaps = new Map();
 const compareCardMapLayers = new Map();
+const finalistsMapLayers = [];
 const geocodeCache = new Map();
 const routeCache = new Map();
 let sharePlanStatusMessage = "Copy a link to this exact compare setup.";
@@ -575,6 +866,8 @@ function createInitialState() {
     shortlist: [],
     compareConfigs: {},
     compareTransport: "road",
+    planBudgetMin: 3500,
+    planBudgetMax: 9000,
   };
 }
 
@@ -597,6 +890,8 @@ function getPersistableState() {
     filters: appState.filters,
     selectedOptionId: appState.selectedOptionId,
     compareTransport: appState.compareTransport,
+    planBudgetMin: appState.planBudgetMin,
+    planBudgetMax: appState.planBudgetMax,
     shortlist: compare,
   };
 }
@@ -615,6 +910,8 @@ function applyPersistedState(payload) {
     ? payload.selectedOptionId
     : "meghamalai";
   appState.compareTransport = payload.compareTransport === "train" ? "train" : "road";
+  appState.planBudgetMin = clampNumber(payload.planBudgetMin, 3000, 12000, 3500);
+  appState.planBudgetMax = clampNumber(payload.planBudgetMax, 3000, 12000, 9000);
 
   if (Array.isArray(payload.shortlist)) {
     payload.shortlist.slice(0, 3).forEach((item) => {
@@ -665,6 +962,8 @@ function encodeStateToUrl() {
   params.set("style", appState.filters.style);
   params.set("selected", appState.selectedOptionId);
   params.set("transport", appState.compareTransport);
+  params.set("planMin", String(appState.planBudgetMin));
+  params.set("planMax", String(appState.planBudgetMax));
   params.set("compare", encodeURIComponent(JSON.stringify(getPersistableState().shortlist)));
   const nextUrl = `${window.location.pathname}?${params.toString()}`;
   window.history.replaceState({}, "", nextUrl);
@@ -687,6 +986,8 @@ function buildShareablePlanUrl() {
   params.set("style", appState.filters.style);
   params.set("selected", appState.selectedOptionId);
   params.set("transport", appState.compareTransport);
+  params.set("planMin", String(appState.planBudgetMin));
+  params.set("planMax", String(appState.planBudgetMax));
   params.set("compare", encodeURIComponent(JSON.stringify(getPersistableState().shortlist)));
   url.search = params.toString();
   return url.toString();
@@ -743,6 +1044,8 @@ function decodeStateFromUrl() {
   urlState.filters.style = params.get("style") || "balanced";
   urlState.selectedOptionId = params.get("selected") || "meghamalai";
   urlState.compareTransport = params.get("transport") === "train" ? "train" : "road";
+  urlState.planBudgetMin = clampNumber(params.get("planMin"), 3000, 12000, 3500);
+  urlState.planBudgetMax = clampNumber(params.get("planMax"), 3000, 12000, 9000);
 
   const compareRaw = params.get("compare");
   if (compareRaw) {
@@ -786,6 +1089,22 @@ function clampNumber(value, min, max, fallback) {
     return fallback;
   }
   return Math.min(max, Math.max(min, parsed));
+}
+
+function formatInr(value) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+function normalizePlanBudgetRange() {
+  if (appState.planBudgetMin > appState.planBudgetMax) {
+    const swap = appState.planBudgetMin;
+    appState.planBudgetMin = appState.planBudgetMax;
+    appState.planBudgetMax = swap;
+  }
 }
 
 function sanitizeStops(stops) {
@@ -849,6 +1168,17 @@ function setActiveTab(tabId) {
     window.setTimeout(() => {
       compareMasterMap?.invalidateSize();
       renderCompareMaps();
+    }, 300);
+  }
+
+  if (isPlan) {
+    requestAnimationFrame(() => {
+      ensureFinalistsMap();
+      renderFinalistsMap();
+    });
+    window.setTimeout(() => {
+      finalistsMap?.invalidateSize();
+      renderFinalistsMap();
     }, 300);
   }
 }
@@ -1862,6 +2192,163 @@ async function renderCompareMaps() {
   compareMapLegend.innerHTML = legendMarkup.join("");
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function getFilteredFinalistStays(destinationId) {
+  normalizePlanBudgetRange();
+  return (FINALISTS_STAY_CATALOG[destinationId] || [])
+    .filter(
+      (stay) =>
+        stay.estimatedNightly >= appState.planBudgetMin &&
+        stay.estimatedNightly <= appState.planBudgetMax
+    )
+    .sort((a, b) => a.estimatedNightly - b.estimatedNightly);
+}
+
+function buildFinalistStayCard(stay) {
+  return `
+    <article class="stay-card stay-card-rich">
+      <img class="stay-card-image" src="${escapeHtml(stay.image)}" alt="${escapeHtml(stay.name)}" loading="lazy" />
+      <div>
+        <div class="stay-card-topline">
+          <div>
+            <h4>${escapeHtml(stay.name)}</h4>
+            <p class="stay-card-subline">${escapeHtml(stay.typeLabel)} · ${escapeHtml(stay.location)}</p>
+          </div>
+          <div class="stay-card-price">
+            <span class="fact-label">Estimated nightly</span>
+            <strong>${escapeHtml(formatInr(stay.estimatedNightly))}</strong>
+          </div>
+        </div>
+        <p>${escapeHtml(stay.summary)}</p>
+        <div class="stay-card-badges">
+          <span class="stay-badge">${escapeHtml(stay.guests)}</span>
+          <span class="stay-badge">${escapeHtml(stay.metaLabel)}</span>
+        </div>
+        <a class="text-link" href="${escapeHtml(stay.link)}" target="_blank" rel="noreferrer">Open Airbnb listing</a>
+      </div>
+    </article>
+  `;
+}
+
+function renderFinalistStayList(destinationId, node) {
+  if (!node) return 0;
+  const matches = getFilteredFinalistStays(destinationId);
+  if (!matches.length) {
+    node.innerHTML = `
+      <div class="stay-empty">
+        No Airbnb options are inside this budget band right now. Widen the slider range to bring back more properties.
+      </div>
+    `;
+    return 0;
+  }
+
+  node.innerHTML = matches.map((stay) => buildFinalistStayCard(stay)).join("");
+  return matches.length;
+}
+
+function updatePlanBudgetUi() {
+  normalizePlanBudgetRange();
+  if (planBudgetMinInput) {
+    planBudgetMinInput.value = String(appState.planBudgetMin);
+  }
+  if (planBudgetMaxInput) {
+    planBudgetMaxInput.value = String(appState.planBudgetMax);
+  }
+  if (planBudgetMinValue) {
+    planBudgetMinValue.textContent = formatInr(appState.planBudgetMin);
+  }
+  if (planBudgetMaxValue) {
+    planBudgetMaxValue.textContent = formatInr(appState.planBudgetMax);
+  }
+}
+
+function renderFinalistsTab() {
+  updatePlanBudgetUi();
+  const meghCount = renderFinalistStayList("meghamalai", meghamalaiStayList);
+  const kemCount = renderFinalistStayList("kemmanagundi", kemmanagundiStayList);
+
+  if (planBudgetSummary) {
+    planBudgetSummary.textContent = `Showing ${meghCount + kemCount} Airbnb options across the two finalists whose estimated nightly stay price falls between ${formatInr(
+      appState.planBudgetMin
+    )} and ${formatInr(appState.planBudgetMax)}.`;
+  }
+}
+
+function ensureFinalistsMap() {
+  if (finalistsMap || typeof window.L === "undefined" || !finalistsMapNode) {
+    return;
+  }
+
+  finalistsMap = window.L.map(finalistsMapNode, {
+    zoomControl: true,
+    scrollWheelZoom: false,
+  });
+
+  window.L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: "&copy; OpenStreetMap contributors",
+  }).addTo(finalistsMap);
+}
+
+function clearFinalistsMap() {
+  finalistsMapLayers.splice(0).forEach((layer) => finalistsMap?.removeLayer(layer));
+}
+
+function renderFinalistsMap() {
+  if (!finalistsMap) return;
+  clearFinalistsMap();
+
+  const bounds = [];
+  const chennaiMarker = window.L.circleMarker(CHENNAI.coords, {
+    radius: 7,
+    color: "#102f2c",
+    weight: 2,
+    fillColor: "#102f2c",
+    fillOpacity: 1,
+  })
+    .addTo(finalistsMap)
+    .bindTooltip("Chennai", { permanent: true, direction: "top", offset: [0, -10] });
+  finalistsMapLayers.push(chennaiMarker);
+  bounds.push(CHENNAI.coords);
+
+  FINALISTS_ROUTE_LINES.forEach((route) => {
+    const polyline = window.L.polyline(
+      route.waypoints.map((waypoint) => waypoint.coords),
+      {
+        color: route.color,
+        weight: 4,
+        opacity: 0.82,
+      }
+    ).addTo(finalistsMap);
+    finalistsMapLayers.push(polyline);
+
+    route.waypoints.slice(1).forEach((waypoint, index) => {
+      const marker = window.L.circleMarker(waypoint.coords, {
+        radius: index === route.waypoints.length - 2 ? 7 : 5,
+        color: route.color,
+        weight: 2,
+        fillColor: route.color,
+        fillOpacity: 0.92,
+      })
+        .addTo(finalistsMap)
+        .bindTooltip(waypoint.name, { permanent: true, direction: "top", offset: [0, -10] });
+      finalistsMapLayers.push(marker);
+      bounds.push(waypoint.coords);
+    });
+  });
+
+  finalistsMap.fitBounds(bounds, { padding: [28, 28] });
+  requestAnimationFrame(() => finalistsMap.invalidateSize());
+}
+
 async function searchCustomStop(optionId, direction) {
   const config = appState.compareConfigs[optionId];
   if (!config) return;
@@ -2018,6 +2505,7 @@ function createCardActions() {
 function renderApp() {
   renderExploreTab();
   renderCompareTab();
+  renderFinalistsTab();
   setActiveTab(appState.activeTab);
 }
 
@@ -2090,6 +2578,27 @@ exploreCompareButton.addEventListener("click", () => {
 openExploreTabButton.addEventListener("click", () => setActiveTab("explore"));
 openCompareTabButton.addEventListener("click", () => setActiveTab("compare"));
 openPlanTabButton.addEventListener("click", () => setActiveTab("plan"));
+
+planBudgetMinInput?.addEventListener("input", () => {
+  appState.planBudgetMin = clampNumber(planBudgetMinInput.value, 3000, 12000, appState.planBudgetMin);
+  normalizePlanBudgetRange();
+  persistState();
+  renderFinalistsTab();
+});
+
+planBudgetMaxInput?.addEventListener("input", () => {
+  appState.planBudgetMax = clampNumber(planBudgetMaxInput.value, 3000, 12000, appState.planBudgetMax);
+  normalizePlanBudgetRange();
+  persistState();
+  renderFinalistsTab();
+});
+
+planBudgetResetButton?.addEventListener("click", () => {
+  appState.planBudgetMin = 3500;
+  appState.planBudgetMax = 9000;
+  persistState();
+  renderFinalistsTab();
+});
 
 function adjustExploreTripLength(delta) {
   appState.filters.nights = clampNumber(appState.filters.nights + delta, 2, 3, appState.filters.nights);
