@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="./styles.css?v=6305" />
+    <link rel="stylesheet" href="./styles.css?v=6306" />
   </head>
   <body>
     <div class="page-shell">
@@ -799,6 +799,27 @@
                 </button>
               </div>
 
+              <div class="budget-people-panel">
+                <label class="budget-slider-label" for="planBudgetPeople">
+                  <span>Group size for split calculation</span>
+                  <input type="range" id="planBudgetPeople" min="5" max="7" step="1" value="6" />
+                </label>
+                <div class="budget-readout budget-readout-compact">
+                  <div class="budget-chip">
+                    <span class="fact-label">People</span>
+                    <strong id="planBudgetPeopleValue">6 people</strong>
+                  </div>
+                  <div class="budget-chip">
+                    <span class="fact-label">Price per person per night</span>
+                    <strong id="planBudgetPerPersonValue">₹583 to ₹1,500</strong>
+                  </div>
+                  <div class="budget-chip">
+                    <span class="fact-label">Entire stay total</span>
+                    <strong id="planBudgetStayTotalValue">₹10,500 to ₹27,000</strong>
+                  </div>
+                </div>
+              </div>
+
               <div class="budget-slider-group">
                 <label class="budget-slider-label" for="planBudgetMin">
                   <span>Minimum nightly stay budget</span>
@@ -1104,6 +1125,6 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="./script.js?v=6305"></script>
+    <script src="./script.js?v=6306"></script>
   </body>
 </html>

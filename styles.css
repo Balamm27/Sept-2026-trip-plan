@@ -1738,6 +1738,17 @@ li {
   align-self: stretch;
 }
 
+.budget-people-panel {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.budget-readout-compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 0;
+}
+
 .budget-chip {
   border-radius: 18px;
   padding: 16px;
@@ -2092,6 +2103,7 @@ li {
   .pricing-grid,
   .planner-gallery,
   .budget-readout,
+  .budget-readout-compact,
   .stay-card-rich {
     grid-template-columns: 1fr;
   }

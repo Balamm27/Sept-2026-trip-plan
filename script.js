@@ -799,9 +799,13 @@ const compareOverview = document.getElementById("compareOverview");
 const finalistsMapNode = document.getElementById("finalistsMap");
 const planBudgetMinInput = document.getElementById("planBudgetMin");
 const planBudgetMaxInput = document.getElementById("planBudgetMax");
+const planBudgetPeopleInput = document.getElementById("planBudgetPeople");
 const planBudgetResetButton = document.getElementById("planBudgetReset");
 const planBudgetMinValue = document.getElementById("planBudgetMinValue");
 const planBudgetMaxValue = document.getElementById("planBudgetMaxValue");
+const planBudgetPeopleValue = document.getElementById("planBudgetPeopleValue");
+const planBudgetPerPersonValue = document.getElementById("planBudgetPerPersonValue");
+const planBudgetStayTotalValue = document.getElementById("planBudgetStayTotalValue");
 const planBudgetSummary = document.getElementById("planBudgetSummary");
 const meghamalaiStayList = document.getElementById("meghamalaiStayList");
 const kemmanagundiStayList = document.getElementById("kemmanagundiStayList");
@@ -868,6 +872,7 @@ function createInitialState() {
     compareTransport: "road",
     planBudgetMin: 3500,
     planBudgetMax: 9000,
+    planBudgetPeople: 6,
   };
 }
 
@@ -892,6 +897,7 @@ function getPersistableState() {
     compareTransport: appState.compareTransport,
     planBudgetMin: appState.planBudgetMin,
     planBudgetMax: appState.planBudgetMax,
+    planBudgetPeople: appState.planBudgetPeople,
     shortlist: compare,
   };
 }
@@ -912,6 +918,7 @@ function applyPersistedState(payload) {
   appState.compareTransport = payload.compareTransport === "train" ? "train" : "road";
   appState.planBudgetMin = clampNumber(payload.planBudgetMin, 3000, 12000, 3500);
   appState.planBudgetMax = clampNumber(payload.planBudgetMax, 3000, 12000, 9000);
+  appState.planBudgetPeople = clampNumber(payload.planBudgetPeople, 5, 7, 6);
 
   if (Array.isArray(payload.shortlist)) {
     payload.shortlist.slice(0, 3).forEach((item) => {
@@ -964,6 +971,7 @@ function encodeStateToUrl() {
   params.set("transport", appState.compareTransport);
   params.set("planMin", String(appState.planBudgetMin));
   params.set("planMax", String(appState.planBudgetMax));
+  params.set("planPeople", String(appState.planBudgetPeople));
   params.set("compare", encodeURIComponent(JSON.stringify(getPersistableState().shortlist)));
   const nextUrl = `${window.location.pathname}?${params.toString()}`;
   window.history.replaceState({}, "", nextUrl);
@@ -988,6 +996,7 @@ function buildShareablePlanUrl() {
   params.set("transport", appState.compareTransport);
   params.set("planMin", String(appState.planBudgetMin));
   params.set("planMax", String(appState.planBudgetMax));
+  params.set("planPeople", String(appState.planBudgetPeople));
   params.set("compare", encodeURIComponent(JSON.stringify(getPersistableState().shortlist)));
   url.search = params.toString();
   return url.toString();
@@ -1046,6 +1055,7 @@ function decodeStateFromUrl() {
   urlState.compareTransport = params.get("transport") === "train" ? "train" : "road";
   urlState.planBudgetMin = clampNumber(params.get("planMin"), 3000, 12000, 3500);
   urlState.planBudgetMax = clampNumber(params.get("planMax"), 3000, 12000, 9000);
+  urlState.planBudgetPeople = clampNumber(params.get("planPeople"), 5, 7, 6);
 
   const compareRaw = params.get("compare");
   if (compareRaw) {
@@ -2225,6 +2235,10 @@ function getGuestCapacity(stay) {
 
 function buildFinalistStayCard(stay) {
   const guestCapacity = getGuestCapacity(stay);
+  const stayNights = appState.filters.nights;
+  const nightlyPerPerson = Math.round(stay.estimatedNightly / appState.planBudgetPeople);
+  const totalStay = stay.estimatedNightly * stayNights;
+  const totalPerPerson = Math.round(totalStay / appState.planBudgetPeople);
   const fitLabel =
     guestCapacity >= 5
       ? "Fits the full 5 to 7 person group"
@@ -2247,6 +2261,8 @@ function buildFinalistStayCard(stay) {
         <div class="stay-card-badges">
           <span class="stay-badge">${escapeHtml(fitLabel)}</span>
           <span class="stay-badge">${escapeHtml(stay.guests)}</span>
+          <span class="stay-badge">${escapeHtml(formatInr(nightlyPerPerson))} pp / night at ${appState.planBudgetPeople}</span>
+          <span class="stay-badge">${escapeHtml(formatInr(totalPerPerson))} pp for ${stayNights} nights</span>
           <span class="stay-badge">${escapeHtml(stay.metaLabel)}</span>
         </div>
         <a class="text-link" href="${escapeHtml(stay.link)}" target="_blank" rel="noreferrer">Open Airbnb listing</a>
@@ -2273,17 +2289,34 @@ function renderFinalistStayList(destinationId, node) {
 
 function updatePlanBudgetUi() {
   normalizePlanBudgetRange();
+  const stayNights = appState.filters.nights;
+  const perPersonMin = Math.round(appState.planBudgetMin / appState.planBudgetPeople);
+  const perPersonMax = Math.round(appState.planBudgetMax / appState.planBudgetPeople);
+  const totalStayMin = appState.planBudgetMin * stayNights;
+  const totalStayMax = appState.planBudgetMax * stayNights;
   if (planBudgetMinInput) {
     planBudgetMinInput.value = String(appState.planBudgetMin);
   }
   if (planBudgetMaxInput) {
     planBudgetMaxInput.value = String(appState.planBudgetMax);
   }
+  if (planBudgetPeopleInput) {
+    planBudgetPeopleInput.value = String(appState.planBudgetPeople);
+  }
   if (planBudgetMinValue) {
     planBudgetMinValue.textContent = formatInr(appState.planBudgetMin);
   }
   if (planBudgetMaxValue) {
     planBudgetMaxValue.textContent = formatInr(appState.planBudgetMax);
+  }
+  if (planBudgetPeopleValue) {
+    planBudgetPeopleValue.textContent = `${appState.planBudgetPeople} people`;
+  }
+  if (planBudgetPerPersonValue) {
+    planBudgetPerPersonValue.textContent = `${formatInr(perPersonMin)} to ${formatInr(perPersonMax)}`;
+  }
+  if (planBudgetStayTotalValue) {
+    planBudgetStayTotalValue.textContent = `${formatInr(totalStayMin)} to ${formatInr(totalStayMax)}`;
   }
 }
 
@@ -2295,7 +2328,9 @@ function renderFinalistsTab() {
   if (planBudgetSummary) {
     planBudgetSummary.textContent = `Showing ${meghCount + kemCount} Airbnb options across the two finalists whose estimated nightly entire-property price falls between ${formatInr(
       appState.planBudgetMin
-    )} and ${formatInr(appState.planBudgetMax)}.`;
+    )} and ${formatInr(appState.planBudgetMax)}. At ${appState.planBudgetPeople} people, that works out to roughly ${formatInr(
+      Math.round(appState.planBudgetMin / appState.planBudgetPeople)
+    )} to ${formatInr(Math.round(appState.planBudgetMax / appState.planBudgetPeople))} per person per night.`;
   }
 }
 
@@ -2610,9 +2645,16 @@ planBudgetMaxInput?.addEventListener("input", () => {
   renderFinalistsTab();
 });
 
+planBudgetPeopleInput?.addEventListener("input", () => {
+  appState.planBudgetPeople = clampNumber(planBudgetPeopleInput.value, 5, 7, appState.planBudgetPeople);
+  persistState();
+  renderFinalistsTab();
+});
+
 planBudgetResetButton?.addEventListener("click", () => {
   appState.planBudgetMin = 3500;
   appState.planBudgetMax = 9000;
+  appState.planBudgetPeople = 6;
   persistState();
   renderFinalistsTab();
 });
