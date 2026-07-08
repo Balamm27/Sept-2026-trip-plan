@@ -780,8 +780,9 @@
               <p class="section-label">Budget filter</p>
               <h3>Filter the Airbnb pool by nightly stay budget</h3>
               <p>
-                This filter works on the estimated nightly stay number shown on each card, so
-                you can narrow the list before comparing the fuller itinerary.
+                This filter works on the estimated nightly stay number shown on each card.
+                That number is for the entire property per night, not per person, so you can
+                narrow the list before comparing the fuller itinerary.
               </p>
 
               <div class="budget-readout">
@@ -810,8 +811,8 @@
               </div>
 
               <p class="planner-note" id="planBudgetSummary">
-                Showing Airbnb options whose estimated nightly stay price sits inside the
-                selected budget band.
+                Showing Airbnb options whose estimated nightly entire-property price sits
+                inside the selected budget band.
               </p>
             </div>
           </section>
@@ -852,8 +853,10 @@
                 <div class="planner-accordion-body">
                   <p class="planner-note">
                     Budget filtering applies to this list live. These cards use Airbnb listing
-                    metadata plus estimated nightly planning numbers so you can actually sort
-                    the options instead of reading them one by one.
+                    metadata plus estimated nightly entire-property planning numbers so you can
+                    actually sort the options instead of reading them one by one. Some smaller
+                    stays are left in the list as split-stay or backup ideas, not as the main
+                    5 to 7 person answer.
                   </p>
                   <div class="stay-list stay-list-rich" id="meghamalaiStayList"></div>
                 </div>
@@ -990,6 +993,8 @@
                   <p class="planner-note">
                     These are better-for-sharing Chikkamagaluru and Kemmanagundi-region options
                     with Airbnb images included, so the group can scan the stay style quickly.
+                    Smaller-capacity listings are kept only as backup or split-stay references,
+                    not as the default full-group pick.
                   </p>
                   <div class="stay-list stay-list-rich" id="kemmanagundiStayList"></div>
                 </div>

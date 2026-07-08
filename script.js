@@ -2209,10 +2209,26 @@ function getFilteredFinalistStays(destinationId) {
         stay.estimatedNightly >= appState.planBudgetMin &&
         stay.estimatedNightly <= appState.planBudgetMax
     )
-    .sort((a, b) => a.estimatedNightly - b.estimatedNightly);
+    .sort((a, b) => {
+      const guestDelta = getGuestCapacity(b) - getGuestCapacity(a);
+      if (guestDelta !== 0) {
+        return guestDelta;
+      }
+      return a.estimatedNightly - b.estimatedNightly;
+    });
+}
+
+function getGuestCapacity(stay) {
+  const match = String(stay.guests).match(/\d+/);
+  return match ? Number(match[0]) : 0;
 }
 
 function buildFinalistStayCard(stay) {
+  const guestCapacity = getGuestCapacity(stay);
+  const fitLabel =
+    guestCapacity >= 5
+      ? "Fits the full 5 to 7 person group"
+      : "Better as a backup or split-stay idea";
   return `
     <article class="stay-card stay-card-rich">
       <img class="stay-card-image" src="${escapeHtml(stay.image)}" alt="${escapeHtml(stay.name)}" loading="lazy" />
@@ -2223,12 +2239,13 @@ function buildFinalistStayCard(stay) {
             <p class="stay-card-subline">${escapeHtml(stay.typeLabel)} · ${escapeHtml(stay.location)}</p>
           </div>
           <div class="stay-card-price">
-            <span class="fact-label">Estimated nightly</span>
+            <span class="fact-label">Entire property per night</span>
             <strong>${escapeHtml(formatInr(stay.estimatedNightly))}</strong>
           </div>
         </div>
         <p>${escapeHtml(stay.summary)}</p>
         <div class="stay-card-badges">
+          <span class="stay-badge">${escapeHtml(fitLabel)}</span>
           <span class="stay-badge">${escapeHtml(stay.guests)}</span>
           <span class="stay-badge">${escapeHtml(stay.metaLabel)}</span>
         </div>
@@ -2276,7 +2293,7 @@ function renderFinalistsTab() {
   const kemCount = renderFinalistStayList("kemmanagundi", kemmanagundiStayList);
 
   if (planBudgetSummary) {
-    planBudgetSummary.textContent = `Showing ${meghCount + kemCount} Airbnb options across the two finalists whose estimated nightly stay price falls between ${formatInr(
+    planBudgetSummary.textContent = `Showing ${meghCount + kemCount} Airbnb options across the two finalists whose estimated nightly entire-property price falls between ${formatInr(
       appState.planBudgetMin
     )} and ${formatInr(appState.planBudgetMax)}.`;
   }
