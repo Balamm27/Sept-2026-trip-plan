@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="./styles.css?v=6308" />
+    <link rel="stylesheet" href="./styles.css?v=6309" />
   </head>
   <body>
     <div class="page-shell">
@@ -785,48 +785,25 @@
                 below, so you can narrow the list before comparing the fuller itinerary.
               </p>
 
-              <div class="budget-readout">
-                <div class="budget-chip">
-                  <span class="fact-label">Minimum per person</span>
-                  <strong id="planBudgetMinValue">₹500</strong>
-                </div>
-                <div class="budget-chip">
-                  <span class="fact-label">Maximum per person</span>
-                  <strong id="planBudgetMaxValue">₹1,500</strong>
-                </div>
-                <button type="button" class="button button-secondary budget-reset-button" id="planBudgetReset">
-                  Reset range
-                </button>
-              </div>
-
-              <div class="budget-people-panel">
+              <div class="budget-controls-grid">
                 <div class="budget-control-block">
-                  <span class="budget-control-label">Group size for split calculation</span>
+                  <span class="budget-control-label">Group size</span>
                   <div class="budget-stepper">
                     <button type="button" class="counter-button" id="planBudgetPeopleDecrease" aria-label="Decrease people count">−</button>
                     <input type="number" id="planBudgetPeople" min="2" max="8" step="1" value="6" />
                     <button type="button" class="counter-button" id="planBudgetPeopleIncrease" aria-label="Increase people count">+</button>
                   </div>
                 </div>
-                <div class="budget-readout budget-readout-compact">
-                  <div class="budget-chip">
-                    <span class="fact-label">People</span>
-                    <strong id="planBudgetPeopleValue">6 people</strong>
-                  </div>
-                  <div class="budget-chip">
-                    <span class="fact-label">Price per person per night</span>
-                    <strong id="planBudgetPerPersonValue">₹583 to ₹1,500</strong>
-                  </div>
-                  <div class="budget-chip">
-                    <span class="fact-label">Entire stay total</span>
-                    <strong id="planBudgetStayTotalValue">₹10,500 to ₹27,000</strong>
+                <div class="budget-control-block">
+                  <span class="budget-control-label">Stay nights</span>
+                  <div class="budget-stepper">
+                    <button type="button" class="counter-button" id="planBudgetNightsDecrease" aria-label="Decrease stay nights">−</button>
+                    <input type="number" id="planBudgetNights" min="2" max="6" step="1" value="3" />
+                    <button type="button" class="counter-button" id="planBudgetNightsIncrease" aria-label="Increase stay nights">+</button>
                   </div>
                 </div>
-              </div>
-
-              <div class="budget-slider-group">
                 <div class="budget-control-block">
-                  <span class="budget-control-label">Minimum per person per night</span>
+                  <span class="budget-control-label">Minimum budget</span>
                   <div class="budget-stepper">
                     <button type="button" class="counter-button" id="planBudgetMinDecrease" aria-label="Decrease minimum nightly budget">−</button>
                     <input type="number" id="planBudgetMin" min="500" max="6000" step="500" value="500" />
@@ -834,12 +811,27 @@
                   </div>
                 </div>
                 <div class="budget-control-block">
-                  <span class="budget-control-label">Maximum per person per night</span>
+                  <span class="budget-control-label">Maximum budget</span>
                   <div class="budget-stepper">
                     <button type="button" class="counter-button" id="planBudgetMaxDecrease" aria-label="Decrease maximum nightly budget">−</button>
                     <input type="number" id="planBudgetMax" min="500" max="6000" step="500" value="1500" />
                     <button type="button" class="counter-button" id="planBudgetMaxIncrease" aria-label="Increase maximum nightly budget">+</button>
                   </div>
+                </div>
+              </div>
+
+              <div class="budget-readout budget-readout-compact">
+                <div class="budget-chip">
+                  <span class="fact-label">People</span>
+                  <strong id="planBudgetPeopleValue">6 people</strong>
+                </div>
+                <div class="budget-chip">
+                  <span class="fact-label">Price per person per night</span>
+                  <strong id="planBudgetPerPersonValue">₹500 to ₹1,500</strong>
+                </div>
+                <div class="budget-chip">
+                  <span class="fact-label">Entire stay total</span>
+                  <strong id="planBudgetStayTotalValue">₹9,000 to ₹27,000</strong>
                 </div>
               </div>
 
@@ -1137,6 +1129,6 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="./script.js?v=6308"></script>
+    <script src="./script.js?v=6309"></script>
   </body>
 </html>

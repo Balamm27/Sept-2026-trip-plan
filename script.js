@@ -800,13 +800,15 @@ const finalistsMapNode = document.getElementById("finalistsMap");
 const planBudgetMinInput = document.getElementById("planBudgetMin");
 const planBudgetMaxInput = document.getElementById("planBudgetMax");
 const planBudgetPeopleInput = document.getElementById("planBudgetPeople");
+const planBudgetNightsInput = document.getElementById("planBudgetNights");
 const planBudgetMinDecrease = document.getElementById("planBudgetMinDecrease");
 const planBudgetMinIncrease = document.getElementById("planBudgetMinIncrease");
 const planBudgetMaxDecrease = document.getElementById("planBudgetMaxDecrease");
 const planBudgetMaxIncrease = document.getElementById("planBudgetMaxIncrease");
 const planBudgetPeopleDecrease = document.getElementById("planBudgetPeopleDecrease");
 const planBudgetPeopleIncrease = document.getElementById("planBudgetPeopleIncrease");
-const planBudgetResetButton = document.getElementById("planBudgetReset");
+const planBudgetNightsDecrease = document.getElementById("planBudgetNightsDecrease");
+const planBudgetNightsIncrease = document.getElementById("planBudgetNightsIncrease");
 const planBudgetMinValue = document.getElementById("planBudgetMinValue");
 const planBudgetMaxValue = document.getElementById("planBudgetMaxValue");
 const planBudgetPeopleValue = document.getElementById("planBudgetPeopleValue");
@@ -879,6 +881,7 @@ function createInitialState() {
     planBudgetMin: 500,
     planBudgetMax: 1500,
     planBudgetPeople: 6,
+    planBudgetNights: 3,
   };
 }
 
@@ -904,6 +907,7 @@ function getPersistableState() {
     planBudgetMin: appState.planBudgetMin,
     planBudgetMax: appState.planBudgetMax,
     planBudgetPeople: appState.planBudgetPeople,
+    planBudgetNights: appState.planBudgetNights,
     shortlist: compare,
   };
 }
@@ -925,6 +929,7 @@ function applyPersistedState(payload) {
   appState.planBudgetMin = clampNumber(payload.planBudgetMin, 500, 6000, 500);
   appState.planBudgetMax = clampNumber(payload.planBudgetMax, 500, 6000, 1500);
   appState.planBudgetPeople = clampNumber(payload.planBudgetPeople, 2, 8, 6);
+  appState.planBudgetNights = clampNumber(payload.planBudgetNights, 2, 6, 3);
 
   if (Array.isArray(payload.shortlist)) {
     payload.shortlist.slice(0, 3).forEach((item) => {
@@ -978,6 +983,7 @@ function encodeStateToUrl() {
   params.set("planMin", String(appState.planBudgetMin));
   params.set("planMax", String(appState.planBudgetMax));
   params.set("planPeople", String(appState.planBudgetPeople));
+  params.set("planStayNights", String(appState.planBudgetNights));
   params.set("compare", encodeURIComponent(JSON.stringify(getPersistableState().shortlist)));
   const nextUrl = `${window.location.pathname}?${params.toString()}`;
   window.history.replaceState({}, "", nextUrl);
@@ -1003,6 +1009,7 @@ function buildShareablePlanUrl() {
   params.set("planMin", String(appState.planBudgetMin));
   params.set("planMax", String(appState.planBudgetMax));
   params.set("planPeople", String(appState.planBudgetPeople));
+  params.set("planStayNights", String(appState.planBudgetNights));
   params.set("compare", encodeURIComponent(JSON.stringify(getPersistableState().shortlist)));
   url.search = params.toString();
   return url.toString();
@@ -1062,6 +1069,7 @@ function decodeStateFromUrl() {
   urlState.planBudgetMin = clampNumber(params.get("planMin"), 500, 6000, 500);
   urlState.planBudgetMax = clampNumber(params.get("planMax"), 500, 6000, 1500);
   urlState.planBudgetPeople = clampNumber(params.get("planPeople"), 2, 8, 6);
+  urlState.planBudgetNights = clampNumber(params.get("planStayNights"), 2, 6, 3);
 
   const compareRaw = params.get("compare");
   if (compareRaw) {
@@ -2243,7 +2251,7 @@ function getGuestCapacity(stay) {
 
 function buildFinalistStayCard(stay) {
   const guestCapacity = getGuestCapacity(stay);
-  const stayNights = appState.filters.nights;
+  const stayNights = appState.planBudgetNights;
   const nightlyPerPerson = Math.round(stay.estimatedNightly / appState.planBudgetPeople);
   const totalStay = stay.estimatedNightly * stayNights;
   const totalPerPerson = Math.round(totalStay / appState.planBudgetPeople);
@@ -2297,7 +2305,7 @@ function renderFinalistStayList(destinationId, node) {
 
 function updatePlanBudgetUi() {
   normalizePlanBudgetRange();
-  const stayNights = appState.filters.nights;
+  const stayNights = appState.planBudgetNights;
   const totalStayMin = appState.planBudgetMin * appState.planBudgetPeople * stayNights;
   const totalStayMax = appState.planBudgetMax * appState.planBudgetPeople * stayNights;
   if (planBudgetMinInput) {
@@ -2308,6 +2316,9 @@ function updatePlanBudgetUi() {
   }
   if (planBudgetPeopleInput) {
     planBudgetPeopleInput.value = String(appState.planBudgetPeople);
+  }
+  if (planBudgetNightsInput) {
+    planBudgetNightsInput.value = String(appState.planBudgetNights);
   }
   if (planBudgetMinValue) {
     planBudgetMinValue.textContent = formatInr(appState.planBudgetMin);
@@ -2330,6 +2341,7 @@ function applyPlanBudgetControl(next) {
   appState.planBudgetMin = clampNumber(next.planBudgetMin ?? appState.planBudgetMin, 500, 6000, appState.planBudgetMin);
   appState.planBudgetMax = clampNumber(next.planBudgetMax ?? appState.planBudgetMax, 500, 6000, appState.planBudgetMax);
   appState.planBudgetPeople = clampNumber(next.planBudgetPeople ?? appState.planBudgetPeople, 2, 8, appState.planBudgetPeople);
+  appState.planBudgetNights = clampNumber(next.planBudgetNights ?? appState.planBudgetNights, 2, 6, appState.planBudgetNights);
   normalizePlanBudgetRange();
   persistState();
   renderFinalistsTab();
@@ -2343,7 +2355,7 @@ function renderFinalistsTab() {
   if (planBudgetSummary) {
     planBudgetSummary.textContent = `Showing ${meghCount + kemCount} Airbnb options across the two finalists whose estimated nightly per-person price falls between ${formatInr(
       appState.planBudgetMin
-    )} and ${formatInr(appState.planBudgetMax)} for a group of ${appState.planBudgetPeople}.`;
+    )} and ${formatInr(appState.planBudgetMax)} for a group of ${appState.planBudgetPeople} over ${appState.planBudgetNights} nights.`;
   }
 }
 
@@ -2656,6 +2668,10 @@ planBudgetPeopleInput?.addEventListener("change", () => {
   applyPlanBudgetControl({ planBudgetPeople: planBudgetPeopleInput.value });
 });
 
+planBudgetNightsInput?.addEventListener("change", () => {
+  applyPlanBudgetControl({ planBudgetNights: planBudgetNightsInput.value });
+});
+
 planBudgetMinDecrease?.addEventListener("click", () => {
   applyPlanBudgetControl({ planBudgetMin: appState.planBudgetMin - 500 });
 });
@@ -2680,12 +2696,12 @@ planBudgetPeopleIncrease?.addEventListener("click", () => {
   applyPlanBudgetControl({ planBudgetPeople: appState.planBudgetPeople + 1 });
 });
 
-planBudgetResetButton?.addEventListener("click", () => {
-  applyPlanBudgetControl({
-    planBudgetMin: 3500,
-    planBudgetMax: 9000,
-    planBudgetPeople: 6,
-  });
+planBudgetNightsDecrease?.addEventListener("click", () => {
+  applyPlanBudgetControl({ planBudgetNights: appState.planBudgetNights - 1 });
+});
+
+planBudgetNightsIncrease?.addEventListener("click", () => {
+  applyPlanBudgetControl({ planBudgetNights: appState.planBudgetNights + 1 });
 });
 
 function adjustExploreTripLength(delta) {

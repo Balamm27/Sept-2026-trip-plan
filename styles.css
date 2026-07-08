@@ -1733,12 +1733,7 @@ li {
   margin-top: 18px;
 }
 
-.budget-reset-button {
-  min-height: 70px;
-  align-self: stretch;
-}
-
-.budget-people-panel {
+.budget-controls-grid {
   display: grid;
   gap: 14px;
   margin-top: 18px;
@@ -1755,14 +1750,14 @@ li {
 }
 
 .budget-stepper {
-  display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) 42px;
+  display: flex;
   gap: 10px;
   align-items: center;
 }
 
 .budget-stepper input {
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
   border-radius: 16px;
   border: 1px solid rgba(22, 53, 51, 0.12);
   background: rgba(255, 255, 255, 0.92);
@@ -1770,6 +1765,11 @@ li {
   font: inherit;
   font-weight: 700;
   color: var(--ink);
+}
+
+.budget-stepper .counter-button {
+  flex: 0 0 42px;
+  height: 42px;
 }
 
 .budget-readout-compact {
@@ -1782,19 +1782,6 @@ li {
   padding: 16px;
   border: 1px solid rgba(22, 53, 51, 0.08);
   background: rgba(255, 255, 255, 0.76);
-}
-
-.budget-slider-group {
-  display: grid;
-  gap: 14px;
-  margin-top: 18px;
-}
-
-.budget-slider-label {
-  display: grid;
-  gap: 10px;
-  font-weight: 700;
-  color: var(--ink);
 }
 
 .finalist-card {
@@ -2141,17 +2128,17 @@ li {
     align-items: flex-start;
   }
 
-  .budget-reset-button {
-    min-height: auto;
-  }
-
   .budget-stepper {
-    grid-template-columns: 36px minmax(0, 1fr) 36px;
-    gap: 8px;
+    gap: 6px;
   }
 
   .budget-stepper input {
     padding: 11px 12px;
+  }
+
+  .budget-stepper .counter-button {
+    flex-basis: 34px;
+    height: 34px;
   }
 
   .compare-overview-pills {
