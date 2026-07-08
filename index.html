@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="./styles.css?v=6309" />
+    <link rel="stylesheet" href="./styles.css?v=6310" />
   </head>
   <body>
     <div class="page-shell">
@@ -778,10 +778,10 @@
 
             <div class="finalists-budget-panel">
               <p class="section-label">Budget filter</p>
-              <h3>Filter the Airbnb pool by nightly stay budget</h3>
+              <h3>Filter the Airbnb pool by per-person daily stay budget</h3>
               <p>
                 The cards still show the full property price per night, but this filter works
-                on the derived per-person nightly split based on the group size you choose
+                on the derived per-person per-day split based on the group size you choose
                 below, so you can narrow the list before comparing the fuller itinerary.
               </p>
 
@@ -803,19 +803,19 @@
                   </div>
                 </div>
                 <div class="budget-control-block">
-                  <span class="budget-control-label">Minimum budget</span>
+                  <span class="budget-control-label">Minimum budget per person per day</span>
                   <div class="budget-stepper">
-                    <button type="button" class="counter-button" id="planBudgetMinDecrease" aria-label="Decrease minimum nightly budget">−</button>
+                    <button type="button" class="counter-button" id="planBudgetMinDecrease" aria-label="Decrease minimum per-person daily budget">−</button>
                     <input type="number" id="planBudgetMin" min="500" max="6000" step="500" value="500" />
-                    <button type="button" class="counter-button" id="planBudgetMinIncrease" aria-label="Increase minimum nightly budget">+</button>
+                    <button type="button" class="counter-button" id="planBudgetMinIncrease" aria-label="Increase minimum per-person daily budget">+</button>
                   </div>
                 </div>
                 <div class="budget-control-block">
-                  <span class="budget-control-label">Maximum budget</span>
+                  <span class="budget-control-label">Maximum budget per person per day</span>
                   <div class="budget-stepper">
-                    <button type="button" class="counter-button" id="planBudgetMaxDecrease" aria-label="Decrease maximum nightly budget">−</button>
+                    <button type="button" class="counter-button" id="planBudgetMaxDecrease" aria-label="Decrease maximum per-person daily budget">−</button>
                     <input type="number" id="planBudgetMax" min="500" max="6000" step="500" value="1500" />
-                    <button type="button" class="counter-button" id="planBudgetMaxIncrease" aria-label="Increase maximum nightly budget">+</button>
+                    <button type="button" class="counter-button" id="planBudgetMaxIncrease" aria-label="Increase maximum per-person daily budget">+</button>
                   </div>
                 </div>
               </div>
@@ -826,7 +826,7 @@
                   <strong id="planBudgetPeopleValue">6 people</strong>
                 </div>
                 <div class="budget-chip">
-                  <span class="fact-label">Price per person per night</span>
+                  <span class="fact-label">Price per person per day</span>
                   <strong id="planBudgetPerPersonValue">₹500 to ₹1,500</strong>
                 </div>
                 <div class="budget-chip">
@@ -836,7 +836,7 @@
               </div>
 
               <p class="planner-note" id="planBudgetSummary">
-                Showing Airbnb options whose estimated nightly per-person price sits
+                Showing Airbnb options whose estimated per-person daily price sits
                 inside the selected budget band.
               </p>
             </div>
@@ -1129,6 +1129,6 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="./script.js?v=6309"></script>
+    <script src="./script.js?v=6310"></script>
   </body>
 </html>

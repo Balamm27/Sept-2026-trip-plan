@@ -2277,7 +2277,7 @@ function buildFinalistStayCard(stay) {
         <div class="stay-card-badges">
           <span class="stay-badge">${escapeHtml(fitLabel)}</span>
           <span class="stay-badge">${escapeHtml(stay.guests)}</span>
-          <span class="stay-badge">${escapeHtml(formatInr(nightlyPerPerson))} pp / night at ${appState.planBudgetPeople}</span>
+          <span class="stay-badge">${escapeHtml(formatInr(nightlyPerPerson))} pp / day at ${appState.planBudgetPeople}</span>
           <span class="stay-badge">${escapeHtml(formatInr(totalPerPerson))} pp for ${stayNights} nights</span>
           <span class="stay-badge">${escapeHtml(stay.metaLabel)}</span>
         </div>
@@ -2353,7 +2353,7 @@ function renderFinalistsTab() {
   const kemCount = renderFinalistStayList("kemmanagundi", kemmanagundiStayList);
 
   if (planBudgetSummary) {
-    planBudgetSummary.textContent = `Showing ${meghCount + kemCount} Airbnb options across the two finalists whose estimated nightly per-person price falls between ${formatInr(
+    planBudgetSummary.textContent = `Showing ${meghCount + kemCount} Airbnb options across the two finalists whose estimated per-person daily price falls between ${formatInr(
       appState.planBudgetMin
     )} and ${formatInr(appState.planBudgetMax)} for a group of ${appState.planBudgetPeople} over ${appState.planBudgetNights} nights.`;
   }
