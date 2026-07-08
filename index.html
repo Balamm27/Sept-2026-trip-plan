@@ -18,7 +18,7 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
-    <link rel="stylesheet" href="./styles.css?v=6306" />
+    <link rel="stylesheet" href="./styles.css?v=6307" />
   </head>
   <body>
     <div class="page-shell">
@@ -800,10 +800,14 @@
               </div>
 
               <div class="budget-people-panel">
-                <label class="budget-slider-label" for="planBudgetPeople">
-                  <span>Group size for split calculation</span>
-                  <input type="range" id="planBudgetPeople" min="5" max="7" step="1" value="6" />
-                </label>
+                <div class="budget-control-block">
+                  <span class="budget-control-label">Group size for split calculation</span>
+                  <div class="budget-stepper">
+                    <button type="button" class="counter-button" id="planBudgetPeopleDecrease" aria-label="Decrease people count">−</button>
+                    <input type="number" id="planBudgetPeople" min="2" max="8" step="1" value="6" />
+                    <button type="button" class="counter-button" id="planBudgetPeopleIncrease" aria-label="Increase people count">+</button>
+                  </div>
+                </div>
                 <div class="budget-readout budget-readout-compact">
                   <div class="budget-chip">
                     <span class="fact-label">People</span>
@@ -821,14 +825,22 @@
               </div>
 
               <div class="budget-slider-group">
-                <label class="budget-slider-label" for="planBudgetMin">
-                  <span>Minimum nightly stay budget</span>
-                  <input type="range" id="planBudgetMin" min="3000" max="12000" step="500" value="3500" />
-                </label>
-                <label class="budget-slider-label" for="planBudgetMax">
-                  <span>Maximum nightly stay budget</span>
-                  <input type="range" id="planBudgetMax" min="3000" max="12000" step="500" value="9000" />
-                </label>
+                <div class="budget-control-block">
+                  <span class="budget-control-label">Minimum nightly stay budget</span>
+                  <div class="budget-stepper">
+                    <button type="button" class="counter-button" id="planBudgetMinDecrease" aria-label="Decrease minimum nightly budget">−</button>
+                    <input type="number" id="planBudgetMin" min="3000" max="12000" step="500" value="3500" />
+                    <button type="button" class="counter-button" id="planBudgetMinIncrease" aria-label="Increase minimum nightly budget">+</button>
+                  </div>
+                </div>
+                <div class="budget-control-block">
+                  <span class="budget-control-label">Maximum nightly stay budget</span>
+                  <div class="budget-stepper">
+                    <button type="button" class="counter-button" id="planBudgetMaxDecrease" aria-label="Decrease maximum nightly budget">−</button>
+                    <input type="number" id="planBudgetMax" min="3000" max="12000" step="500" value="9000" />
+                    <button type="button" class="counter-button" id="planBudgetMaxIncrease" aria-label="Increase maximum nightly budget">+</button>
+                  </div>
+                </div>
               </div>
 
               <p class="planner-note" id="planBudgetSummary">
@@ -1125,6 +1137,6 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="./script.js?v=6306"></script>
+    <script src="./script.js?v=6307"></script>
   </body>
 </html>

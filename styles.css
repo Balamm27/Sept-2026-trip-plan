@@ -1744,6 +1744,34 @@ li {
   margin-top: 18px;
 }
 
+.budget-control-block {
+  display: grid;
+  gap: 10px;
+}
+
+.budget-control-label {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.budget-stepper {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
+  gap: 10px;
+  align-items: center;
+}
+
+.budget-stepper input {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(22, 53, 51, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 12px 14px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--ink);
+}
+
 .budget-readout-compact {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 0;
@@ -1767,11 +1795,6 @@ li {
   gap: 10px;
   font-weight: 700;
   color: var(--ink);
-}
-
-.budget-slider-label input[type="range"] {
-  width: 100%;
-  accent-color: var(--accent);
 }
 
 .finalist-card {
@@ -2120,6 +2143,15 @@ li {
 
   .budget-reset-button {
     min-height: auto;
+  }
+
+  .budget-stepper {
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    gap: 8px;
+  }
+
+  .budget-stepper input {
+    padding: 11px 12px;
   }
 
   .compare-overview-pills {

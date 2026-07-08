@@ -800,6 +800,12 @@ const finalistsMapNode = document.getElementById("finalistsMap");
 const planBudgetMinInput = document.getElementById("planBudgetMin");
 const planBudgetMaxInput = document.getElementById("planBudgetMax");
 const planBudgetPeopleInput = document.getElementById("planBudgetPeople");
+const planBudgetMinDecrease = document.getElementById("planBudgetMinDecrease");
+const planBudgetMinIncrease = document.getElementById("planBudgetMinIncrease");
+const planBudgetMaxDecrease = document.getElementById("planBudgetMaxDecrease");
+const planBudgetMaxIncrease = document.getElementById("planBudgetMaxIncrease");
+const planBudgetPeopleDecrease = document.getElementById("planBudgetPeopleDecrease");
+const planBudgetPeopleIncrease = document.getElementById("planBudgetPeopleIncrease");
 const planBudgetResetButton = document.getElementById("planBudgetReset");
 const planBudgetMinValue = document.getElementById("planBudgetMinValue");
 const planBudgetMaxValue = document.getElementById("planBudgetMaxValue");
@@ -918,7 +924,7 @@ function applyPersistedState(payload) {
   appState.compareTransport = payload.compareTransport === "train" ? "train" : "road";
   appState.planBudgetMin = clampNumber(payload.planBudgetMin, 3000, 12000, 3500);
   appState.planBudgetMax = clampNumber(payload.planBudgetMax, 3000, 12000, 9000);
-  appState.planBudgetPeople = clampNumber(payload.planBudgetPeople, 5, 7, 6);
+  appState.planBudgetPeople = clampNumber(payload.planBudgetPeople, 2, 8, 6);
 
   if (Array.isArray(payload.shortlist)) {
     payload.shortlist.slice(0, 3).forEach((item) => {
@@ -1055,7 +1061,7 @@ function decodeStateFromUrl() {
   urlState.compareTransport = params.get("transport") === "train" ? "train" : "road";
   urlState.planBudgetMin = clampNumber(params.get("planMin"), 3000, 12000, 3500);
   urlState.planBudgetMax = clampNumber(params.get("planMax"), 3000, 12000, 9000);
-  urlState.planBudgetPeople = clampNumber(params.get("planPeople"), 5, 7, 6);
+  urlState.planBudgetPeople = clampNumber(params.get("planPeople"), 2, 8, 6);
 
   const compareRaw = params.get("compare");
   if (compareRaw) {
@@ -2320,6 +2326,15 @@ function updatePlanBudgetUi() {
   }
 }
 
+function applyPlanBudgetControl(next) {
+  appState.planBudgetMin = clampNumber(next.planBudgetMin ?? appState.planBudgetMin, 3000, 12000, appState.planBudgetMin);
+  appState.planBudgetMax = clampNumber(next.planBudgetMax ?? appState.planBudgetMax, 3000, 12000, appState.planBudgetMax);
+  appState.planBudgetPeople = clampNumber(next.planBudgetPeople ?? appState.planBudgetPeople, 2, 8, appState.planBudgetPeople);
+  normalizePlanBudgetRange();
+  persistState();
+  renderFinalistsTab();
+}
+
 function renderFinalistsTab() {
   updatePlanBudgetUi();
   const meghCount = renderFinalistStayList("meghamalai", meghamalaiStayList);
@@ -2631,32 +2646,48 @@ openExploreTabButton.addEventListener("click", () => setActiveTab("explore"));
 openCompareTabButton.addEventListener("click", () => setActiveTab("compare"));
 openPlanTabButton.addEventListener("click", () => setActiveTab("plan"));
 
-planBudgetMinInput?.addEventListener("input", () => {
-  appState.planBudgetMin = clampNumber(planBudgetMinInput.value, 3000, 12000, appState.planBudgetMin);
-  normalizePlanBudgetRange();
-  persistState();
-  renderFinalistsTab();
+planBudgetMinInput?.addEventListener("change", () => {
+  applyPlanBudgetControl({ planBudgetMin: planBudgetMinInput.value });
 });
 
-planBudgetMaxInput?.addEventListener("input", () => {
-  appState.planBudgetMax = clampNumber(planBudgetMaxInput.value, 3000, 12000, appState.planBudgetMax);
-  normalizePlanBudgetRange();
-  persistState();
-  renderFinalistsTab();
+planBudgetMaxInput?.addEventListener("change", () => {
+  applyPlanBudgetControl({ planBudgetMax: planBudgetMaxInput.value });
 });
 
-planBudgetPeopleInput?.addEventListener("input", () => {
-  appState.planBudgetPeople = clampNumber(planBudgetPeopleInput.value, 5, 7, appState.planBudgetPeople);
-  persistState();
-  renderFinalistsTab();
+planBudgetPeopleInput?.addEventListener("change", () => {
+  applyPlanBudgetControl({ planBudgetPeople: planBudgetPeopleInput.value });
+});
+
+planBudgetMinDecrease?.addEventListener("click", () => {
+  applyPlanBudgetControl({ planBudgetMin: appState.planBudgetMin - 500 });
+});
+
+planBudgetMinIncrease?.addEventListener("click", () => {
+  applyPlanBudgetControl({ planBudgetMin: appState.planBudgetMin + 500 });
+});
+
+planBudgetMaxDecrease?.addEventListener("click", () => {
+  applyPlanBudgetControl({ planBudgetMax: appState.planBudgetMax - 500 });
+});
+
+planBudgetMaxIncrease?.addEventListener("click", () => {
+  applyPlanBudgetControl({ planBudgetMax: appState.planBudgetMax + 500 });
+});
+
+planBudgetPeopleDecrease?.addEventListener("click", () => {
+  applyPlanBudgetControl({ planBudgetPeople: appState.planBudgetPeople - 1 });
+});
+
+planBudgetPeopleIncrease?.addEventListener("click", () => {
+  applyPlanBudgetControl({ planBudgetPeople: appState.planBudgetPeople + 1 });
 });
 
 planBudgetResetButton?.addEventListener("click", () => {
-  appState.planBudgetMin = 3500;
-  appState.planBudgetMax = 9000;
-  appState.planBudgetPeople = 6;
-  persistState();
-  renderFinalistsTab();
+  applyPlanBudgetControl({
+    planBudgetMin: 3500,
+    planBudgetMax: 9000,
+    planBudgetPeople: 6,
+  });
 });
 
 function adjustExploreTripLength(delta) {
